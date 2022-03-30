@@ -1,6 +1,25 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const express = require("express");
+const session = require("express-session");
+
 var Userdb = require("../models/model");
+
+const sessionRouter = express.Router();
+
+sessionRouter.use(
+  session({
+    key: "email",
+    secret: "cmpe273_kafka_passport_mongo",
+    resave: false, // Forces the session to be saved back to the session store, even if the session was never modified during the request
+    saveUninitialized: false, // Force to save uninitialized session to db. A session is uninitialized when it is new but not modified.
+    // duration: 60 * 60 * 1000, // Overall duration of Session : 30 minutes : 1800 seconds
+    activeDuration: 5 * 60 * 1000,
+    cookie: {
+      expiresIn: 60 * 60 * 24,
+    },
+  })
+);
 
 //create and save new user
 exports.create = async (req, res) => {
@@ -44,35 +63,41 @@ exports.findUser = (req, res) => {
     console.log(user + "--------------------------");
     if (user) {
       bcrypt.compare(password, user.password, (err, result) => {
+        console.log("result " + result);
+
         if (err) {
-          res.json({ error: err });
+          res.send({ error: err });
         }
         if (result) {
-          res.cookie("user", result[0].name, {
+          res.cookie("user", user.username, {
             maxAge: 900000,
             httpOnly: false,
             path: "/",
           });
-          req.session.user = result;
-          let token = jwt.sign({ email: user.email }, "SecretValue", {
+          session.user = user;
+          let token = jwt.sign({ username: user.username }, "SecretValue", {
             expiresIn: "1h",
           });
-          // res.json({ message: "Login successfull", token });
-          res.send(result);
+          res.send({ success: true, message: "Login successfull", token });
+          // res.send(result);
+          console.log("=========end =============");
         } else {
-          res.json({
+          res.send({
             message: "Password doesn't match",
           });
         }
       });
     } else {
-      res.json({ message: "No user found!" });
+      res.send({ message: "No user found!" });
     }
   });
 };
 
 exports.getSignIn = (req, res) => {
-  if (req.session.user) {
+  console.log("---------------session user----------------");
+  if (session.user) {
+    console.log(session.user);
+    console.log("---------------session user exist----------------");
     res.send({ loggedIn: true, user: req.session.user });
   } else {
     res.send({ loggedIn: false });

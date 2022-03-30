@@ -31,40 +31,37 @@ function Signin({ setshowSignIn }) {
 
   const checkUser = (e) => {
     e.preventDefault();
-
     Axios.post("http://localhost:4000/api/users/signin", {
       email: email,
       password: password,
     })
       .then((response) => {
-        if (response.data.length === 1) {
-          console.log(response);
-          console.log(response.data[0]);
+        if (response.data.success) {
+          console.log(response.data.success);
           console.log("In frontend signin");
 
-          dispatch(
-            login({
-              id: response.data[0].id,
-              email: response.data[0].email,
-              name: response.data[0].name,
-              shopName: response.data[0].shopName,
-              dob: response.data[0].dob,
-              gender: response.data[0].gender,
-              city: response.data[0].city,
-              phoneNumber: response.data[0].phoneNumber,
-              profilePic: response.data[0].profilePic,
-              about: response.data[0].about,
-              shopImage: response.data[0].shopImage,
-              loggedIn: true,
-            })
-          );
+          // dispatch(
+          //   login({
+          //     id: response.data[0].id,
+          //     email: response.data[0].email,
+          //     name: response.data[0].name,
+          //     shopName: response.data[0].shopName,
+          //     dob: response.data[0].dob,
+          //     gender: response.data[0].gender,
+          //     city: response.data[0].city,
+          //     phoneNumber: response.data[0].phoneNumber,
+          //     profilePic: response.data[0].profilePic,
+          //     about: response.data[0].about,
+          //     shopImage: response.data[0].shopImage,
+          //     loggedIn: true,
+          //   })
+          // );
 
           window.location.pathname = "/home";
-        } else {
-          setError("Invalid Credentials!");
         }
       })
       .catch((err) => {
+        console.log(err);
         setError("Invalid credentials");
       });
   };
