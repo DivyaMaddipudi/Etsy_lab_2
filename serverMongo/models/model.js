@@ -44,6 +44,7 @@ var schema = new mongoose.Schema({
   shopName: {
     type: String,
     default: null,
+    unique: true,
   },
   shopImage: {
     type: String,

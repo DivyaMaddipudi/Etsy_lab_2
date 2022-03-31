@@ -63,8 +63,6 @@ exports.findUser = (req, res) => {
     console.log(user + "--------------------------");
     if (user) {
       bcrypt.compare(password, user.password, (err, result) => {
-        console.log("result " + result);
-
         if (err) {
           res.send({ error: err });
         }
@@ -78,7 +76,10 @@ exports.findUser = (req, res) => {
           let token = jwt.sign({ username: user.username }, "SecretValue", {
             expiresIn: "1h",
           });
-          res.send({ success: true, message: "Login successfull", token });
+
+          console.log("result " + result);
+
+          res.send({ success: true, user, token });
           // res.send(result);
           console.log("=========end =============");
         } else {
@@ -102,4 +103,29 @@ exports.getSignIn = (req, res) => {
   } else {
     res.send({ loggedIn: false });
   }
+};
+
+exports.findShopDuplicates = (req, res) => {
+  const shopName = req.body.shopName;
+
+  Userdb.findOne({ shopName: shopName }).then((user) => {
+    if (user) {
+      res.send({
+        message: "duplicate",
+      });
+      console.log("In shops db shop name found");
+    } else {
+      res.send({
+        message: "No duplicates",
+      });
+      console.log("In shops db and no shop name found");
+    }
+  });
+};
+
+exports.createShop = (req, res) => {
+  const shopName = req.body.shopName;
+  const id = req.params.id;
+
+  console.log(shopName + " " + id);
 };

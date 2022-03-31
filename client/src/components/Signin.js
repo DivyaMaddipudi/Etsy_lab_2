@@ -36,26 +36,27 @@ function Signin({ setshowSignIn }) {
       password: password,
     })
       .then((response) => {
+        console.log(response);
         if (response.data.success) {
-          console.log(response.data.success);
+          console.log(response.data.user["email"] + " about ");
           console.log("In frontend signin");
 
-          // dispatch(
-          //   login({
-          //     id: response.data[0].id,
-          //     email: response.data[0].email,
-          //     name: response.data[0].name,
-          //     shopName: response.data[0].shopName,
-          //     dob: response.data[0].dob,
-          //     gender: response.data[0].gender,
-          //     city: response.data[0].city,
-          //     phoneNumber: response.data[0].phoneNumber,
-          //     profilePic: response.data[0].profilePic,
-          //     about: response.data[0].about,
-          //     shopImage: response.data[0].shopImage,
-          //     loggedIn: true,
-          //   })
-          // );
+          dispatch(
+            login({
+              id: response.data.user["_id"],
+              email: response.data.user["email"],
+              name: response.data.user["name"],
+              shopName: response.data.user["shopName"],
+              dob: response.data.user["dob"],
+              gender: response.data.user["gender"],
+              city: response.data.user["city"],
+              phoneNumber: response.data.user["phoneNumber"],
+              profilePic: response.data.user["profilePic"],
+              about: response.data.user["about"],
+              shopImage: response.data.user["shopImage"],
+              loggedIn: true,
+            })
+          );
 
           window.location.pathname = "/home";
         }
@@ -70,8 +71,8 @@ function Signin({ setshowSignIn }) {
     Axios.get("http://localhost:4000/api/users/signin").then((response) => {
       // console.log(response);
 
-      if (response.data.loggedIn === true) {
-        setLoginStatus(response.data.user[0]);
+      if (response.data.success === true) {
+        setLoginStatus(response.data.user);
         console.log(loginStatus);
         console.log("++++++++++ cookie ++++++++++++" + cookie.load("user"));
       }
