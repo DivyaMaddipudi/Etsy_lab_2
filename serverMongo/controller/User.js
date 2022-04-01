@@ -127,5 +127,13 @@ exports.createShop = (req, res) => {
   const shopName = req.body.shopName;
   const id = req.params.id;
 
+  Userdb.findByIdAndUpdate(id, { shopName }).then((data) => {
+    if (!data) {
+      console.log(data + " can't update shopname");
+    } else {
+      console.log(data);
+      res.send("Shops Value Inserted in user successfully");
+    }
+  });
   console.log(shopName + " " + id);
 };
