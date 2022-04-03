@@ -18,13 +18,22 @@ function shopHeader({ searchProductUserId }) {
   const [prodUserId, setProdUserId] = useState(0);
 
   useEffect(() => {
-    Axios.get("http://localhost:4000/getShopById/" + user.id).then(
+    console.log(
+      user.id + " --------------------redux user id --------------------"
+    );
+    Axios.get("http://localhost:4000/api/users/getShopById/" + user.id).then(
       (response) => {
         if (response.data.success) {
           // setShop(response.data.result);
-          setShopName(response.data.result[0].shopName);
-          setUserName(response.data.result[0].name);
-          setShopImage(response.data.result[0].shopImage);
+          // console.log(response.data.user["shopImage"]);
+          // console.log(response.data.user["shopName"]);
+          // console.log(response.data.user.shopImage);
+          // console.log(response.data.user);
+
+          console.log(response);
+          setShopName(response.data.user.shopName);
+          setUserName(response.data.user.name);
+          setShopImage(response.data.user.shopImage);
         } else {
           console.log("Failed in getting shop by id ");
         }
@@ -42,7 +51,7 @@ function shopHeader({ searchProductUserId }) {
     <div className="shophome_header">
       {/* {shopImage} */}
       <div className="shop_details">
-        <img width="180px" src={"/Images/" + shopImage} alt="shop"></img>
+        <img width="180px" src={shopImage} alt="shop"></img>
         <div className="shop_info">
           <h3 className="shop_name">{shopName}</h3>
           <p> 10 Sales </p>

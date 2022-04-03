@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../features/userSlice";
 import CloseLogin from "../closeLogin";
-import CategoryComponent from "./CategoryComponent";
 
 function addProducts({ setShowProductsAddPage }) {
   const user = useSelector(selectUser);
@@ -24,26 +23,28 @@ function addProducts({ setShowProductsAddPage }) {
     formData.append("itemDescription", itemDescription);
     formData.append("itemPrice", itemPrice);
     formData.append("itemCount", itemCount);
+    console.log(itemCategory);
+
     if (itemCategory === "others") {
       formData.append("itemCategory", itemNewCategory);
     } else {
       formData.append("itemCategory", itemCategory);
     }
-    // console.log(itemImage);
-    // const itemDetails = {
-    //   itemName: itemName,
-    //   itemDescription: itemDescription,
-    //   itemCount,
-    //   itemPrice,
-    // };
 
-    Axios.post("http://localhost:4000/addProduct/" + user.id, formData, {
-      headers: { "content-Type": "multipart/form-data" },
-    }).then((response) => {
-      console.warn(response);
-      if (response.data.message === "success") {
+    console.log(itemName);
+    console.log(itemDescription);
+    console.log(itemPrice);
+    console.log(itemCount);
+    console.log(itemCategory);
+
+    Axios.post(
+      "http://localhost:4000/api/products/addProduct/" + user.id,
+      formData
+    ).then((response) => {
+      console.log(response);
+      if (response) {
         console.log("Image uploaded successfully");
-        // window.location.pathname = "/shopHome";
+        window.location.pathname = "/shopHome";
       }
     });
     setShowProductsAddPage(false);
@@ -108,6 +109,7 @@ function addProducts({ setShowProductsAddPage }) {
                 borderRadius: "4px",
               }}
             >
+              <option value=""></option>
               <option value="jewellery">Jewellery</option>
               <option value="clothing">Clothing</option>
               <option value="entertainment">Entertainment</option>
@@ -126,9 +128,9 @@ function addProducts({ setShowProductsAddPage }) {
                 className="item_category"
                 id="item_category"
                 placeholder="Item Category"
-                onChange={(event) => {
-                  setItemNewCategory(event.target.value);
-                }}
+                // onChange={(event) => {
+                //   setItemCategory(event.target.value);
+                // }}
                 required
               />
             </div>

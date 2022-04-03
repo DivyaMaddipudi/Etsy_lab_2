@@ -43,7 +43,7 @@ function Navbar() {
   };
 
   let navLogin = null;
-  if (user || cookie.load("user")) {
+  if (user && cookie.load("user")) {
     console.log("Able to read cookie");
     console.log(cookie.load("user"));
     navLogin = (

@@ -8,5 +8,7 @@ route.post("/api/users/signin", user.findUser);
 route.get("/api/users/signin", user.findUser);
 route.post("/api/users/findShopDuplicates", user.findShopDuplicates);
 route.post("/api/users/createShop/:id", user.createShop);
+route.get("/api/users/getShopById/:id", user.getShopById);
+route.put("/api/users/updateShopImageById/:id", user.updateShopImageById);
 
 module.exports = route;

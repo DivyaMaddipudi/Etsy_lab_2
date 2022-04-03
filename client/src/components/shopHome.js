@@ -47,7 +47,9 @@ function shopHome() {
   }, []);
 
   const getItemsByItemSearchId = () => {
-    Axios.get("http://localhost:4000/getItemById/" + id).then((response) => {
+    Axios.get(
+      "http://localhost:4000/api/products/getItemsByItemSearchId/" + id
+    ).then((response) => {
       console.log(response);
       if (response) {
         setSearchItemDetails(response.data.result);
@@ -73,7 +75,7 @@ function shopHome() {
     setShowProds(true);
     console.log("---------------in view Items-------------------");
     Axios.post(
-      "http://localhost:4000/getAllProducts/" + user.id,
+      "http://localhost:4000/api/products/getAllProducts/" + user.id,
       variables
     ).then((response) => {
       if (response.data.success) {
@@ -83,10 +85,7 @@ function shopHome() {
         } else {
           setProducts(response.data.result);
         }
-        setPostSize(response.data.postSize);
         console.log(user.id);
-
-        console.log(response.data.postSize + "Postsize in getallProducts");
       } else {
         console.log("Failed in ");
       }
@@ -128,17 +127,13 @@ function shopHome() {
     return (
       <div className="col-md-4 mb-4">
         <div className="card">
-          <img
-            src={"/Images/" + pro.itemImage}
-            className="card-img-top"
-            alt="..."
-          />
+          <img src={pro.itemImage} className="card-img-top" alt="..." />
           <div className="card-body">
             <h5 className="card-title">{pro.itemName}</h5>
             <p>Price: ${pro.itemPrice}</p>
             <p className="card-text">{pro.itemDescription}</p>
             <button
-              onClick={() => editItem(pro.itemId)}
+              onClick={() => editItem(pro._id)}
               className="btn-sm btn-dark"
             >
               Edit
@@ -235,7 +230,7 @@ function shopHome() {
       {showProductsEditPage && (
         <EditProducts
           setShowProductsEditPage={setShowProductsEditPage}
-          products={products}
+          // products={products}
           itemId={productId}
         />
       )}

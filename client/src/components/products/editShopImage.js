@@ -16,12 +16,14 @@ const editShopImage = ({ editShopPage }) => {
 
     const formData = new FormData();
     formData.append("shopImage", shopImage);
-    console.log("Inedit client axios");
+    console.log("Inedit client axios " + user.id);
     Axios.put(
-      "http://localhost:4000/updateShopImageById/" + user.id,
+      "http://localhost:4000/api/users/updateShopImageById/" + user.id,
       formData
     ).then((response) => {
       if (response.data.success) {
+        console.log("Item details edited successfully.....");
+
         console.log(response);
         // setShopImage(shopImage);
         console.log("Item details edited successfully.....");
@@ -35,11 +37,11 @@ const editShopImage = ({ editShopPage }) => {
   }, []);
 
   const fetchItemDetails = () => {
-    Axios.get("http://localhost:4000/getShopById/" + user.id).then(
+    Axios.get("http://localhost:4000/api/users/getShopById/" + user.id).then(
       (response) => {
         if (response) {
-          console.log(response.data.result[0].shopImage);
-          setShopImage(response.data.result[0].shopImage);
+          console.log(response.data.user["shopImage"] + " shop image ");
+          setShopImage(response.data.user["shopImage"]);
           // setProductExist(true);
           console.log("Products stored in get shop by id");
         }

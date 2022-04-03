@@ -2,6 +2,9 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const express = require("express");
 const session = require("express-session");
+const aws = require("aws-sdk");
+const multer = require("multer");
+const multerS3 = require("multer-s3");
 
 var Userdb = require("../models/model");
 
@@ -20,6 +23,14 @@ sessionRouter.use(
     },
   })
 );
+
+//connect to s3 bucket
+
+const s3 = new aws.S3({
+  accessKeyId: process.env.S3_ACCESS_KEY,
+  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+  region: process.env.S3_BUCKET_REGION,
+});
 
 //create and save new user
 exports.create = async (req, res) => {
@@ -64,6 +75,7 @@ exports.findUser = (req, res) => {
     if (user) {
       bcrypt.compare(password, user.password, (err, result) => {
         if (err) {
+          console.log(err);
           res.send({ error: err });
         }
         if (result) {
@@ -137,3 +149,66 @@ exports.createShop = (req, res) => {
   });
   console.log(shopName + " " + id);
 };
+
+exports.getShopById = (req, res) => {
+  console.log("------------------ get shop by id ---------------------");
+  const userId = req.params.id;
+  console.log(userId);
+  Userdb.findById({ _id: userId }).then((user) => {
+    if (user) {
+      console.log(user);
+      res.send({ user, success: true });
+    } else {
+      res.send({
+        message: "No user exists",
+      });
+    }
+  });
+};
+
+exports.updateShopImageById = (req, res) => {
+  const shopName = req.body.shopName;
+  const id = req.params.id;
+
+  const uploadSingle = upload("etsyappstorage").single("shopImage");
+
+  uploadSingle(req, res, async (err) => {
+    if (err) return res.status(400).json({ message: err.message });
+    console.log(req.file);
+    await Userdb.findByIdAndUpdate(id, { shopImage: req.file.location }).then(
+      (data) => {
+        if (!data) {
+          console.log(data + " can't update shopname");
+        } else {
+          console.log(data);
+          console.log("Image uploaded successfully");
+          res.send({ success: true, data });
+        }
+      }
+    );
+  });
+
+  // Userdb.findByIdAndUpdate(id, { shopName }).then((data) => {
+  //   if (!data) {
+  //     console.log(data + " can't update shopname");
+  //   } else {
+  //     console.log(data);
+  //     res.send("Shops Value Inserted in user successfully");
+  //   }
+  // });
+  console.log(shopName + " " + id);
+};
+
+const upload = (bucketName) =>
+  multer({
+    storage: multerS3({
+      s3,
+      bucket: bucketName,
+      metadata: function (req, file, cb) {
+        cb(null, { fieldName: file.fieldname });
+      },
+      key: function (req, file, cb) {
+        cb(null, `image-${Date.now()}.jpeg`);
+      },
+    }),
+  });

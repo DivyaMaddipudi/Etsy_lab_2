@@ -39,7 +39,6 @@ function profileList({ setShowProfileLists }) {
     dispatch(removeProductsState());
     dispatch(removeFavouritesList());
     // dispatch(removeAllItemsFromHome());
-    console.log("In sign out 1");
     // navigate("/");
     cookie.remove("user", { path: "/" });
     window.location.pathname = "/";
