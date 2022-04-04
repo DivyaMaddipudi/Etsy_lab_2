@@ -20,6 +20,9 @@ function profileForm() {
 
   const handleUserData = (e) => {
     e.preventDefault();
+    // console.log("In profile form");
+    // console.log(userImage);
+
     // console.log("User data submitted successfully");
     // console.log(userImage);
     // console.log(userName);
@@ -28,7 +31,6 @@ function profileForm() {
     // console.log(dob);
     // console.log(about);
     const formData = new FormData();
-    console.log(userImage.lastModified + userImage.name);
     formData.append("userImage", userImage);
     formData.append("userName", userName);
     formData.append("gender", gender);
@@ -37,25 +39,24 @@ function profileForm() {
     formData.append("about", about);
     formData.append("phoneNumber", phoneNumber);
 
-    console.log(dob);
-
-    Axios.put("http://localhost:4000/updateUser/" + user.id, formData, {
-      headers: { "content-Type": "multipart/form-data" },
-    }).then((response) => {
-      console.warn(response);
-      if (response.data.message === "success") {
+    Axios.put(
+      "http://localhost:4000/api/users/updateUser/" + user.id,
+      formData
+    ).then((response) => {
+      console.log(response);
+      if (response.data.success === true) {
         console.log("Image uploaded successfully");
         // console.log(response.data[0].result);
-        // console.log(response.data[0].result.name);
+        console.log(response.data.result["profilePic"]);
         dispatch(
           updateUserDetails({
-            name: userName,
-            dob: dob,
-            gender: gender,
-            city: city,
-            profilePic: userImage.lastModified + "" + userImage.name,
-            about: about,
-            phoneNumber: phoneNumber,
+            name: response.data.result["username"],
+            dob: response.data.result["dob"],
+            gender: response.data.result["gender"],
+            city: response.data.result["city"],
+            profilePic: response.data.profilePic,
+            about: response.data.result["about"],
+            phoneNumber: response.data.result["phoneNumber"],
           })
         );
         window.location.pathname = "/profileForm";
@@ -69,21 +70,23 @@ function profileForm() {
 
   const fetchItemDetails = (e) => {
     // e.preventDefault();
-    Axios.get("http://localhost:4000/getShopById/" + user.id).then(
+    Axios.get("http://localhost:4000/api/users/getShopById/" + user.id).then(
       (response) => {
         console.log(response);
 
         // console.log("In get of profile form");
         if (response.data.success === true) {
           console.log("In get of profile form");
-          console.log(response.data.result[0]);
-          setUserName(response.data.result[0].name);
-          setUserImage(response.data.result[0].profilePic);
-          setDob(response.data.result[0].dob);
-          setGender(response.data.result[0].gender);
-          setCity(response.data.result[0].city);
-          setAbout(response.data.result[0].about);
-          setPhoneNumber(response.data.result[0].phoneNumber);
+          console.log(response.data.user);
+          console.log(response.data.user["dob"]);
+
+          setUserName(response.data.user["username"]);
+          setUserImage(response.data.user["profilePic"]);
+          setDob(response.data.user["dob"]);
+          setGender(response.data.user["gender"]);
+          setCity(response.data.user["city"]);
+          setAbout(response.data.user["about"]);
+          setPhoneNumber(response.data.user["phoneNumber"]);
           console.log("Products stored in product");
         }
       }
@@ -91,7 +94,11 @@ function profileForm() {
   };
 
   const dateFunction = (specifiedDate) => {
-    return new Date(specifiedDate);
+    if (specifiedDate === "null") {
+      return new Date();
+    } else {
+      return new Date(specifiedDate).toISOString().split("T")[0];
+    }
   };
 
   // useEffect(() => {
@@ -137,15 +144,11 @@ function profileForm() {
               </div>
             </div>
 
-            <form>
+            <form encType="multipart/form-data">
               <div className="section">
                 <div className="label">Profile Picture</div>
                 <div className="profile-pic">
-                  <img
-                    width="200px"
-                    src={"/Users/Images/" + userImage}
-                    alt="shop"
-                  ></img>
+                  <img width="200px" src={userImage} alt="shop"></img>
                 </div>
 
                 <input
@@ -163,7 +166,7 @@ function profileForm() {
               <div className="section">
                 <div className="label">Your Name</div>
                 <input
-                  defaultValue={user.name}
+                  defaultValue={userName}
                   onChange={(event) => {
                     setUserName(event.target.value);
                   }}
@@ -237,7 +240,6 @@ function profileForm() {
                   City
                 </div>
                 <select
-                  defaultValue={user.city}
                   id="country"
                   name="country"
                   class="form-control"
@@ -246,6 +248,9 @@ function profileForm() {
                     setCity(event.target.value);
                   }}
                 >
+                  <option value="selected" selected>
+                    {city}
+                  </option>
                   <option value="Afghanistan">Afghanistan</option>
                   <option value="Åland Islands">Åland Islands</option>
                   <option value="Albania">Albania</option>
@@ -564,9 +569,7 @@ function profileForm() {
               <div className="section">
                 <div className="label">Birthday</div>
                 <input
-                  defaultValue={
-                    dateFunction(user.dob).toISOString().split("T")[0]
-                  }
+                  defaultValue={dateFunction(user.dob)}
                   type="date"
                   style={{ marginLeft: "-2%" }}
                   onChange={(event) => {
@@ -581,7 +584,7 @@ function profileForm() {
                   <p>Tell people a little about yourself.</p>
                 </div>
                 <textarea
-                  defaultValue={user.about}
+                  defaultValue={about}
                   style={{
                     marginLeft: "-3%",
                     borderRadius: "4px",

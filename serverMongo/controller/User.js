@@ -136,18 +136,17 @@ exports.findShopDuplicates = (req, res) => {
 };
 
 exports.createShop = (req, res) => {
+  console.log("In create shop");
   const shopName = req.body.shopName;
   const id = req.params.id;
-
   Userdb.findByIdAndUpdate(id, { shopName }).then((data) => {
     if (!data) {
       console.log(data + " can't update shopname");
     } else {
       console.log(data);
-      res.send("Shops Value Inserted in user successfully");
+      res.send({ data, message: "Shops Value Inserted in user successfully" });
     }
   });
-  console.log(shopName + " " + id);
 };
 
 exports.getShopById = (req, res) => {
@@ -163,6 +162,53 @@ exports.getShopById = (req, res) => {
         message: "No user exists",
       });
     }
+  });
+};
+
+exports.updateUser = (req, res) => {
+  console.log("In update user details");
+  const userId = req.params.id;
+
+  const uploadSingle = upload("etsyappstorage").single("userImage");
+
+  uploadSingle(req, res, async (err) => {
+    if (err) return res.status(400).json({ message: err.message });
+    console.log(req.file);
+    // console.log(req.file.location);
+    console.log("-----------------------------------");
+    console.log(req.body);
+
+    const userName = req.body.userName;
+    const gender = req.body.gender;
+    const city = req.body.city;
+    const dob = req.body.dob;
+    const about = req.body.about;
+    const phoneNumber = req.body.phoneNumber;
+    const profilePic = req.file.location;
+
+    await Userdb.findByIdAndUpdate(userId, {
+      username: userName,
+      gender,
+      city,
+      dob,
+      about,
+      phoneNumber,
+      profilePic,
+    })
+      .then((result) => {
+        console.log(
+          "--------------------------------user updated results -------------"
+        );
+        console.log(result);
+        res.send({ success: true, result, profilePic });
+      })
+      .catch((err) => {
+        console.log(
+          "--------------------------------not updated results -------------" +
+            err
+        );
+        res.send({ message: "User not updated", err });
+      });
   });
 };
 

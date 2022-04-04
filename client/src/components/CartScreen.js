@@ -3,18 +3,19 @@ import React from "react";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { createCartItem } from "../features/cartItemsSlice";
 
 // Components
 import CartItem from "../components/CartItem";
 
 // Actions
 import { addToCart, removeFromCart } from "../redux/actions/cartActions";
+import { getCartItems } from "../features/cartItemsSlice";
 
 const CartScreen = () => {
   const dispatch = useDispatch();
 
-  const cart = useSelector((state) => state.cart);
-  const { cartItems } = cart;
+  const cartItems = useSelector(getCartItems);
 
   useEffect(() => {}, []);
 

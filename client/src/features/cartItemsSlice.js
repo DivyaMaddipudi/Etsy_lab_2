@@ -25,7 +25,7 @@ export const cartItemsSlice = createSlice({
     removeCartItem: (state, action) => {
       console.log("----------------------------: deleted" + action.payload);
       let index = state.cartItems.findIndex(
-        ({ id }) => id === action.payload.id
+        ({ id }) => id === action.payload.itemId
       );
       state.cartItems.splice(index, 1);
       // state.cartItems.splice(action.payload, 1);
@@ -43,17 +43,17 @@ export const cartItemsSlice = createSlice({
     },
 
     createFinalCart: (state, action) => {
-      const exist = state.cartItems.findIndex(
+      const exist = state.finalCart.findIndex(
         (ele) => ele.itemId === action.payload.itemId
       );
       console.log(exist + "----------------------------: exist");
       if (exist !== -1) {
-        state.cartItems[exist] = {
-          ...state.cartItems[exist],
+        state.finalCart[exist] = {
+          ...state.finalCart[exist],
           ...action.payload,
         };
       } else {
-        state.cartItems.push(action.payload);
+        state.finalCart.push(action.payload);
       }
     },
   },

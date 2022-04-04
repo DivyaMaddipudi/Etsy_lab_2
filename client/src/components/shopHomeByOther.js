@@ -16,7 +16,8 @@ import ShopHeaderByOther from "./shopHeaderByOther";
 import ShopHomeOtherUser from "./shopHomeOtherUser";
 
 function shopHomeByOther() {
-  const { id } = useParams(); //itemId
+  const { itemId } = useParams(); //itemId
+  const { userId } = useParams();
   const [userIdFromSearch, setUserIdFromSearch] = useState();
   // const user = useSelector(selectUser);
 
@@ -26,49 +27,41 @@ function shopHomeByOther() {
   const userid = useSelector(getUserId);
 
   useEffect(() => {
-    getUserIdFromItemId();
+    // getUserIdFromItemId();
     getItemsFromUserid();
     getUserDetails();
-    // setTimeout(() => {
-    //   getItemsFromUserid();
-    // }, 2000);
-
-    // setTimeout(() => {
-    //   userDetails();
-    // }, 3000);
   });
 
   const getUserIdFromItemId = () => {
-    Axios.get("http://localhost:4000/getItemById/" + id).then((response) => {
-      if (response) {
-        dispatch(userId(response.data[0].userId));
-      }
-    });
-  };
-
-  const getItemsFromUserid = () => {
-    Axios.get("http://localhost:4000/getItemsBasedOnUser/" + userid).then(
+    Axios.get("http://localhost:4000/getItemById/" + itemId).then(
       (response) => {
         if (response) {
-          console.log(response);
-          // setUserInfo();
-          dispatch(createProducts(response.data.result));
-          console.log("helllo");
-          console.log(userInfo);
+          dispatch(userId(response.data[0].userId));
         }
       }
     );
   };
 
+  const getItemsFromUserid = () => {
+    Axios.get(
+      "http://localhost:4000/api/products/getAllProducts/" + userId
+    ).then((response) => {
+      if (response) {
+        console.log(response.data.result);
+        // setUserInfo();
+        dispatch(createProducts(response.data.result));
+      }
+    });
+  };
+
   const getUserDetails = () => {
-    Axios.get("http://localhost:4000/getShopById/" + userid).then(
+    Axios.get("http://localhost:4000/api/users/getShopById/" + userId).then(
       (response) => {
         if (response) {
           console.log(response);
           // setUserInfo(response.data.result[0]);
-          dispatch(userDetails(response.data.result[0]));
+          dispatch(userDetails(response.data.user));
           // console.log(response.data.result[0].name);
-          console.log("hi");
         }
       }
     );
@@ -83,8 +76,6 @@ function shopHomeByOther() {
 
       <ShopHeaderByOther />
       <ShopHomeOtherUser />
-
-      {/* shop home header  */}
     </div>
   );
 }

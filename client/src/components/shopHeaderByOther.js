@@ -24,11 +24,7 @@ function shopHeaderByOther({ searchProductUserId }) {
     <div className="shophome_header">
       {/* {shopImage} */}
       <div className="shop_details">
-        <img
-          width="180px"
-          // src={"/Images/" + userInformation.shopImage}
-          alt="shop"
-        ></img>
+        <img width="180px" src={userInformation.shopImage} alt="shop"></img>
         <div className="shop_info">
           <h3 className="shop_name">{userInformation.shopName}</h3>
           <p> 10 Sales </p>
@@ -39,9 +35,10 @@ function shopHeaderByOther({ searchProductUserId }) {
         <h6 style={{ fontSize: "18px" }}>SHOP OWNER</h6>
         <img
           style={{ width: "30%", borderRadius: "50%", height: "100px" }}
-          src={"/Users/Images/" + userInformation.profilePic}
+          src={userInformation.profilePic}
         ></img>
-        <h5>{userInformation.name}</h5>
+        <h5>{userInformation.username}</h5>
+        <h5>+1 {userInformation.phoneNumber}</h5>
       </div>
     </div>
   );

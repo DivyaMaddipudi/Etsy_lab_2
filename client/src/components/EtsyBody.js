@@ -37,51 +37,52 @@ function EtsyBody() {
   }, []);
 
   const getItems = () => {
-    Axios.get("http://localhost:4000/getItems").then((response) => {
-      if (response.data.success === true) {
-        console.log(response.data.result);
-        dispatch(getAllItems(response.data.result));
+    Axios.get("http://localhost:4000/api/products/getItems").then(
+      (response) => {
+        if (response.data.success === true) {
+          console.log(response.data.result);
+          dispatch(getAllItems(response.data.result));
 
-        for (let i = 0; i < response.data.result.length; i++) {
-          // console.log(response.data.result[i].itemId);
-          const updateItems = [
-            ...items,
-            {
-              itemId: response.data.result[i].itemId,
-              userId: response.data.result[i].userId,
-              itemName: response.data.result[i].itemName,
-              itemCategory: response.data.result[i].itemCategory,
-              itemPrice: response.data.result[i].itemPrice,
-              itemDescription: response.data.result[i].itemDescription,
-              itemCount: response.data.result[i].itemCount,
-              itemImage: response.data.result[i].itemImage,
-            },
-          ];
-          SetItems(updateItems);
-          console.log("-------------geting all products----------------");
-          console.log(items);
+          for (let i = 0; i < response.data.result.length; i++) {
+            // console.log(response.data.result[i].itemId);
+            const updateItems = [
+              ...items,
+              {
+                itemId: response.data.result[i].itemId,
+                userId: response.data.result[i].userId,
+                itemName: response.data.result[i].itemName,
+                itemCategory: response.data.result[i].itemCategory,
+                itemPrice: response.data.result[i].itemPrice,
+                itemDescription: response.data.result[i].itemDescription,
+                itemCount: response.data.result[i].itemCount,
+                itemImage: response.data.result[i].itemImage,
+              },
+            ];
+            SetItems(updateItems);
+            // console.log("-------------geting all products----------------");
+          }
         }
       }
-    });
+    );
   };
 
   const getFavourites = () => {
     if (user !== null) {
-      Axios.get("http://localhost:4000/getFavourites/" + user.id).then(
-        (response) => {
-          console.log("user id for favourites" + user.id);
-          console.log(response.data.result);
-          if (response.data.success === true) {
-            dispatch(favouritesList(response.data.result));
-          }
+      Axios.get(
+        "http://localhost:4000/api/products/getFavourites/" + user.id
+      ).then((response) => {
+        console.log("user id for favourites" + user.id);
+        console.log(response.data.result);
+        if (response.data.success === true) {
+          dispatch(favouritesList(response.data.result));
         }
-      );
+      });
     }
   };
 
   const handleFavourite = (itemId, userId) => {
-    console.log("Favourites added" + itemId + userId);
-    Axios.post("http://localhost:4000/addFavourite", {
+    console.log("Favourites added " + itemId + " " + userId);
+    Axios.post("http://localhost:4000/api/products/addFavourite", {
       itemId: itemId,
       userId: userId,
     }).then((response) => {
@@ -116,7 +117,7 @@ function EtsyBody() {
             }}
             className="favourite_icon"
             onClick={() => {
-              handleFavourite(pro.itemId, user.id);
+              handleFavourite(pro._id, user.id);
             }}
           >
             {/* {toggleFavourites} */}
@@ -125,7 +126,7 @@ function EtsyBody() {
               favourites.userId === user.id} */}
           </div>
           <img
-            src={"/Images/" + pro.itemImage}
+            src={pro.itemImage}
             className="home_image card-img-top"
             alt="..."
             onClick={() => {

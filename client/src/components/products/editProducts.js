@@ -18,15 +18,16 @@ function editProducts({ setShowProductsEditPage, itemId }) {
     itemName: itemName,
     itemPrice: itemPrice,
     itemDescription: itemDescription,
-    itemCategory: itemCategory,
+    // itemCategory: itemCategory,
     itemCount: itemCount,
   };
 
   const editItem = (e) => {
     // e.preventDefault();
-    console.log("Inedit client axios");
+    console.log("In edit item client axios");
+    console.log(itemDetails);
     Axios.put(
-      "http://localhost:4000/updateItemById/" + itemId,
+      "http://localhost:4000/api/products/editItemById/" + itemId,
       itemDetails
     ).then((response) => {
       if (response.data.success) {
@@ -44,8 +45,6 @@ function editProducts({ setShowProductsEditPage, itemId }) {
       (response) => {
         if (response) {
           console.log("In edit items page");
-          console.log(response.data.result[0]["itemCount"]);
-          console.log(response.data.result);
 
           setItemName(response.data.result[0]["itemName"]);
           setItemDescription(response.data.result[0]["itemDescription"]);
@@ -54,7 +53,6 @@ function editProducts({ setShowProductsEditPage, itemId }) {
           setItemCategory(response.data.result[0]["itemCategory"]);
           setProduct(response.data.result[0]["itemCount"]);
           setProductExist(true);
-          console.log("Products stored in product");
         }
       }
     );

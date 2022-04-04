@@ -15,9 +15,9 @@
   color: #171717;
 }
 
-.cartItem__name:hover {
-  color: #dd219e;
-}
+/* .cartItem__name:hover {
+  color: orange;
+} */
 
 .cartItem__select {
   padding: 10px 17px;

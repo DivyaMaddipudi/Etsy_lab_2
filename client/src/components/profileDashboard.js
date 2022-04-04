@@ -27,35 +27,40 @@ function profileDashboard() {
   }, []);
 
   const getFavouriteItems = () => {
-    Axios.get("http://localhost:4000/getFavourites/" + user.id).then(
-      (response) => {
-        console.log(response.data.result);
-        if (response.data.success === true) {
-          console.log("geting all fav products and storing in redux");
-          dispatch(favouritesList(response.data.result));
-          console.log(response.data.result.length);
-          console.log(favProds);
-        }
+    Axios.get(
+      "http://localhost:4000/api/products/getFavourites/" + user.id
+    ).then((response) => {
+      console.log(response.data.result);
+      if (response.data.success === true) {
+        console.log("geting all fav products and storing in redux");
+        // response.data.result.map((favItem) => {
+        //   console.log("Fav items");
+        //   // console.log(favItem.itemId);
+        //   //  setProducts([...products, ...response.data.result]);
+        //   setFavProds([...favProdS, favItem.itemId]);
+        // });
+
+        dispatch(favouritesList(response.data.result));
+
+        // console.log(response.data.result.length);
       }
-    );
+    });
   };
 
   const editProfile = () => {
     navigate("/updateProfile");
   };
 
-  const handleFavourite = (itemId, userId) => {
-    console.log("Favourites deletd" + itemId + userId);
+  const handleFavourite = (favId) => {
+    console.log("Favourites deletd" + favId);
     Axios.delete(
-      "http://localhost:4000/deleteFavourite/" + itemId + "/" + userId,
-      {
-        itemId: itemId,
-        userId: userId,
-      }
+      "http://localhost:4000/api/products/deleteFavourite/" + favId
     ).then((response) => {
+      console.log(response.data);
       if (response.data.success === true) {
+        console.log("item deleted successfully");
+        console.log(response.data.res);
         window.location.pathname = "/profile";
-        console.log(response);
       }
     });
   };
@@ -78,24 +83,22 @@ function profileDashboard() {
               }}
               className="favourite_icon"
               onClick={() => {
-                handleFavourite(pro.itemId, user.id);
+                handleFavourite(pro._id);
               }}
             >
               <FavoriteBorderIcon />
             </div>
             <img
-              src={"/Images/" + pro.itemImage}
+              src={pro.itemId["itemImage"]}
               className="card-img-top"
               alt="..."
             />
             <p className="home_price">
-              <AirportShuttleIcon /> ${pro.itemPrice}
+              <AirportShuttleIcon /> ${pro.itemId["itemPrice"]}
             </p>
-
             <div className="card-body">
-              <h5 className="card-title">{pro.itemName}</h5>
-
-              <p className="card-text">{pro.itemDescription}</p>
+              <h5 className="card-title">{pro.itemId["itemName"]}</h5>
+              <p className="card-text">{pro.itemId["itemDescription"]}</p>
               {/* <button className="btn-sm btn-dark">Edit</button> */}
             </div>
           </div>
@@ -115,14 +118,11 @@ function profileDashboard() {
       {/* <h1>{favProdS}</h1> */}
 
       <div className="profile_dashboard">
-        {/* {user !== null && (
-          // <img
-          //   className="profile_image"
-          //   src={"/Users/Images/" + user.profilePic}
-          //   alt="profile pic"
-          // />
-        )} */}
-        {/* <img className="profile_pic" src="" /> */}
+        <img
+          className="profile_image"
+          src={user.profilePic}
+          alt="profile pic"
+        />
 
         <div className="profile_name">{cookie.load("user")}</div>
         <div className="edit_profileIcon">

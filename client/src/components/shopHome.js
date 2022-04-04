@@ -43,7 +43,7 @@ function shopHome() {
       limit: limit,
     };
     viewItems(variables);
-    getItemsByItemSearchId();
+    // getItemsByItemSearchId();
   }, []);
 
   const getItemsByItemSearchId = () => {
@@ -72,12 +72,14 @@ function shopHome() {
   };
 
   var viewItems = (variables) => {
+    console.log(
+      variables["searchTerm"] + "------------------ getting viewItems"
+    );
     setShowProds(true);
     console.log("---------------in view Items-------------------");
-    Axios.post(
-      "http://localhost:4000/api/products/getAllProducts/" + user.id,
-      variables
-    ).then((response) => {
+    Axios.post("http://localhost:4000/api/products/getAllProducts/" + user.id, {
+      searchTerm: variables["searchTerm"],
+    }).then((response) => {
       if (response.data.success) {
         if (variables.loadMore) {
           setProducts([...products, ...response.data.result]);

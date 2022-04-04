@@ -48,7 +48,10 @@ function App() {
           {/* <Route path="/shopHome/:id" element={<ShopHome />} /> */}
           <Route path="/shopName" element={<CheckShopName />} />
           <Route path="/searchResults" element={<SearchResultItems />} />
-          <Route path="/shopHomeForOthers/:id" element={<ShopHomeByOther />} />
+          <Route
+            path="/shopHomeForOthers/:userId/:itemId"
+            element={<ShopHomeByOther />}
+          />
           <Route path="/profileDashboard" element={<ProfileDashboard />} />
           <Route path="/profileForm" element={<ProfileForm />} />
           <Route path="/productOverview" element={<ProductOverView />} />

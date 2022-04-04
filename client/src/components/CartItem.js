@@ -1,8 +1,12 @@
 import "./CartItem.css";
 import { Link } from "react-router-dom";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createFinalCart, removeCartItem } from "../features/cartItemsSlice";
+import {
+  createFinalCart,
+  createCartItem,
+  removeCartItem,
+} from "../features/cartItemsSlice";
 import { Delete } from "@material-ui/icons";
 import Axios from "axios";
 import { selectUser } from "../features/userSlice";
@@ -10,27 +14,87 @@ import { selectUser } from "../features/userSlice";
 const CartItem = ({ item }) => {
   const dispatch = useDispatch();
 
+  const [giftOption, setGiftOption] = useState(false);
+  const [giftDescription, setGiftDescription] = useState("");
+  const user = useSelector(selectUser);
+
+  // if (giftOption) {
+  //   const qtyChangeHandler = (qty) => {
+  //     dispatch(
+  //       createFinalCart({
+  //         itemId: item.itemId,
+  //         itemName: item.itemName,
+  //         itemDescription: item.itemDescription,
+  //         itemImage: item.itemImage,
+  //         itemPrice: item.itemPrice,
+  //         itemCount: item.itemCount,
+  //         qty: Number(qty),
+  //       })
+  //     );
+  //     window.location.reload(true);
+  //   };
+  // }
+
   const qtyChangeHandler = (qty) => {
-    dispatch(
-      createFinalCart({
-        itemId: item.itemId,
-        itemName: item.itemName,
-        itemDescription: item.itemDescription,
-        itemImage: item.itemImage,
-        itemPrice: item.itemPrice,
-        itemCount: item.itemCount,
-        // itemId: item.itemId,
-        qty: Number(qty),
+    Axios.post("http://localhost:4000/api/products/addToCart", {
+      itemId: item.itemId._id,
+      userId: user.id,
+      qty: Number(qty),
+    })
+      .then((response) => {
+        console.log(response);
+        if (response.data.success) {
+          console.log("Items added to cart successfully");
+          window.location.reload(true);
+          // window.location.pathname = "/home";
+        }
       })
-    );
-    window.location.reload(true);
+      .catch((err) => {
+        console.log(err);
+      });
+
+    // dispatch(
+    //   createFinalCart({
+    //     itemId: item.itemId,
+    //     itemName: item.itemName,
+    //     itemDescription: item.itemDescription,
+    //     itemImage: item.itemImage,
+    //     itemPrice: item.itemPrice,
+    //     itemCount: item.itemCount,
+    //     qty: Number(qty),
+    //   })
+    // );
   };
 
   const removeHandler = (id) => {
     console.log("remove");
-    dispatch(removeCartItem(id));
-    // window.location.reload(true);
+    Axios.delete(
+      "http://localhost:4000/api/products/deleteCartItem/" + id
+    ).then((response) => {
+      console.log(response.data);
+      if (response.data.success === true) {
+        console.log("item deleted successfully");
+        console.log(response.data.res);
+        window.location.reload(true);
+      }
+    });
+
     // dispatch(removeFromCart(id));
+  };
+
+  const giftOptions = (giftMessage, itemId) => {
+    console.log("Added gift options");
+    console.log(giftMessage + " " + itemId);
+    dispatch(removeCartItem(itemId));
+    dispatch(
+      createCartItem({
+        itemId: item.itemId._id,
+        itemName: item.itemId.itemName,
+        itemPrice: item.itemId.itemPrice,
+        qty: item.qty,
+        giftMessage: giftMessage,
+      })
+    );
   };
 
   return (
@@ -46,31 +110,59 @@ const CartItem = ({ item }) => {
       <div className="cartitem">
         <div className="cartitem__image">
           <img
-            src={"/Images/" + item.itemImage}
-            // src={require("../Images/" + item.itemImage)}
-            alt={item.itemName}
-            width={150}
-            height={100}
+            src={item.itemId.itemImage}
+            alt={item.itemId.itemName}
+            width={200}
+            height={150}
           />
         </div>
-        <Link to={`/product/${item.product}`} className="cartItem__name">
-          <p>{item.itemName}</p>
-        </Link>
-        <p className="cartitem__price">${item.itemPrice}</p>
+        <div style={{ marginLeft: "50px" }} className="cartItem__name">
+          <p>{item.itemId.itemName}</p>
+          <input
+            type="checkbox"
+            id="gift"
+            name="gift"
+            onChange={() => {
+              setGiftOption(!giftOption);
+            }}
+          />
+          <label for="gift"> This order contains gift</label>
+          {giftOption ? (
+            <>
+              <input
+                type="text"
+                style={{ width: "95%", paddingLeft: "5px" }}
+                placeholder="Enjoy your gift!!"
+                onChange={(event) => {
+                  setGiftDescription(event.target.value);
+                }}
+              />
+              <button
+                onClick={() => giftOptions(giftDescription, item.itemId._id)}
+              >
+                Save Gift Options
+              </button>
+            </>
+          ) : (
+            <div></div>
+          )}
+        </div>
+        <p className="cartitem__price">${item.itemId.itemPrice}</p>
         <select
           value={item.qty}
           onChange={(e) => qtyChangeHandler(e.target.value)}
           className="cartItem__select"
         >
-          {[...Array(item.itemCount).keys()].map((x) => (
+          {[...Array(item.itemId.itemCount).keys()].map((x) => (
             <option key={x + 1} value={x + 1}>
               {x + 1}
             </option>
           ))}
         </select>
+
         <button
           className="cartItem__deleteBtn"
-          onClick={() => removeHandler(item.itemId)}
+          onClick={() => removeHandler(item._id)}
         >
           <Delete />
         </button>

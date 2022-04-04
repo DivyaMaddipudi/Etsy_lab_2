@@ -34,21 +34,15 @@ function shopHomeOtherUser() {
             >
               <FavoriteBorderIcon />
             </div> */}
-            <img
-              src={"/Images/" + pro.itemImage}
-              className="card-img-top"
-              alt="..."
-            />
+            <img src={pro.itemImage} className="card-img-top" alt="..." />
             <p
               style={{ marginTop: "65%", width: "20%", marginLeft: "15px" }}
               className="home_price"
             >
               ${pro.itemPrice}
             </p>
-
             <div className="card-body">
               <h5 className="card-title">{pro.itemName}</h5>
-
               <p className="card-text">{pro.itemDescription}</p>
               {/* <button className="btn-sm btn-dark">Edit</button> */}
             </div>

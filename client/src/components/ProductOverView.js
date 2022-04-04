@@ -24,23 +24,39 @@ function ProductOverView() {
   // const cartItems = useSelector(getCartItems);
   const [addToCartMessage, setAddToCart] = useState("");
 
-  const addToCartHandler = () => {
+  const addToCartHandler = (itemId) => {
     console.log("add to cart handler");
+    Axios.post("http://localhost:4000/api/products/addToCart", {
+      itemId: itemId,
+      userId: user.id,
+      qty: Number(qty),
+    })
+      .then((response) => {
+        console.log(response);
+        if (response.data.success) {
+          console.log("Items added to cart successfully");
+          // window.location.pathname = "/home";
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     setAddToCart("Item added to your cart successfully");
     // cartItems.map((ele) => console.log(ele));
     // if (cartItems) {
-    dispatch(
-      createCartItem({
-        itemId: productView.itemId,
-        itemName: productView.itemName,
-        itemDescription: productView.itemDescription,
-        itemImage: productView.itemImage,
-        itemPrice: productView.itemPrice,
-        itemCount: productView.itemCount,
-        itemId: productView.itemId,
-        qty: Number(qty),
-      })
-    );
+
+    // dispatch(
+    //   createCartItem({
+    //     itemId: productView._id,
+    //     itemName: productView.itemName,
+    //     itemDescription: productView.itemDescription,
+    //     itemImage: productView.itemImage,
+    //     itemPrice: productView.itemPrice,
+    //     itemCount: productView.itemCount,
+    //     // itemId: productView._id,
+    //     qty: Number(qty),
+    //   })
+    // );
     // }
 
     // if (cartItems) {
@@ -86,7 +102,7 @@ function ProductOverView() {
         <div className="productscreen__left">
           <div className="left__image">
             <img
-              src={"/Images/" + productView.itemImage}
+              src={productView.itemImage}
               alt={productView.itemName}
               //   height={300}
               width={450}
@@ -98,7 +114,9 @@ function ProductOverView() {
             <p>Price: ${productView.itemPrice}</p>
             <p>Description: {productView.itemDescription}</p>
             <p>
-              <Link to={`/shopHomeForOthers/${productView.itemId}`}>
+              <Link
+                to={`/shopHomeForOthers/${productView.userId}/${productView.itemId}`}
+              >
                 Shop Home
               </Link>
             </p>
@@ -127,7 +145,10 @@ function ProductOverView() {
               </select>
             </p>
             <p>
-              <button type="button" onClick={addToCartHandler}>
+              <button
+                type="button"
+                onClick={() => addToCartHandler(productView._id)}
+              >
                 Add To Cart
               </button>
             </p>

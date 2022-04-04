@@ -36,14 +36,14 @@ function checkShopName() {
     }
   };
 
-  const handleCreateShop = () => {
-    Axios.post("http://localhost:4000/api/users/createShop/" + user.id, {
+  const handleCreateShop = (e) => {
+    e.preventDefault();
+    Axios.put("http://localhost:4000/api/users/createShop/" + user.id, {
       shopName: shopName,
     }).then((response) => {
       if (response.data) {
+        console.log(response.data);
         console.log("Data Inserted successfully using post shop method");
-        // console.log(response.data[0]);
-        // console.log(response.data);
         dispatch(
           updateUser({
             shopName: shopName,

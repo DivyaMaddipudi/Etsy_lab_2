@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Cart.css";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
@@ -24,12 +24,32 @@ const CartScreen = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const [finalAmount, setFinalAmount] = useState();
+  const [giftOption, setGiftOption] = useState(false);
+  const [giftDescription, setGiftDescription] = useState("");
+  const [saveGiftOptions, setSaveGiftOptions] = useState(false);
 
   // const cart = useSelector((state) => state.cart);
   // const { cartItems } = cart;
-  const finalCartProducts = useSelector(getCartItems);
+  // const finalCartProducts = useSelector(getCartItems);
 
-  // useEffect(() => {}, []);
+  const [finalCartProducts, setFinalCartProducts] = useState([]);
+  useEffect(() => {
+    getCartList();
+  }, []);
+
+  const getCartList = () => {
+    Axios.get(
+      "http://localhost:4000/api/products/getCartItems/" + user.id
+    ).then((response) => {
+      console.log(response.data.result);
+      if (response.data.success === true) {
+        console.log("geting all fav products and storing in redux");
+        console.log(response.data.result);
+        dispatch(createCartItem(response.data.result));
+        setFinalCartProducts([...finalCartProducts, ...response.data.result]);
+      }
+    });
+  };
 
   const removeFromCartHandler = (id) => {
     // dispatch(removeFromCart(id));
@@ -48,7 +68,7 @@ const CartScreen = () => {
       return 0;
     } else {
       return finalCartProducts
-        .reduce((price, item) => price + item.itemPrice * item.qty, 0)
+        .reduce((price, item) => price + item.itemId.itemPrice * item.qty, 0)
         .toFixed(2);
     }
 
@@ -57,23 +77,23 @@ const CartScreen = () => {
   };
 
   const handleCheckOut = () => {
-    console.log(JSON.stringify(finalCartProducts));
-    localStorage.setItem("purchase", JSON.stringify(finalCartProducts));
-
+    // console.log(JSON.stringify(finalCartProducts));
+    // localStorage.setItem("purchase", JSON.stringify(finalCartProducts));
     finalCartProducts.map((product) => {
-      Axios.post(`http://localhost:4000/editCount/${product.itemId}`, {
-        quantity: product.qty,
-      })
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      console.log(product);
+      // Axios.post(`http://localhost:4000/editCount/${product.itemId}`, {
+      //   quantity: product.qty,
+      // })
+      //   .then((response) => {
+      //     console.log(response);
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
     });
-    // dispatch(clearCart());
-    window.location.pathname = "/purchase";
 
+    // dispatch(clearCart());
+    // window.location.pathname = "/purchase";
     // Axios.post("http://localhost:4000/addCartProduct/" + user.id, {
     //   items: JSON.stringify(finalCartProducts),
     //   orderId: Math.floor(Math.random() * 1000),
@@ -96,14 +116,18 @@ const CartScreen = () => {
         <div className="cartscreen__left">
           <h2>Shopping Cart</h2>
 
-          {finalCartProducts === null ? (
+          {finalCartProducts.length === 0 ? (
             <div>
               Your Cart Is Empty <Link to="/">Go Back</Link>
             </div>
           ) : (
             finalCartProducts.map((item) => (
               <CartItem
-                key={item.product}
+                setGiftOption={setGiftOption}
+                setGiftDescription={setGiftDescription}
+                giftOption={giftOption}
+                giftDescription={giftDescription}
+                key={item}
                 item={item}
                 getCartSubTotal={getCartSubTotal}
                 getCartCount={getCartCount}
