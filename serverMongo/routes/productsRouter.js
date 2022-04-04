@@ -46,4 +46,9 @@ productRoute.get(
   product.getPurchasedItems
 );
 
+productRoute.put(
+  "/api/products/editItemQtyById/:itemId",
+  product.editItemQtyById
+);
+
 module.exports = productRoute;

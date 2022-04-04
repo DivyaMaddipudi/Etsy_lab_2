@@ -23,7 +23,7 @@ var schema = new mongoose.Schema({
   },
   phoneNumber: {
     type: String,
-    default: null,
+    default: 000 - 000 - 0000,
   },
   dob: {
     type: String,

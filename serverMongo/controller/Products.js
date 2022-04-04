@@ -360,6 +360,7 @@ exports.addProductToPurchase = (req, res) => {
     userId: purchase.userId,
     itemName: purchase.itemName,
     itemPrice: purchase.itemPrice,
+    itemCount: purchase.itemCount,
     qty: purchase.qty,
     itemId: purchase.itemId,
     itemImage: purchase.itemImage,
@@ -393,5 +394,27 @@ exports.getPurchasedItems = (req, res) => {
     })
     .catch((err) => {
       res.send(err);
+    });
+};
+
+exports.editItemQtyById = (req, res) => {
+  console.log("In edit item for qty");
+
+  const itemId = req.params.itemId;
+  const sales = req.body.itemSales;
+  const itemCount = req.body.itemCount;
+  items
+    .findByIdAndUpdate(itemId, {
+      itemCount,
+      sales,
+    })
+    .then((data) => {
+      if (!data) {
+        console.log(data + " can't update item details");
+      } else {
+        console.log(data);
+        console.log("item details updated successfully");
+        res.send({ success: true, data });
+      }
     });
 };

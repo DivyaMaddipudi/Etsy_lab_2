@@ -29,6 +29,7 @@ const CartItem = ({ item }) => {
         itemImage: item.itemId.itemImage,
         itemDescription: item.itemId.itemDescription,
         qty: item.qty,
+        itemCount: item.itemId.itemCount,
         giftMessage: "",
       })
     );
@@ -81,6 +82,7 @@ const CartItem = ({ item }) => {
         itemImage: item.itemId.itemImage,
         itemDescription: item.itemId.itemDescription,
         qty: item.qty,
+        itemCount: item.itemId.itemCount,
         giftMessage: giftMessage,
       })
     );

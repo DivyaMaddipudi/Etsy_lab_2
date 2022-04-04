@@ -32,7 +32,7 @@ var schema = new mongoose.Schema({
   },
   sales: {
     type: Number,
-    default: null,
+    default: 0,
   },
 });
 

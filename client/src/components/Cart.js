@@ -88,7 +88,22 @@ const CartScreen = () => {
         .catch((err) => {
           console.log(err);
         });
+
+      const itemDetails = {
+        itemCount: product.itemCount - product.qty,
+        itemSales: product.qty,
+      };
+
+      Axios.put(
+        "http://localhost:4000/api/products/editItemQtyById/" + product.itemId,
+        itemDetails
+      ).then((response) => {
+        if (response.data.success) {
+          console.log("Item details edited successfully.....");
+        }
+      });
     });
+
     Axios.delete("http://localhost:4000/api/products/clearCart")
       .then((response) => {
         if (response) {
@@ -99,7 +114,9 @@ const CartScreen = () => {
       .catch((err) => {
         console.log(err);
       });
+
     dispatch(clearCart());
+
     window.location.pathname = "/purchase";
   };
 

@@ -145,12 +145,18 @@ function ProductOverView() {
               </select>
             </p>
             <p>
-              <button
-                type="button"
-                onClick={() => addToCartHandler(productView._id)}
-              >
-                Add To Cart
-              </button>
+              {productView.itemCount !== 0 ? (
+                <button
+                  type="button"
+                  onClick={() => addToCartHandler(productView._id)}
+                >
+                  Add To Cart
+                </button>
+              ) : (
+                <div style={{ width: "150%" }}>
+                  Sorry, item is out of stock!
+                </div>
+              )}
             </p>
           </div>
         </div>

@@ -19,6 +19,10 @@ var schema = new mongoose.Schema({
     type: String,
     default: null,
   },
+  itemCount: {
+    type: Number,
+    default: null,
+  },
   itemPrice: {
     type: Number,
     default: null,
