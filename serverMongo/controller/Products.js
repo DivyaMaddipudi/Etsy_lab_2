@@ -8,6 +8,7 @@ var items = require("../models/items");
 const json = require("formidable/src/plugins/json");
 const favouritesDb = require("../models/favourites");
 const cartDb = require("../models/cart");
+const purchasesDb = require("../models/purchases");
 
 // const productRouter = express.Router();
 
@@ -315,7 +316,10 @@ exports.getCartItems = (req, res) => {
     .populate("itemId")
     .then((cartItems) => {
       console.log(cartItems);
-      res.send({ success: true, result: cartItems });
+      res.send({
+        success: true,
+        result: cartItems,
+      });
     })
     .catch((err) => {
       res.send(err);
@@ -330,6 +334,62 @@ exports.deleteCartItem = (req, res) => {
     .then((result) => {
       console.log("Item deleted successfully");
       res.send({ success: true, result });
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+};
+
+exports.clearCart = (req, res) => {
+  cartDb
+    .deleteMany({})
+    .then((result) => {
+      res.send({ message: "Cart Items cleared", result });
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+};
+exports.addProductToPurchase = (req, res) => {
+  console.log("handling add purchases ");
+
+  const purchase = req.body.product;
+
+  console.log(purchase.itemId);
+  const purchases = new purchasesDb({
+    userId: purchase.userId,
+    itemName: purchase.itemName,
+    itemPrice: purchase.itemPrice,
+    qty: purchase.qty,
+    itemId: purchase.itemId,
+    itemImage: purchase.itemImage,
+    itemDescription: purchase.itemDescription,
+    giftMessage: purchase.giftMessage,
+  });
+
+  purchases
+    .save(purchases)
+    .then((data) => {
+      console.log(data);
+      res.send({ success: true, result: data });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ message: "some error occured" });
+    });
+};
+
+exports.getPurchasedItems = (req, res) => {
+  const userId = req.params.id;
+  console.log(userId);
+  console.log("In get purchased items");
+
+  purchasesDb
+    .find({ userId })
+    .populate("itemId")
+    .then((purchasedItems) => {
+      console.log(purchasedItems);
+      res.send({ success: true, result: purchasedItems });
     })
     .catch((err) => {
       res.send(err);

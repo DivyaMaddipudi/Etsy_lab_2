@@ -826,3 +826,33 @@ body {
   transform: scale(1.1);
   transition: 0.6s;
 }
+
+.card-img-left {
+  width: 300px;
+  height: 200px;
+  object-fit: contain;
+}
+
+.purchase_item_price {
+  width: 10%;
+  border-radius: 20px;
+  padding-left: 4px;
+  margin-left: 10px;
+  margin-top: 10px;
+  /* background-color: #d4e9d7; */
+}
+
+.purchase_item_header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.item {
+  display: flex;
+  /* justify-content: space-between; */
+}
+
+.item-details {
+  display: flex;
+  flex-direction: column;
+}

@@ -3,13 +3,37 @@ const Userdb = require("./model");
 const Items = require("./items");
 
 var schema = new mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: Userdb,
-  },
   itemId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: Items,
+    type: String,
+    default: null,
+  },
+  userId: {
+    type: String,
+    default: null,
+  },
+  itemName: {
+    type: String,
+    default: null,
+  },
+  itemImage: {
+    type: String,
+    default: null,
+  },
+  itemPrice: {
+    type: Number,
+    default: null,
+  },
+  qty: {
+    type: Number,
+    default: null,
+  },
+  itemDescription: {
+    type: String,
+    default: null,
+  },
+  giftMessage: {
+    type: String,
+    default: null,
   },
 });
 

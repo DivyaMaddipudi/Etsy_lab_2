@@ -36,7 +36,7 @@ export const cartItemsSlice = createSlice({
       // console.log(item + "----------------------------: deleted");
     },
     clearCart: (state) => {
-      state.cartItems = null;
+      state.cartItems = [];
     },
     updateCartItem: (state, action) => {
       state.cartItems = action.payload;

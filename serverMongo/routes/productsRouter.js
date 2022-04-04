@@ -34,5 +34,16 @@ productRoute.delete(
   "/api/products/deleteCartItem/:cartId",
   product.deleteCartItem
 );
+productRoute.delete("/api/products/clearCart", product.clearCart);
+
+//purchases
+productRoute.post(
+  "/api/products/addProductToPurchase/",
+  product.addProductToPurchase
+);
+productRoute.get(
+  "/api/products/getPurchasedItems/:id",
+  product.getPurchasedItems
+);
 
 module.exports = productRoute;

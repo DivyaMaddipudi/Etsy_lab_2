@@ -1,11 +1,12 @@
 import "./CartItem.css";
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createFinalCart,
   createCartItem,
   removeCartItem,
+  getCartItems,
 } from "../features/cartItemsSlice";
 import { Delete } from "@material-ui/icons";
 import Axios from "axios";
@@ -18,22 +19,20 @@ const CartItem = ({ item }) => {
   const [giftDescription, setGiftDescription] = useState("");
   const user = useSelector(selectUser);
 
-  // if (giftOption) {
-  //   const qtyChangeHandler = (qty) => {
-  //     dispatch(
-  //       createFinalCart({
-  //         itemId: item.itemId,
-  //         itemName: item.itemName,
-  //         itemDescription: item.itemDescription,
-  //         itemImage: item.itemImage,
-  //         itemPrice: item.itemPrice,
-  //         itemCount: item.itemCount,
-  //         qty: Number(qty),
-  //       })
-  //     );
-  //     window.location.reload(true);
-  //   };
-  // }
+  useEffect(() => {
+    dispatch(
+      createCartItem({
+        userId: item.userId,
+        itemId: item.itemId._id,
+        itemName: item.itemId.itemName,
+        itemPrice: item.itemId.itemPrice,
+        itemImage: item.itemId.itemImage,
+        itemDescription: item.itemId.itemDescription,
+        qty: item.qty,
+        giftMessage: "",
+      })
+    );
+  }, []);
 
   const qtyChangeHandler = (qty) => {
     Axios.post("http://localhost:4000/api/products/addToCart", {
@@ -52,18 +51,6 @@ const CartItem = ({ item }) => {
       .catch((err) => {
         console.log(err);
       });
-
-    // dispatch(
-    //   createFinalCart({
-    //     itemId: item.itemId,
-    //     itemName: item.itemName,
-    //     itemDescription: item.itemDescription,
-    //     itemImage: item.itemImage,
-    //     itemPrice: item.itemPrice,
-    //     itemCount: item.itemCount,
-    //     qty: Number(qty),
-    //   })
-    // );
   };
 
   const removeHandler = (id) => {
@@ -85,12 +72,14 @@ const CartItem = ({ item }) => {
   const giftOptions = (giftMessage, itemId) => {
     console.log("Added gift options");
     console.log(giftMessage + " " + itemId);
-    dispatch(removeCartItem(itemId));
     dispatch(
       createCartItem({
+        userId: item.userId,
         itemId: item.itemId._id,
         itemName: item.itemId.itemName,
         itemPrice: item.itemId.itemPrice,
+        itemImage: item.itemId.itemImage,
+        itemDescription: item.itemId.itemDescription,
         qty: item.qty,
         giftMessage: giftMessage,
       })
