@@ -115,7 +115,7 @@ function ProductOverView() {
             <p>Description: {productView.itemDescription}</p>
             <p>
               <Link
-                to={`/shopHomeForOthers/${productView.userId}/${productView.itemId}`}
+                to={`/shopHomeForOthers/${productView.userId}/${productView._id}`}
               >
                 Shop Home
               </Link>

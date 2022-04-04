@@ -418,3 +418,25 @@ exports.editItemQtyById = (req, res) => {
       }
     });
 };
+
+exports.getSalesCount = (req, res) => {
+  const itemId = req.params.itemId;
+
+  // write code to find sales count
+};
+
+exports.getSearchItems = (req, res) => {
+  const searchValue = req.params.searchValue;
+  console.log(searchValue);
+  console.log("In get items search value");
+
+  items
+    .find({ itemName: { $regex: searchValue, $options: "i" } })
+    .then((result) => {
+      console.log(result);
+      res.send({ success: true, result });
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+};

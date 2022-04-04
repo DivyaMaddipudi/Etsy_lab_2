@@ -24,22 +24,22 @@ function searchBar(props) {
     e.preventDefault();
     console.log("submit clicked");
     if (searchValue !== "") {
-      Axios.get("http://localhost:4000/getSearchItems/" + searchValue).then(
-        (response) => {
-          if (response.data.success === true) {
-            console.log(response.data.result);
-            console.log("Helllo.....................");
-            console.log(prod);
-            if (prod === null || prod.length === 0) {
-              console.log(" products is null");
-              dispatch(productsList(response.data.result));
-            } else {
-              dispatch(updateProducts(response.data.result));
-            }
+      Axios.get(
+        "http://localhost:4000/api/products/getSearchItems/" + searchValue
+      ).then((response) => {
+        if (response.data.success === true) {
+          console.log(response.data.result);
+          console.log("Helllo.....................");
+          console.log(prod);
+          if (prod === null || prod.length === 0) {
+            console.log(" products is null");
+            dispatch(productsList(response.data.result));
+          } else {
+            dispatch(updateProducts(response.data.result));
           }
-          window.location.pathname = "/searchResults";
         }
-      );
+        window.location.pathname = "/searchResults";
+      });
     } else {
       window.location.pathname = "/";
     }

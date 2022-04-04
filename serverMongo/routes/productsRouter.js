@@ -51,4 +51,9 @@ productRoute.put(
   product.editItemQtyById
 );
 
+productRoute.get(
+  "/api/products/getSearchItems/:searchValue",
+  product.getSearchItems
+);
+
 module.exports = productRoute;

@@ -65,12 +65,13 @@ function searchResultItems() {
   };
 
   const handleOpenImage = (pro) => {
-    console.log(pro.itemId);
+    console.log(pro);
+    console.log(pro._id);
     console.log(pro.itemImage);
     dispatch(productOverview(pro));
     // console.log(pro.itemCount);
     // setProductOverview(true);
-    // window.location.pathname = "/productOverview";
+    window.location.pathname = "/productOverview";
   };
 
   let searchPage = null;
@@ -79,11 +80,7 @@ function searchResultItems() {
       return (
         <div className="col-md-4 mb-4">
           <div className="card">
-            <img
-              src={"/Images/" + pro.itemImage}
-              className="card-img-top"
-              alt="..."
-            />
+            <img src={pro.itemImage} className="card-img-top" alt="..." />
             <div className="card-body">
               <h5 className="card-title">{pro.itemName}</h5>
               <p>Price: ${pro.itemPrice}</p>
