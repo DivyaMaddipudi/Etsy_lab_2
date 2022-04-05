@@ -56,4 +56,8 @@ productRoute.get(
   product.getSearchItems
 );
 
+//get sales count
+
+productRoute.get("/api/products/getSalesCount", product.getSalesCount);
+
 module.exports = productRoute;

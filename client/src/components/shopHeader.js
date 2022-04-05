@@ -16,11 +16,12 @@ function shopHeader({ searchProductUserId }) {
   const [shopImage, setShopImage] = useState("");
   const [shopDetails, setShopDetails] = useState();
   const [prodUserId, setProdUserId] = useState(0);
+  const [salesCount, setSalesCount] = useState([]);
+
+  const [salesValue, setSalesValue] = useState();
 
   useEffect(() => {
-    console.log(
-      user.id + " --------------------redux user id --------------------"
-    );
+    console.log(user.id + " -------------redux user id --------------------");
     Axios.get("http://localhost:4000/api/users/getShopById/" + user.id).then(
       (response) => {
         if (response.data.success) {
@@ -39,6 +40,23 @@ function shopHeader({ searchProductUserId }) {
         }
       }
     );
+
+    Axios.get("http://localhost:4000/api/products/getSalesCount").then(
+      (response) => {
+        console.log("In sales count axios");
+        console.log(response);
+        console.log("In sales count axios");
+        if (response.data.success) {
+          console.log(response.data.result);
+          response.data.result
+            .filter((sales) => sales._id === user.id)
+            .map((salesCount) => setSalesValue(salesCount.sum));
+          console.log(salesValue);
+        } else {
+          console.log("failed in geting sales count");
+        }
+      }
+    );
   }, []);
 
   const editShopDetails = (id) => {
@@ -54,7 +72,8 @@ function shopHeader({ searchProductUserId }) {
         <img width="180px" src={shopImage} alt="shop"></img>
         <div className="shop_info">
           <h3 className="shop_name">{shopName}</h3>
-          <p> 10 Sales </p>
+
+          <p>Sales: {salesValue}</p>
           {/* {editButton} */}
 
           <button

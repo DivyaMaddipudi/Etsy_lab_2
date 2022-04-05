@@ -93,11 +93,9 @@ function profileDashboard() {
               className="card-img-top"
               alt="..."
             />
-            <p className="home_price">
-              <AirportShuttleIcon /> ${pro.itemId["itemPrice"]}
-            </p>
             <div className="card-body">
               <h5 className="card-title">{pro.itemId["itemName"]}</h5>
+              <h6>Price: ${pro.itemId["itemPrice"]}</h6>
               <p className="card-text">{pro.itemId["itemDescription"]}</p>
               {/* <button className="btn-sm btn-dark">Edit</button> */}
             </div>

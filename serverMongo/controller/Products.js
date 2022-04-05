@@ -420,8 +420,35 @@ exports.editItemQtyById = (req, res) => {
 };
 
 exports.getSalesCount = (req, res) => {
-  const itemId = req.params.itemId;
+  console.log(
+    "in sales count backend " + "++++++++++++++++++++++++++++++++++++++++++"
+  );
+  items
+    .aggregate([
+      {
+        $group: {
+          _id: "$userId",
+          sum: {
+            $sum: "$sales",
+          },
+        },
+      },
+    ])
+    .then((result) => {
+      console.log(result);
+      res.send({ success: true, result: result });
+    })
+    .catch((err) => {
+      res.send(err);
+    });
 
+  // .then((data) => {
+  //   console.log(data);
+  //   res.send({ success: true, result: data });
+  // })
+  // .catch((err) => {
+  //   res.send(err);
+  // });
   // write code to find sales count
 };
 

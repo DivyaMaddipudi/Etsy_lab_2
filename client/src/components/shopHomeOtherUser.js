@@ -36,7 +36,7 @@ function shopHomeOtherUser() {
             </div> */}
             <img src={pro.itemImage} className="card-img-top" alt="..." />
             <p
-              style={{ marginTop: "65%", width: "20%", marginLeft: "15px" }}
+              style={{ marginTop: "65%", width: "35%", marginLeft: "15px" }}
               className="home_price"
             >
               ${pro.itemPrice}

@@ -17,8 +17,27 @@ function shopHeaderByOther({ searchProductUserId }) {
   // const [shopImage, setShopImage] = useState("");
   // const [shopDetails, setShopDetails] = useState();
   // const [prodUserId, setProdUserId] = useState(0);
+  const [salesValue, setSalesValue] = useState();
 
   const userInformation = useSelector(getSearchItemUserInfo);
+  useEffect(() => {
+    Axios.get("http://localhost:4000/api/products/getSalesCount").then(
+      (response) => {
+        console.log("In sales count axios");
+        console.log(response);
+        console.log("In sales count axios");
+        if (response.data.success) {
+          console.log(response.data.result);
+          response.data.result
+            .filter((sales) => sales._id === userInformation._id)
+            .map((salesCount) => setSalesValue(salesCount.sum));
+          console.log(salesValue);
+        } else {
+          console.log("failed in geting sales count");
+        }
+      }
+    );
+  }, []);
 
   return (
     <div className="shophome_header">
@@ -27,7 +46,7 @@ function shopHeaderByOther({ searchProductUserId }) {
         <img width="180px" src={userInformation.shopImage} alt="shop"></img>
         <div className="shop_info">
           <h3 className="shop_name">{userInformation.shopName}</h3>
-          <p> 10 Sales </p>
+          <p>Sales: {salesValue}</p>
           {/* {editButton} */}
         </div>
       </div>

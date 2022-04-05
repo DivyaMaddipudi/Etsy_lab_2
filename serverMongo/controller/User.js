@@ -73,6 +73,8 @@ exports.findUser = (req, res) => {
   Userdb.findOne({ email: email }).then((user) => {
     console.log(user + "--------------------------");
     if (user) {
+      console.log(" user exists");
+
       bcrypt.compare(password, user.password, (err, result) => {
         if (err) {
           console.log(err);
@@ -101,6 +103,7 @@ exports.findUser = (req, res) => {
         }
       });
     } else {
+      console.log("No user exists");
       res.send({ message: "No user found!" });
     }
   });

@@ -59,6 +59,8 @@ function Signin({ setshowSignIn }) {
           );
 
           window.location.pathname = "/home";
+        } else {
+          setError(response.data.message);
         }
       })
       .catch((err) => {
