@@ -856,3 +856,10 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+.purchases_header {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 25px;
+  margin-right: 10%;
+}

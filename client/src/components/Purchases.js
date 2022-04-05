@@ -8,15 +8,26 @@ import AirportShuttleIcon from "@mui/icons-material/AirportShuttle";
 import Navbar from "./Navbar";
 import Hoverbar from "./Hoverbar";
 import cookie from "react-cookies";
+import Pagination from "./Pagination";
 
 function Purchases() {
   const user = useSelector(selectUser);
   const [purchasedProducts, setPurchasedProducts] = useState([]);
   // const [purchasedProducts, setPurchasedProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
 
   useEffect(() => {
     getPurchasedItems();
   }, []);
+  //Get current posts
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentPurchasedItems = purchasedProducts.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
   const getPurchasedItems = () => {
     Axios.get(
@@ -42,7 +53,7 @@ function Purchases() {
       return <div>No Purchases till now...</div>;
     };
   } else {
-    renderFavourites = purchasedProducts.map((pro) => {
+    renderFavourites = currentPurchasedItems.map((pro) => {
       return (
         <div className="home_cards mb-4">
           <div className="home_card card">
@@ -65,6 +76,7 @@ function Purchases() {
 
               <div style={{ marginLeft: "10px" }} className="item-details">
                 <h5 className="card-title">{pro.itemName}</h5>
+                <p className="card-text">{pro.itemDescription}</p>
                 {pro.giftMessage !== "" ? (
                   <p className="card-text">Gift Message: {pro.giftMessage}</p>
                 ) : (
@@ -80,17 +92,51 @@ function Purchases() {
     });
   }
 
+  //change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // const setItemsInPage = (itemsCount) => {
+  //   localStorage.setItem("itemsPerPage", itemsCount);
+  //   setItemsPerPage(localStorage.getItem("itemsPerPage"));
+  // };
+
   return (
     <>
       <Navbar />
       <Hoverbar />
       <hr></hr>
-      <h2 style={{ marginLeft: "110px" }}>Purchases Page</h2>
+      <div className="purchases_header">
+        <h2 style={{ marginLeft: "110px" }}>Purchases Page</h2>
+        <div style={{ width: "20%" }}>
+          <label htmlFor="itemsPerPage" style={{ marginRight: "10px" }}>
+            Items per page
+          </label>
+          <select
+            style={{ width: "25%", height: "30px", marginTop: "5px" }}
+            onChange={(e) => {
+              setItemsPerPage(e.target.value);
+            }}
+            id="itemsPerPage"
+          >
+            <option></option>
+            <option value="2"> 2 </option>
+            <option value="5" selected>
+              5
+            </option>
+            <option value="10"> 10 </option>
+          </select>
+        </div>
+      </div>
       <div className="profile_favourites">
         <div className="container-fluid mx-1">
           <div className="row mt-5 mx-1">
             <div className="col-md-9">
               <div className="row"> {renderFavourites} </div>
+              <Pagination
+                itemsPerPage={itemsPerPage}
+                totalItems={purchasedProducts.length}
+                paginate={paginate}
+              />
             </div>
           </div>
         </div>
