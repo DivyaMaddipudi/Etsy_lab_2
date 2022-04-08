@@ -129,6 +129,12 @@ const CartItem = ({ item }) => {
                 }}
               />
               <button
+                style={{
+                  borderRadius: "4px",
+                  backgroundColor: "rgb(243, 234, 223)",
+                  marginTop: "1px",
+                  border: "1px solid black",
+                }}
                 onClick={() => giftOptions(giftDescription, item.itemId._id)}
               >
                 Save Gift Options

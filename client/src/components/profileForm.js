@@ -6,6 +6,7 @@ import logo from "./etsyFooter.png";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser, updateUserDetails } from "../features/userSlice";
 import Axios from "axios";
+import axios from "axios";
 
 function profileForm() {
   const dispatch = useDispatch();
@@ -38,7 +39,8 @@ function profileForm() {
     formData.append("dob", dob);
     formData.append("about", about);
     formData.append("phoneNumber", phoneNumber);
-
+    axios.defaults.headers.common["authorization"] =
+      localStorage.getItem("token");
     Axios.put(
       "http://localhost:4000/api/users/updateUser/" + user.id,
       formData
@@ -47,6 +49,13 @@ function profileForm() {
       if (response.data.success === true) {
         console.log("Image uploaded successfully");
         // console.log(response.data[0].result);
+        setUserName(response.data.result["username"]);
+        setDob(response.data.result["dob"]);
+        setGender(response.data.result["gender"]);
+        setCity(response.data.result["city"]);
+        setUserImage(response.data.profilePic);
+        setAbout(response.data.result["about"]);
+        setPhoneNumber(response.data.result["phoneNumber"]);
         console.log(response.data.result["profilePic"]);
         dispatch(
           updateUserDetails({
@@ -70,6 +79,8 @@ function profileForm() {
 
   const fetchItemDetails = (e) => {
     // e.preventDefault();
+    axios.defaults.headers.common["authorization"] =
+      localStorage.getItem("token");
     Axios.get("http://localhost:4000/api/users/getShopById/" + user.id).then(
       (response) => {
         console.log(response);

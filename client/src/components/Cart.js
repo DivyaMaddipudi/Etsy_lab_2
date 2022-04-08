@@ -156,6 +156,7 @@ const CartScreen = () => {
           </div>
           <div>
             <button
+              style={{ backgroundColor: "rgb(243, 234, 223)", color: "black" }}
               onClick={() => {
                 handleCheckOut();
                 // item.itemId,

@@ -8,6 +8,8 @@ import {
   getAllCartProducts,
   getFinalCartProducts,
 } from "../features/cartSlice";
+import cookie from "react-cookies";
+import { Navigate } from "react-router-dom";
 import userSlice, { selectUser } from "../features/userSlice";
 import Hoverbar from "./Hoverbar";
 import Navbar from "./Navbar";
@@ -83,8 +85,15 @@ function ProductOverView() {
     //   console.log("Add to cart clicked");
     // }
   };
+
+  let redirectVar = null;
+  if (user === null || !cookie.load("user")) {
+    console.log("cookie is found " + user);
+    redirectVar = <Navigate to="/home" />;
+  }
   return (
     <>
+      {redirectVar}
       <Navbar />
       <Hoverbar />
       <hr></hr>
@@ -147,6 +156,10 @@ function ProductOverView() {
             <p>
               {productView.itemCount !== 0 ? (
                 <button
+                  style={{
+                    backgroundColor: "rgb(243, 234, 223)",
+                    color: "black",
+                  }}
                   type="button"
                   onClick={() => addToCartHandler(productView._id)}
                 >

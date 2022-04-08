@@ -92,26 +92,32 @@ exports.getAllProducts = async (req, res) => {
   const term = req.body.searchTerm;
 
   console.log(userId);
-  // console.log(term);
+  console.log(term);
 
-  // if (term) {
-  //   console.log("filtering in shop");
-  //   const count = await items.find({ itemName: term }).count();
-  //   console.log(count);
-  // } else {
-  await items
-    .find({ userId: userId })
-    .then((products) => {
-      // console.log(products);
-      res.send({ success: true, result: products });
-    })
-    .catch((err) => {
-      res.send({
-        success: false,
-        message: "Unable to fetch products by specific id",
+  if (term) {
+    console.log("filtering in shop");
+    await items
+      .find({ userId: userId, itemName: { $regex: term, $options: "i" } })
+      .then((products) => {
+        console.log(products);
+        res.send({ success: true, result: products });
       });
-    });
-  // }
+  } else {
+    console.log("getting all in shop");
+
+    await items
+      .find({ userId: userId })
+      .then((products) => {
+        // console.log(products);
+        res.send({ success: true, result: products });
+      })
+      .catch((err) => {
+        res.send({
+          success: false,
+          message: "Unable to fetch products by specific id",
+        });
+      });
+  }
 };
 
 exports.getAllProductsById = async (req, res) => {

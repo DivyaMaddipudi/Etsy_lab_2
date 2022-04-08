@@ -29,7 +29,6 @@ function searchBar(props) {
       ).then((response) => {
         if (response.data.success === true) {
           console.log(response.data.result);
-          console.log("Helllo.....................");
           console.log(prod);
           if (prod === null || prod.length === 0) {
             console.log(" products is null");

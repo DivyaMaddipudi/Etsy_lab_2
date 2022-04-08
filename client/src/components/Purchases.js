@@ -44,22 +44,22 @@ function Purchases() {
     });
   };
 
-  let renderFavourites = null;
+  let renderPurchases = null;
 
   // const purchasedProducts = JSON.parse(localStorage.getItem("purchase"));
 
   if (purchasedProducts.length === 0) {
-    renderFavourites = () => {
+    renderPurchases = () => {
       return <div>No Purchases till now...</div>;
     };
   } else {
-    renderFavourites = currentPurchasedItems.map((pro) => {
+    renderPurchases = currentPurchasedItems.map((pro) => {
       return (
         <div className="home_cards mb-4">
           <div className="home_card card">
             <div
               className="purchase_item_header"
-              style={{ backgroundColor: "rgb(197, 197, 197)" }}
+              style={{ backgroundColor: "rgb(243, 234, 223)" }}
             >
               <p className="purchase_item_price">Item Price ${pro.itemPrice}</p>
               <p className="purchase_item_price">
@@ -76,7 +76,10 @@ function Purchases() {
 
               <div style={{ marginLeft: "10px" }} className="item-details">
                 <h5 className="card-title">{pro.itemName}</h5>
+
                 <p className="card-text">{pro.itemDescription}</p>
+                <p className="card-text">Quantity: {pro.qty}</p>
+
                 {pro.giftMessage !== "" ? (
                   <p className="card-text">Gift Message: {pro.giftMessage}</p>
                 ) : (
@@ -131,7 +134,7 @@ function Purchases() {
         <div className="container-fluid mx-1">
           <div className="row mt-5 mx-1">
             <div className="col-md-9">
-              <div className="row"> {renderFavourites} </div>
+              <div className="row"> {renderPurchases} </div>
               <Pagination
                 itemsPerPage={itemsPerPage}
                 totalItems={purchasedProducts.length}

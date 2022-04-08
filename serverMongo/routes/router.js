@@ -1,6 +1,7 @@
 const express = require("express");
 const route = express.Router();
 const user = require("../controller/User");
+const { checkAuth } = require("../passport");
 
 //API
 route.post("/api/users/register", user.create);

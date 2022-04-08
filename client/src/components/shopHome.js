@@ -12,6 +12,8 @@ import EditShopImage from "./products/editShopImage";
 import { getProducts } from "../features/productsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import cookie from "react-cookies";
+import { Navigate } from "react-router-dom";
 
 function shopHome() {
   const { id } = useParams(); //itemId
@@ -153,8 +155,14 @@ function shopHome() {
     );
   });
 
+  let redirectVar = null;
+  if (user === null || !cookie.load("user")) {
+    console.log("cookie is found " + user);
+    redirectVar = <Navigate to="/home" />;
+  }
   return (
     <div>
+      {redirectVar}
       <Navbar />
       <Hoverbar />
       <hr></hr>

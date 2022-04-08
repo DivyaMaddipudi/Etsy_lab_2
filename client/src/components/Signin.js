@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import GoogleIcon from "@mui/icons-material/Google";
 import { login, activeUser, activeShop } from "../features/userSlice";
 import { backendURL } from "./config.json";
+import jwt_decode from "jwt-decode";
 
 function Signin({ setshowSignIn }) {
   // const history = useHistory();
@@ -21,6 +22,7 @@ function Signin({ setshowSignIn }) {
 
   const [loginStatus, setLoginStatus] = useState(null);
 
+  const [token, setToken] = useState();
   const dispatch = useDispatch();
 
   const handleRegister = () => {
@@ -40,7 +42,7 @@ function Signin({ setshowSignIn }) {
         if (response.data.success) {
           console.log(response.data.user["email"] + " about ");
           console.log("In frontend signin");
-
+          setToken(response.data.token);
           dispatch(
             login({
               id: response.data.user["_id"],
@@ -81,16 +83,22 @@ function Signin({ setshowSignIn }) {
     });
   }, []);
 
-  // let redirVal = null;
-  // if (loginStatus) {
-  //   console.log(loginStatus);
-  //   redirVal = <Navigate to="/home" />;
-  //   setLoginStatus(null);
-  // }
+  let redirVal = null;
+  if (token) {
+    console.log(token);
+    localStorage.setItem("token", token);
+
+    var decoded = jwt_decode(token.split(" ")[1]);
+    localStorage.setItem("user_id", decoded._id);
+    localStorage.setItem("username", decoded.username);
+
+    redirVal = <Navigate to="/home" />;
+    // setLoginStatus(null);
+  }
 
   return (
     <>
-      {/* {redirVal} */}
+      {redirVal}
       <div className="bg-modal">
         <div className="modal-content">
           <CloseLogin setshowSignIn={setshowSignIn} />

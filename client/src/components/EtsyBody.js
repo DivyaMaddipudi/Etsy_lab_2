@@ -9,6 +9,8 @@ import {
   getProducts,
   updateFavourites,
 } from "../features/productsSlice";
+import cookie from "react-cookies";
+import { Navigate } from "react-router-dom";
 import FavoriteTwoToneIcon from "@mui/icons-material/FavoriteTwoTone";
 // import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import AirportShuttleIcon from "@mui/icons-material/AirportShuttle";
@@ -100,7 +102,13 @@ function EtsyBody() {
     dispatch(productOverview(pro));
     // console.log(pro.itemCount);
     // setProductOverview(true);
-    window.location.pathname = "/productOverview";
+    let redirectVar = null;
+    if (user === null || !cookie.load("user")) {
+      console.log("cookie is found " + user);
+      redirectVar = <Navigate to="/home" />;
+    } else {
+      window.location.pathname = "/productOverview";
+    }
   };
 
   var renderProducts = null;

@@ -87,13 +87,14 @@ exports.findUser = (req, res) => {
             path: "/",
           });
           session.user = user;
-          let token = jwt.sign({ username: user.username }, "SecretValue", {
+          const payload = { _id: user._id, username: user.username };
+          let token = jwt.sign(payload, process.env.SECRET, {
             expiresIn: "1h",
           });
 
-          console.log("result " + result);
+          console.log("result " + result + " token " + token);
 
-          res.send({ success: true, user, token });
+          res.send({ success: true, user, token: "JWT " + token });
           // res.send(result);
           console.log("=========end =============");
         } else {
