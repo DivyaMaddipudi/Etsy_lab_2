@@ -18,7 +18,7 @@ function sellOnEtsy() {
   }
 
   let gotoSellPage = null;
-  if (user.shopName === null) {
+  if (user.shopName === "") {
     if (shop === null) {
       gotoSellPage = <div>{<Navigate to="/shopName" />}</div>;
     } else {

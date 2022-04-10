@@ -92,7 +92,6 @@ exports.getAllProducts = async (req, res) => {
   const term = req.body.searchTerm;
 
   console.log(userId);
-  console.log(term);
 
   if (term) {
     console.log("filtering in shop");

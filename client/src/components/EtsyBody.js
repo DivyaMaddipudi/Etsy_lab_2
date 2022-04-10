@@ -144,7 +144,9 @@ function EtsyBody() {
           <p className="home_price">
             <AirportShuttleIcon />
             &nbsp;
-            {localStorage.getItem("preferedCurrency")}
+            {localStorage.getItem("preferedCurrency") === null
+              ? "$"
+              : localStorage.getItem("preferedCurrency")}
             {pro.itemPrice}
           </p>
 

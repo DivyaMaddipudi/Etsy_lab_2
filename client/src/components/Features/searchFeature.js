@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 function searchFeature(props) {
-  const [searchTerms, setSearchTerms] = useState("");
+  const [searchTerms, setSearchTerms] = useState();
 
   const onChangeSearchEvent = (e) => {
     setSearchTerms(e.target.value);

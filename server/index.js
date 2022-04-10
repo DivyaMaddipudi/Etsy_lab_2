@@ -27,6 +27,7 @@ app.use(
     credentials: true,
   })
 );
+
 app.use(cookieParser);
 app.use(bodyParser.json({ limit: "20mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "20mb", extended: true }));
