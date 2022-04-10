@@ -36,7 +36,7 @@ const CartItem = ({ item }) => {
   }, []);
 
   const qtyChangeHandler = (qty) => {
-    Axios.post("http://localhost:4000/api/products/addToCart", {
+    Axios.post("http://localhost:4001/api/products/addToCart", {
       itemId: item.itemId._id,
       userId: user.id,
       qty: Number(qty),

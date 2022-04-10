@@ -4,6 +4,8 @@ var app = express();
 var bodyParser = require("body-parser");
 var cors = require("cors");
 var kafka = require("./kafka/client");
+const jwt = require("jsonwebtoken");
+const session = require("express-session");
 //use cors to allow cross origin resource sharing
 app.use(
   cors({
@@ -86,6 +88,30 @@ app.post("/api/users/signin", function (req, res) {
     } else {
       console.log("Inside else");
       console.log(results);
+
+      if (results.success === true) {
+        res.cookie("user", results.user.username, {
+          maxAge: 900000,
+          httpOnly: false,
+          path: "/",
+        });
+        session.user = results.user;
+        const payload = {
+          _id: results.user._id,
+          username: results.user.username,
+        };
+        let token = jwt.sign(payload, "SECRETVALUE", {
+          expiresIn: "1h",
+        });
+
+        console.log("result " + result + " token " + token);
+
+        callback(null, {
+          success: true,
+          user,
+          token: "JWT " + token,
+        });
+      }
       res.json({
         updatedList: results,
       });
@@ -95,16 +121,15 @@ app.post("/api/users/signin", function (req, res) {
   });
 });
 
-app.post("/book", function (req, res) {
-  kafka.make_request("post_book", req.body, function (err, results) {
+app.post("/api/products/addToCart", function (req, res) {
+  console.log(req.body + " IN ADD TO CART");
+  kafka.make_request("add_to_cart", req.body, function (err, results) {
     console.log(req.body + " ----------------------------------");
-    console.log(req.body.BookID + " ----------------------------------");
-    console.log(req.body.Author + " ----------------------------------");
-
+    console.log(req.body.email + " ----------------------------------");
+    console.log(req.body.username + " ----------------------------------");
     console.log("in result");
     if (err) {
       console.log(err);
-
       console.log("Inside err");
       res.json({
         status: "error",
@@ -121,6 +146,7 @@ app.post("/book", function (req, res) {
     }
   });
 });
+
 //start your server on port 3001
 app.listen(4001);
 console.log("Server Listening on port 4001");

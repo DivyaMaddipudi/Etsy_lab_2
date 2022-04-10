@@ -8,7 +8,7 @@ async function handle_request(msg, callback) {
   //validate request
   console.log(msg.username + " --------------- ");
   if (!msg) {
-    res.status(400).send({ message: "Content can not be empty" });
+    callback(null, { message: "Content can not be empty" });
     return;
   }
 

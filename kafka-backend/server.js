@@ -3,6 +3,9 @@ var connection = new require("./kafka/Connection");
 //var signin = require('./services/signin.js');
 var Books = require("./services/books.js");
 var addUser = require("./services/addUser");
+var addToCart = require("./services/addToCart");
+// var createShop = require("./services/createShop");
+// var signIn = require("./services/signin");
 
 const dotenv = require("dotenv");
 dotenv.config({ path: "config.env" });
@@ -45,3 +48,7 @@ function handleTopicRequest(topic_name, fname) {
 //second argument is a function that will handle this topic request
 handleTopicRequest("post_book", Books);
 handleTopicRequest("add_user", addUser);
+handleTopicRequest("add_to_cart", addToCart);
+// handleTopicRequest("create_shop", createShop);
+
+// handleTopicRequest("add_user", signIn);
