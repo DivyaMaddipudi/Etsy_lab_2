@@ -33,4 +33,4 @@ app.use(bodyParse.urlencoded({ extended: true }));
 app.use("/", require("./routes/router"));
 app.use("/", require("./routes/productsRouter"));
 
-app.listen(PORT, () => console.log("Server Started"));
+module.exports = app.listen(PORT, () => console.log("Server Started"));

@@ -71,55 +71,55 @@ app.post("/api/users/register", function (req, res) {
   });
 });
 
-app.post("/api/users/signin", function (req, res) {
-  console.log(req.body + " IN USER signin POST");
-  kafka.make_request("add_user", req.body, function (err, results) {
-    console.log(req.body + " ----------------------------------");
-    console.log(req.body.email + " ----------------------------------");
-    console.log(req.body.username + " ----------------------------------");
-    console.log("in result");
-    if (err) {
-      console.log(err);
-      console.log("Inside err");
-      res.json({
-        status: "error",
-        msg: "System Error, Try Again.",
-      });
-    } else {
-      console.log("Inside else");
-      console.log(results);
+// app.post("/api/users/signin", function (req, res) {
+//   console.log(req.body + " IN USER signin POST");
+//   kafka.make_request("add_user", req.body, function (err, results) {
+//     console.log(req.body + " ----------------------------------");
+//     console.log(req.body.email + " ----------------------------------");
+//     console.log(req.body.username + " ----------------------------------");
+//     console.log("in result");
+//     if (err) {
+//       console.log(err);
+//       console.log("Inside err");
+//       res.json({
+//         status: "error",
+//         msg: "System Error, Try Again.",
+//       });
+//     } else {
+//       console.log("Inside else");
+//       console.log(results);
 
-      if (results.success === true) {
-        res.cookie("user", results.user.username, {
-          maxAge: 900000,
-          httpOnly: false,
-          path: "/",
-        });
-        session.user = results.user;
-        const payload = {
-          _id: results.user._id,
-          username: results.user.username,
-        };
-        let token = jwt.sign(payload, "SECRETVALUE", {
-          expiresIn: "1h",
-        });
+//       if (results.success === true) {
+//         res.cookie("user", results.user.username, {
+//           maxAge: 900000,
+//           httpOnly: false,
+//           path: "/",
+//         });
+//         session.user = results.user;
+//         const payload = {
+//           _id: results.user._id,
+//           username: results.user.username,
+//         };
+//         let token = jwt.sign(payload, "SECRETVALUE", {
+//           expiresIn: "1h",
+//         });
 
-        console.log("result " + result + " token " + token);
+//         console.log("result " + result + " token " + token);
 
-        callback(null, {
-          success: true,
-          user,
-          token: "JWT " + token,
-        });
-      }
-      res.json({
-        updatedList: results,
-      });
+//         callback(null, {
+//           success: true,
+//           user,
+//           token: "JWT " + token,
+//         });
+//       }
+//       res.json({
+//         updatedList: results,
+//       });
 
-      res.end();
-    }
-  });
-});
+//       res.end();
+//     }
+//   });
+// });
 
 app.post("/api/products/addToCart", function (req, res) {
   console.log(req.body + " IN ADD TO CART");
