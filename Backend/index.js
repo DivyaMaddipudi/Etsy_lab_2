@@ -36,18 +36,16 @@ app.use(function (req, res, next) {
 });
 
 //Route to get All Books when user visits the Home Page
-/*app.get('/books', function(req,res){   
-    res.writeHead(200,{
-        'Content-Type' : 'application/json'
-    });
-    res.end(JSON.stringify(books));
-    
+app.get("/books", function (req, res) {
+  res.writeHead(200, {
+    "Content-Type": "application/json",
+  });
+  res.end("Hello");
 });
-*/
 
 app.post("/api/users/register", function (req, res) {
   console.log(req.body + " IN USER REGISTER POST");
-  kafka.make_request("add_user", req.body, function (err, results) {
+  kafka.make_request("addUser", req.body, function (err, results) {
     console.log(req.body + " ----------------------------------");
     console.log(req.body.email + " ----------------------------------");
     console.log(req.body.username + " ----------------------------------");
@@ -88,7 +86,6 @@ app.post("/api/users/register", function (req, res) {
 //     } else {
 //       console.log("Inside else");
 //       console.log(results);
-
 //       if (results.success === true) {
 //         res.cookie("user", results.user.username, {
 //           maxAge: 900000,
@@ -103,9 +100,7 @@ app.post("/api/users/register", function (req, res) {
 //         let token = jwt.sign(payload, "SECRETVALUE", {
 //           expiresIn: "1h",
 //         });
-
 //         console.log("result " + result + " token " + token);
-
 //         callback(null, {
 //           success: true,
 //           user,
@@ -115,18 +110,41 @@ app.post("/api/users/register", function (req, res) {
 //       res.json({
 //         updatedList: results,
 //       });
-
 //       res.end();
 //     }
 //   });
 // });
 
+app.get("/api/products/getFavourites/:id", function (req, res) {
+  console.log(req.body + " IN ADD TO CART");
+  const reqParams = {
+    id: req.params.id,
+  };
+  kafka.make_request("getFavourites", reqParams, function (err, results) {
+    console.log(req.body + " ----------------------------------");
+    console.log("in result");
+    if (err) {
+      console.log(err);
+      console.log("Inside err");
+      res.json({
+        status: "error",
+        msg: "System Error, Try Again.",
+      });
+    } else {
+      console.log("Inside else");
+      console.log(results);
+      res.json({
+        updatedList: results,
+      });
+      res.end();
+    }
+  });
+});
+
 app.post("/api/products/addToCart", function (req, res) {
   console.log(req.body + " IN ADD TO CART");
-  kafka.make_request("add_to_cart", req.body, function (err, results) {
+  kafka.make_request("addToCart", req.body, function (err, results) {
     console.log(req.body + " ----------------------------------");
-    console.log(req.body.email + " ----------------------------------");
-    console.log(req.body.username + " ----------------------------------");
     console.log("in result");
     if (err) {
       console.log(err);

@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+// const bcrypt = require("bcrypt");
 // const jwt = require("jsonwebtoken");
 
 var cartDb = require("../schema/cart");

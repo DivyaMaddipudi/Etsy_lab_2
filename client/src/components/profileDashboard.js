@@ -28,10 +28,10 @@ function profileDashboard() {
 
   const getFavouriteItems = () => {
     Axios.get(
-      "http://localhost:4000/api/products/getFavourites/" + user.id
+      "http://localhost:4001/api/products/getFavourites/" + user.id
     ).then((response) => {
       console.log(response.data.result);
-      if (response.data.success === true) {
+      if (response.data.result) {
         console.log("geting all fav products and storing in redux");
         // response.data.result.map((favItem) => {
         //   console.log("Fav items");

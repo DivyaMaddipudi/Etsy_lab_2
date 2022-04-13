@@ -4,6 +4,8 @@ var connection = new require("./kafka/Connection");
 var Books = require("./services/books.js");
 var addUser = require("./services/addUser");
 var addToCart = require("./services/addToCart");
+var getFavs = require("./services/getFavs");
+
 // var createShop = require("./services/createShop");
 // var signIn = require("./services/signin");
 
@@ -16,6 +18,7 @@ connectDB();
 
 function handleTopicRequest(topic_name, fname) {
   //var topic_name = 'root_topic';
+  console.log("In hadnle topic req");
   var consumer = connection.getConsumer(topic_name);
   var producer = connection.getProducer();
   console.log("server is running ");
@@ -47,8 +50,10 @@ function handleTopicRequest(topic_name, fname) {
 //first argument is topic name
 //second argument is a function that will handle this topic request
 handleTopicRequest("post_book", Books);
-handleTopicRequest("add_user", addUser);
-handleTopicRequest("add_to_cart", addToCart);
+handleTopicRequest("addUser", addUser);
+handleTopicRequest("addToCart", addToCart);
+handleTopicRequest("getFavourites", getFavs);
+
 // handleTopicRequest("create_shop", createShop);
 
 // handleTopicRequest("add_user", signIn);
