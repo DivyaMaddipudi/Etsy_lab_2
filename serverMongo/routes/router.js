@@ -4,6 +4,8 @@ const user = require("../controller/User");
 const { checkAuth } = require("../passport");
 
 //API
+
+//kafka
 route.post("/api/users/register", user.create);
 route.post("/api/users/signin", user.findUser);
 route.get("/api/users/signin", user.findUser);

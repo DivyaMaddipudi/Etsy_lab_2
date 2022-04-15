@@ -5,6 +5,7 @@ var Books = require("./services/books.js");
 var addUser = require("./services/addUser");
 var addToCart = require("./services/addToCart");
 var getFavs = require("./services/getFavs");
+var addProduct = require("./services/addItemToShop");
 
 // var createShop = require("./services/createShop");
 // var signIn = require("./services/signin");
@@ -13,7 +14,6 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "config.env" });
 
 const connectDB = require("./database/connection.js");
-
 connectDB();
 
 function handleTopicRequest(topic_name, fname) {
@@ -53,6 +53,7 @@ handleTopicRequest("post_book", Books);
 handleTopicRequest("addUser", addUser);
 handleTopicRequest("addToCart", addToCart);
 handleTopicRequest("getFavourites", getFavs);
+handleTopicRequest("addToShop", addProduct);
 
 // handleTopicRequest("create_shop", createShop);
 

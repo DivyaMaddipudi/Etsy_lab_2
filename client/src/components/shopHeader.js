@@ -13,6 +13,7 @@ function shopHeader({ searchProductUserId }) {
   const [userId, setUserId] = useState();
   const [editShopPage, setEditShopPage] = useState(false);
   const [userName, setUserName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [shopImage, setShopImage] = useState("");
   const [shopDetails, setShopDetails] = useState();
   const [prodUserId, setProdUserId] = useState(0);
@@ -35,6 +36,8 @@ function shopHeader({ searchProductUserId }) {
           setShopName(response.data.user.shopName);
           setUserName(response.data.user.name);
           setShopImage(response.data.user.shopImage);
+          setPhoneNumber(response.data.user.phoneNumber);
+          setUserName(response.data.user.username);
         } else {
           console.log("Failed in getting shop by id ");
         }
@@ -48,11 +51,15 @@ function shopHeader({ searchProductUserId }) {
         console.log("In sales count axios");
         if (response.data.success) {
           console.log(response.data.result);
-          console.log(response.data.result[0].sum);
+          // console.log(response.data.result[0].sum);
           // response.data.result
           //   .filter((sales) => sales._id === user.id)
           //   .map((salesCount) => setSalesValue(salesCount.sum));
-          setSalesCount(response.data.result[0].sum);
+          if (response.data.result.length === 0) {
+            setSalesCount(0);
+          } else {
+            setSalesCount(response.data.result[0].sum);
+          }
           // console.log(salesValue);
         } else {
           console.log("failed in geting sales count");
@@ -92,9 +99,11 @@ function shopHeader({ searchProductUserId }) {
         <h6 style={{ fontSize: "18px" }}>SHOP OWNER</h6>
         <img
           style={{ width: "30%", borderRadius: "50%", height: "100px" }}
-          src={"/Users/Images/" + user.profilePic}
+          src={user.profilePic}
+          alt="ownerPic"
         ></img>
         <h5>{userName}</h5>
+        <h5>+1 {phoneNumber}</h5>
       </div>
       {editShopPage && (
         <EditShopImage editShopPage={setEditShopPage} userId={userId} />

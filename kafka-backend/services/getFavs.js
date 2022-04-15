@@ -10,7 +10,7 @@ async function handle_request(msg, callback) {
     .populate("itemId")
     .then((favItems) => {
       console.log(favItems);
-      callback(null, { success: true, result: favItems });
+      callback(null, { result: favItems });
     })
     .catch((err) => {
       callback(null, { err });

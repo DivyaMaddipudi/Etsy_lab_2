@@ -23,6 +23,7 @@ const s3 = new aws.S3({
 exports.addProduct = (req, res) => {
   console.log("In add products");
   const userId = req.params.id;
+  // console.log(req)
 
   // console.log(userId);
   // console.log(itemName);

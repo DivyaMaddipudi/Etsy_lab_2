@@ -21,6 +21,8 @@ productRoute.get("/api/products/getItems", product.getItems);
 
 //Favourites
 productRoute.post("/api/products/addFavourite/", product.addFavourite);
+
+//kafka
 productRoute.get("/api/products/getFavourites/:id", product.getFavourites);
 productRoute.delete(
   "/api/products/deleteFavourite/:favId",
@@ -28,6 +30,8 @@ productRoute.delete(
 );
 
 //Cart
+
+//kafka
 productRoute.post("/api/products/addToCart/", product.addToCart);
 productRoute.get("/api/products/getCartItems/:id", product.getCartItems);
 productRoute.delete(

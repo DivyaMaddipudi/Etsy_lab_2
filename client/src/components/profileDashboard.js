@@ -18,8 +18,8 @@ function profileDashboard() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
-  const [favProdS, setFavProds] = useState([]);
-  const favProds = useSelector(getAllFavourites);
+  const [favProds, setFavProds] = useState([]);
+  // const favProds = useSelector(getAllFavourites);
   const [numOfFav, setNumOfFav] = useState(0);
 
   useEffect(() => {
@@ -30,9 +30,11 @@ function profileDashboard() {
     Axios.get(
       "http://localhost:4001/api/products/getFavourites/" + user.id
     ).then((response) => {
-      console.log(response.data.result);
+      console.log(response);
       if (response.data.result) {
         console.log("geting all fav products and storing in redux");
+        console.log(response.data.result.result);
+
         // response.data.result.map((favItem) => {
         //   console.log("Fav items");
         //   // console.log(favItem.itemId);
@@ -40,7 +42,8 @@ function profileDashboard() {
         //   setFavProds([...favProdS, favItem.itemId]);
         // });
 
-        dispatch(favouritesList(response.data.result));
+        setFavProds(response.data.result.result);
+        dispatch(favouritesList(response.data.result.result));
 
         // console.log(response.data.result.length);
       }

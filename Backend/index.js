@@ -6,6 +6,11 @@ var cors = require("cors");
 var kafka = require("./kafka/client");
 const jwt = require("jsonwebtoken");
 const session = require("express-session");
+const formidable = require("formidable");
+const aws = require("aws-sdk");
+const multer = require("multer");
+const multerS3 = require("multer-s3");
+
 //use cors to allow cross origin resource sharing
 app.use(
   cors({
@@ -17,6 +22,12 @@ app.use(
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+const s3 = new aws.S3({
+  accessKeyId: process.env.S3_ACCESS_KEY,
+  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+  region: process.env.S3_BUCKET_REGION,
+});
 
 //Allow Access Control
 
@@ -131,15 +142,66 @@ app.get("/api/products/getFavourites/:id", function (req, res) {
         msg: "System Error, Try Again.",
       });
     } else {
-      console.log("Inside else");
+      console.log("Inside else----------");
       console.log(results);
       res.json({
-        updatedList: results,
+        result: results,
       });
       res.end();
     }
   });
 });
+
+app.post("/api/products/addProduct/:id", function (req, res) {
+  console.log(" Add Product to shop ");
+
+  const uploadSingle = upload("etsyappstorage").single("itemImage");
+
+  uploadSingle(req, res, async (err) => {
+    if (err) return res.status(400).json({ message: err.message });
+    const reqValues = {
+      id: req.params.id,
+      body: req.body,
+      file: req.file.location,
+    };
+
+    // console.log(reqValues);
+    kafka.make_request("addToShop", reqValues, function (err, results) {
+      console.log("in result");
+      if (err) {
+        console.log(err);
+        console.log("Inside err");
+        res.json({
+          status: "error",
+          msg: "System Error, Try Again.",
+        });
+      } else {
+        console.log("Inside else");
+        console.log(results);
+        res.json({
+          updatedList: results,
+        });
+        res.end();
+      }
+    });
+  });
+
+  console.log(" Add Product to shop----------------------------- ");
+});
+
+const upload = (bucketName) =>
+  multer({
+    storage: multerS3({
+      s3,
+      bucket: bucketName,
+      metadata: function (req, file, cb) {
+        cb(null, { fieldName: file.fieldname });
+      },
+      key: function (req, file, cb) {
+        cb(null, `ProductImage-${Date.now()}.jpeg`);
+      },
+    }),
+  });
 
 app.post("/api/products/addToCart", function (req, res) {
   console.log(req.body + " IN ADD TO CART");

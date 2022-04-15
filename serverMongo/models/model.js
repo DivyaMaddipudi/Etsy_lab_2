@@ -43,8 +43,7 @@ var schema = new mongoose.Schema({
   },
   shopName: {
     type: String,
-    default: null,
-    unique: true,
+    default: "",
   },
   shopImage: {
     type: String,
