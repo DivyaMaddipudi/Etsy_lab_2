@@ -17,12 +17,16 @@ import {
   getCartItems,
 } from "../features/cartItemsSlice";
 import { selectUser } from "../features/userSlice";
+import { getAllCartProducts } from "../features/cartSlice";
 import Navbar from "./Navbar";
 import Hoverbar from "./Hoverbar";
+import { useNavigate } from "react-router-dom";
 
 const CartScreen = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector(selectUser);
+  const productOverview = useSelector(getAllCartProducts);
   const [finalAmount, setFinalAmount] = useState();
 
   // const cart = useSelector((state) => state.cart);
@@ -77,47 +81,52 @@ const CartScreen = () => {
 
   const handleCheckOut = async () => {
     console.log(checkOutItems.length);
-    checkOutItems.map((product) => {
-      console.log(product);
-      Axios.post("http://localhost:4000/api/products/addProductToPurchase/", {
-        product: product,
-      })
+    if (user.about === null) {
+      navigate("/shippingAddress");
+    } else {
+      checkOutItems.map((product) => {
+        console.log(product);
+        Axios.post("http://localhost:4000/api/products/addProductToPurchase/", {
+          product: product,
+        })
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+
+        const itemDetails = {
+          itemCount: product.itemCount - product.qty,
+          itemSales: productOverview.sales + product.qty,
+        };
+
+        Axios.put(
+          "http://localhost:4000/api/products/editItemQtyById/" +
+            product.itemId,
+          itemDetails
+        ).then((response) => {
+          if (response.data.success) {
+            console.log("Item details edited successfully.....");
+          }
+        });
+      });
+
+      Axios.delete("http://localhost:4000/api/products/clearCart")
         .then((response) => {
-          console.log(response);
+          if (response) {
+            console.log("Items deleted successfully");
+            console.log(response.data.message);
+          }
         })
         .catch((err) => {
           console.log(err);
         });
 
-      const itemDetails = {
-        itemCount: product.itemCount - product.qty,
-        itemSales: product.qty,
-      };
+      dispatch(clearCart());
 
-      Axios.put(
-        "http://localhost:4000/api/products/editItemQtyById/" + product.itemId,
-        itemDetails
-      ).then((response) => {
-        if (response.data.success) {
-          console.log("Item details edited successfully.....");
-        }
-      });
-    });
-
-    Axios.delete("http://localhost:4000/api/products/clearCart")
-      .then((response) => {
-        if (response) {
-          console.log("Items deleted successfully");
-          console.log(response.data.message);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    dispatch(clearCart());
-
-    window.location.pathname = "/purchase";
+      window.location.pathname = "/purchase";
+    }
   };
 
   return (

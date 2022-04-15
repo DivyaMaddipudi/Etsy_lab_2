@@ -29,6 +29,7 @@ import Cart from "./components/Cart";
 import Purchases from "./components/Purchases";
 import ProductView from "./components/ProductView";
 import ShopHomeByOther from "./components/shopHomeByOther";
+import ShippingAddress from "./components/shippingAddress";
 
 function App() {
   const user = useSelector(selectUser);
@@ -58,6 +59,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/purchase" element={<Purchases />} />
           <Route path="/productView/:id" element={<ProductView />} />
+          <Route path="/shippingAddress" element={<ShippingAddress />} />
         </Routes>
       </Router>
     </>

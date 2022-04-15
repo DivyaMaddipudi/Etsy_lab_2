@@ -185,6 +185,7 @@ exports.updateUser = (req, res) => {
     const userName = req.body.userName;
     const gender = req.body.gender;
     const city = req.body.city;
+    const fullAddress = req.body.fullAddress;
     const dob = req.body.dob;
     const about = req.body.about;
     const phoneNumber = req.body.phoneNumber;
@@ -195,6 +196,7 @@ exports.updateUser = (req, res) => {
       gender,
       city,
       dob,
+      fullAddress,
       about,
       phoneNumber,
       profilePic,
@@ -213,6 +215,31 @@ exports.updateUser = (req, res) => {
         );
         res.send({ message: "User not updated", err });
       });
+  });
+};
+
+exports.updateUserAddress = (req, res) => {
+  const fullAddress = req.body.fullAddress;
+  const about = req.body.about;
+  const city = req.body.city;
+
+  const id = req.params.id;
+
+  console.log(fullAddress);
+  console.log(about);
+  console.log(city);
+
+  Userdb.findByIdAndUpdate(
+    { _id: id },
+    { fullAddress: fullAddress, about: about, city: city }
+  ).then((data) => {
+    if (!data) {
+      console.log(data + " can't update shipping address");
+    } else {
+      console.log(data);
+      console.log("address updated successfully");
+      res.send({ success: true, data });
+    }
   });
 };
 

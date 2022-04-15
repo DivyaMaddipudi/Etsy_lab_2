@@ -48,10 +48,12 @@ function shopHeader({ searchProductUserId }) {
         console.log("In sales count axios");
         if (response.data.success) {
           console.log(response.data.result);
-          response.data.result
-            .filter((sales) => sales._id === user.id)
-            .map((salesCount) => setSalesValue(salesCount.sum));
-          console.log(salesValue);
+          console.log(response.data.result[0].sum);
+          // response.data.result
+          //   .filter((sales) => sales._id === user.id)
+          //   .map((salesCount) => setSalesValue(salesCount.sum));
+          setSalesCount(response.data.result[0].sum);
+          // console.log(salesValue);
         } else {
           console.log("failed in geting sales count");
         }
@@ -73,7 +75,7 @@ function shopHeader({ searchProductUserId }) {
         <div className="shop_info">
           <h3 className="shop_name">{shopName}</h3>
 
-          <p>Sales: {salesValue}</p>
+          <p>Sales: {salesCount}</p>
           {/* {editButton} */}
 
           <button

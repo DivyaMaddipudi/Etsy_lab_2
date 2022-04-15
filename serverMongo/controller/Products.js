@@ -432,7 +432,7 @@ exports.getSalesCount = (req, res) => {
     .aggregate([
       {
         $group: {
-          _id: "$userId",
+          _id: "$itemId",
           sum: {
             $sum: "$sales",
           },
@@ -440,10 +440,17 @@ exports.getSalesCount = (req, res) => {
       },
     ])
     .then((result) => {
+      console.log(
+        "in sales count backend " + "++++++++++++++++++++++++++++++++++++++++++"
+      );
       console.log(result);
       res.send({ success: true, result: result });
     })
     .catch((err) => {
+      console.log(
+        "in not sales count backend " +
+          "++++++++++++++++++++++++++++++++++++++++++"
+      );
       res.send(err);
     });
 

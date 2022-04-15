@@ -15,6 +15,7 @@ function profileForm() {
   const [userName, setUserName] = useState("");
   const [gender, setGender] = useState("");
   const [city, setCity] = useState("");
+  const [fullAddress, setFullAddress] = useState("");
   const [dob, setDob] = useState("");
   const [about, setAbout] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -36,6 +37,7 @@ function profileForm() {
     formData.append("userName", userName);
     formData.append("gender", gender);
     formData.append("city", city);
+    formData.append("fullAddress", fullAddress);
     formData.append("dob", dob);
     formData.append("about", about);
     formData.append("phoneNumber", phoneNumber);
@@ -48,23 +50,26 @@ function profileForm() {
       console.log(response);
       if (response.data.success === true) {
         console.log("Image uploaded successfully");
-        // console.log(response.data[0].result);
+        console.log(fullAddress);
+        console.log(response.data.result);
         setUserName(response.data.result["username"]);
         setDob(response.data.result["dob"]);
         setGender(response.data.result["gender"]);
         setCity(response.data.result["city"]);
+        setFullAddress(fullAddress);
         setUserImage(response.data.profilePic);
-        setAbout(response.data.result["about"]);
+        setAbout(about);
         setPhoneNumber(response.data.result["phoneNumber"]);
-        console.log(response.data.result["profilePic"]);
+
         dispatch(
           updateUserDetails({
             name: response.data.result["username"],
             dob: response.data.result["dob"],
             gender: response.data.result["gender"],
             city: response.data.result["city"],
+            fullAddress: fullAddress,
             profilePic: response.data.profilePic,
-            about: response.data.result["about"],
+            about: about,
             phoneNumber: response.data.result["phoneNumber"],
           })
         );
@@ -79,8 +84,8 @@ function profileForm() {
 
   const fetchItemDetails = (e) => {
     // e.preventDefault();
-    axios.defaults.headers.common["authorization"] =
-      localStorage.getItem("token");
+    // axios.defaults.headers.common["authorization"] =
+    //   localStorage.getItem("token");
     Axios.get("http://localhost:4000/api/users/getShopById/" + user.id).then(
       (response) => {
         console.log(response);
@@ -89,13 +94,14 @@ function profileForm() {
         if (response.data.success === true) {
           console.log("In get of profile form");
           console.log(response.data.user);
-          console.log(response.data.user["dob"]);
+          console.log(response.data.user["fullAddress"]);
 
           setUserName(response.data.user["username"]);
           setUserImage(response.data.user["profilePic"]);
           setDob(response.data.user["dob"]);
           setGender(response.data.user["gender"]);
           setCity(response.data.user["city"]);
+          setFullAddress(response.data.user["fullAddress"]);
           setAbout(response.data.user["about"]);
           setPhoneNumber(response.data.user["phoneNumber"]);
           console.log("Products stored in product");
@@ -579,8 +585,9 @@ function profileForm() {
 
               <div className="section">
                 <div className="label">Birthday</div>
+
                 <input
-                  defaultValue={dateFunction(user.dob)}
+                  defaultValue={dob}
                   type="date"
                   style={{ marginLeft: "-2%" }}
                   onChange={(event) => {
@@ -591,10 +598,25 @@ function profileForm() {
 
               <div className="section">
                 <div className="label">
-                  About
+                  Full Address(Street Address and Apt No.)
+                </div>
+                <input
+                  defaultValue={fullAddress}
+                  type="text"
+                  style={{ marginLeft: "-2%" }}
+                  onChange={(event) => {
+                    setFullAddress(event.target.value);
+                  }}
+                />
+              </div>
+
+              <div className="section">
+                <div className="label">
+                  Zipcode
                   <p>Tell people a little about yourself.</p>
                 </div>
-                <textarea
+                <input
+                  type="text"
                   defaultValue={about}
                   style={{
                     marginLeft: "-3%",
@@ -608,7 +630,7 @@ function profileForm() {
                   onChange={(event) => {
                     setAbout(event.target.value);
                   }}
-                ></textarea>
+                />
               </div>
 
               <button className="clicky" onClick={handleUserData}>

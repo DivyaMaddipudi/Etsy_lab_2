@@ -28,9 +28,12 @@ function shopHeaderByOther({ searchProductUserId }) {
         console.log("In sales count axios");
         if (response.data.success) {
           console.log(response.data.result);
-          response.data.result
-            .filter((sales) => sales._id === userInformation._id)
-            .map((salesCount) => setSalesValue(salesCount.sum));
+          console.log(response.data.result[0].sum);
+
+          // response.data.result
+          //   .filter((sales) => sales._id === userInformation._id)
+          //   .map((salesCount) => setSalesValue(salesCount.sum));
+          setSalesValue(response.data.result[0].sum);
           console.log(salesValue);
         } else {
           console.log("failed in geting sales count");

@@ -52,6 +52,7 @@ function Signin({ setshowSignIn }) {
               dob: response.data.user["dob"],
               gender: response.data.user["gender"],
               city: response.data.user["city"],
+              fullAddress: response.data.user["fullAddress"],
               phoneNumber: response.data.user["phoneNumber"],
               profilePic: response.data.user["profilePic"],
               about: response.data.user["about"],
