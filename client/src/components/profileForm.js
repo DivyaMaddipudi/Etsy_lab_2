@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUser, updateUserDetails } from "../features/userSlice";
 import Axios from "axios";
 import axios from "axios";
+import cookie from "react-cookies";
+import { Navigate } from "react-router-dom";
 
 function profileForm() {
   const dispatch = useDispatch();
@@ -135,8 +137,14 @@ function profileForm() {
   //   );
   // };
 
+  let redirectVar = null;
+  if (user === null || !cookie.load("user")) {
+    console.log("cookie is found " + user);
+    redirectVar = <Navigate to="/home" />;
+  }
   return (
     <div>
+      {redirectVar}
       <Navbar />
       <Hoverbar />
       <hr></hr>
@@ -156,8 +164,10 @@ function profileForm() {
           <div className="user-profile-edit">
             <div className="header-section">
               <div className="title">
-                <h3 style={{ marginLeft: "-30%" }}>Your Public Profile</h3>
-                <p>Everything on this page can be seen by anyone</p>
+                <h3 style={{ marginLeft: "-64%" }}>Your Public Profile</h3>
+                <p style={{ fontSize: "30px" }}>
+                  Everything on this page can be seen by anyone
+                </p>
               </div>
             </div>
 
@@ -165,7 +175,17 @@ function profileForm() {
               <div className="section">
                 <div className="label">Profile Picture</div>
                 <div className="profile-pic">
-                  <img width="200px" src={userImage} alt="shop"></img>
+                  <img
+                    style={{
+                      // backgroundColor: "red",
+                      width: "170px",
+                      height: "145px",
+                      borderRadius: "100%",
+                    }}
+                    width="200px"
+                    src={userImage}
+                    alt="shop"
+                  ></img>
                 </div>
 
                 <input
@@ -253,6 +273,19 @@ function profileForm() {
               </div>
 
               <div className="section">
+                <div className="label">Birthday</div>
+
+                <input
+                  defaultValue={dob}
+                  type="date"
+                  style={{ marginLeft: "-2%" }}
+                  onChange={(event) => {
+                    setDob(event.target.value);
+                  }}
+                />
+              </div>
+
+              <div className="section">
                 <div for="country" className="label">
                   City
                 </div>
@@ -260,7 +293,7 @@ function profileForm() {
                   id="country"
                   name="country"
                   class="form-control"
-                  style={{ marginLeft: "5%" }}
+                  style={{ marginLeft: "2%" }}
                   onChange={(event) => {
                     setCity(event.target.value);
                   }}
@@ -584,19 +617,6 @@ function profileForm() {
               </div>
 
               <div className="section">
-                <div className="label">Birthday</div>
-
-                <input
-                  defaultValue={dob}
-                  type="date"
-                  style={{ marginLeft: "-2%" }}
-                  onChange={(event) => {
-                    setDob(event.target.value);
-                  }}
-                />
-              </div>
-
-              <div className="section">
                 <div className="label">
                   Full Address(Street Address and Apt No.)
                 </div>
@@ -633,7 +653,11 @@ function profileForm() {
                 />
               </div>
 
-              <button className="clicky" onClick={handleUserData}>
+              <button
+                style={{ width: "30%", marginLeft: "50%" }}
+                className="clicky"
+                onClick={handleUserData}
+              >
                 Save Changes
               </button>
             </form>

@@ -63,6 +63,8 @@ function shopHomeOtherUser() {
       {redirectVar}
 
       <div className="profile_favourites">
+        <h2 style={{ fontSize: "30px" }}>ITEMS</h2>
+
         <div className="container-fluid mx-1">
           <div className="row mt-5 mx-1">
             <div

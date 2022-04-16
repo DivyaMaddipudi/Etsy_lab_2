@@ -133,6 +133,7 @@ function profileDashboard() {
         </div>
 
         <div className="profile_favourites">
+          <h2 style={{ fontSize: "30px" }}>Favourites</h2>
           <div className="container-fluid mx-1">
             <div className="row mt-5 mx-1">
               <div className="col-md-9">
