@@ -50,7 +50,7 @@ function shopHome() {
 
   const getItemsByItemSearchId = () => {
     Axios.get(
-      "http://localhost:4000/api/products/getItemsByItemSearchId/" + id
+      "http://54.174.244.242:4000/api/products/getItemsByItemSearchId/" + id
     ).then((response) => {
       console.log(response);
       if (response) {
@@ -79,9 +79,12 @@ function shopHome() {
     );
     setShowProds(true);
     console.log("---------------in view Items-------------------");
-    Axios.post("http://localhost:4000/api/products/getAllProducts/" + user.id, {
-      searchTerm: variables["searchTerm"],
-    }).then((response) => {
+    Axios.post(
+      "http://54.174.244.242:4000/api/products/getAllProducts/" + user.id,
+      {
+        searchTerm: variables["searchTerm"],
+      }
+    ).then((response) => {
       if (response.data.success) {
         if (variables.loadMore) {
           setProducts([...products, ...response.data.result]);

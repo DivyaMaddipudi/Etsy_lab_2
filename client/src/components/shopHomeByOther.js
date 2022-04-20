@@ -33,7 +33,7 @@ function shopHomeByOther() {
   });
 
   const getUserIdFromItemId = () => {
-    Axios.get("http://localhost:4000/getItemById/" + itemId).then(
+    Axios.get("http://54.174.244.242:4000/getItemById/" + itemId).then(
       (response) => {
         if (response) {
           dispatch(userId(response.data[0].userId));
@@ -44,7 +44,7 @@ function shopHomeByOther() {
 
   const getItemsFromUserid = () => {
     Axios.get(
-      "http://localhost:4000/api/products/getAllProducts/" + userId
+      "http://54.174.244.242:4000/api/products/getAllProducts/" + userId
     ).then((response) => {
       if (response) {
         console.log(response.data.result);
@@ -55,16 +55,16 @@ function shopHomeByOther() {
   };
 
   const getUserDetails = () => {
-    Axios.get("http://localhost:4000/api/users/getShopById/" + userId).then(
-      (response) => {
-        if (response) {
-          console.log(response);
-          // setUserInfo(response.data.result[0]);
-          dispatch(userDetails(response.data.user));
-          // console.log(response.data.result[0].name);
-        }
+    Axios.get(
+      "http://54.174.244.242:4000/api/users/getShopById/" + userId
+    ).then((response) => {
+      if (response) {
+        console.log(response);
+        // setUserInfo(response.data.result[0]);
+        dispatch(userDetails(response.data.user));
+        // console.log(response.data.result[0].name);
       }
-    );
+    });
   };
 
   return (

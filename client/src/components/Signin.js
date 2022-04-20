@@ -33,7 +33,7 @@ function Signin({ setshowSignIn }) {
 
   const checkUser = (e) => {
     e.preventDefault();
-    Axios.post("http://localhost:4000/api/users/signin", {
+    Axios.post("http://54.174.244.242:4000/api/users/signin", {
       email: email,
       password: password,
     })
@@ -73,15 +73,17 @@ function Signin({ setshowSignIn }) {
   };
 
   useEffect(() => {
-    Axios.get("http://localhost:4000/api/users/signin").then((response) => {
-      // console.log(response);
+    Axios.get("http://54.174.244.242:4000/api/users/signin").then(
+      (response) => {
+        // console.log(response);
 
-      if (response.data.success === true) {
-        setLoginStatus(response.data.user);
-        console.log(loginStatus);
-        console.log("++++++++++ cookie ++++++++++++" + cookie.load("user"));
+        if (response.data.success === true) {
+          setLoginStatus(response.data.user);
+          console.log(loginStatus);
+          console.log("++++++++++ cookie ++++++++++++" + cookie.load("user"));
+        }
       }
-    });
+    );
   }, []);
 
   let redirVal = null;

@@ -15,7 +15,7 @@ function editShop({ editShopPage, userId }) {
     const formData = new FormData();
     formData.append("shopImage", shopImage);
     Axios.put(
-      "http://localhost:4000/updateShopImageById/" + userId,
+      "http://54.174.244.242:4000/updateShopImageById/" + userId,
       formData
     ).then((response) => {
       if (response.data.success) {
