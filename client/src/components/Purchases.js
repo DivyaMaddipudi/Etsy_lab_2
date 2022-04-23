@@ -65,8 +65,14 @@ function Purchases() {
               <p className="purchase_item_price">
                 Ship To {cookie.load("user")}
               </p>
-              <p style={{ width: "70%" }} className="purchase_item_price">
+              <p style={{ width: "40%" }} className="purchase_item_price">
                 Order Id #{pro._id}
+              </p>
+              <p style={{ width: "30%" }} className="purchase_item_price">
+                Order Date: {pro.createdAt.split("T")[0]}
+              </p>
+              <p style={{ width: "30%" }} className="purchase_item_price">
+                Order Time: {pro.createdAt.substr(11, 5)}
               </p>
             </div>
 
