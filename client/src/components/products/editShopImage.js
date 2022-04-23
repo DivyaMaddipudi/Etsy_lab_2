@@ -18,7 +18,7 @@ const editShopImage = ({ editShopPage }) => {
     formData.append("shopImage", shopImage);
     console.log("Inedit client axios " + user.id);
     Axios.put(
-      "http://localhost:4000/api/users/updateShopImageById/" + user.id,
+      "http://3.101.88.78:4000/api/users/updateShopImageById/" + user.id,
       formData
     ).then((response) => {
       if (response.data.success) {
@@ -37,7 +37,7 @@ const editShopImage = ({ editShopPage }) => {
   }, []);
 
   const fetchItemDetails = () => {
-    Axios.get("http://localhost:4000/api/users/getShopById/" + user.id).then(
+    Axios.get("http://3.101.88.78:4000/api/users/getShopById/" + user.id).then(
       (response) => {
         if (response) {
           console.log(response.data.user["shopImage"] + " shop image ");

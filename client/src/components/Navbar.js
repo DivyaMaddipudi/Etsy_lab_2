@@ -96,7 +96,7 @@ function Navbar() {
   // const viewItems = (variables) => {
   //   // setShowProds(true);
   //   console.log("---------------in view Items-------------------");
-  //   Axios.post("http://localhost:4000/getAllProducts/1", variables).then(
+  //   Axios.post("http://3.101.88.78:4000/getAllProducts/1", variables).then(
   //     (response) => {
   //       if (response.data.success) {
   //         if (variables.loadMore) {

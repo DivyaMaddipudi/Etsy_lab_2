@@ -31,7 +31,7 @@ function Purchases() {
 
   const getPurchasedItems = () => {
     Axios.get(
-      "http://localhost:4000/api/products/getPurchasedItems/" + user.id
+      "http://3.101.88.78:4000/api/products/getPurchasedItems/" + user.id
     ).then((response) => {
       if (response.data.success === true) {
         console.log("----------------Purchased products-------------------");
