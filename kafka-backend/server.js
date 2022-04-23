@@ -10,6 +10,7 @@ var getProductsBasedOnId = require("./services/getProductsById");
 var editProductById = require("./services/updateItem");
 var addProuctsToPurchases = require("./services/addToPurchases");
 const updateUser = require("./services/updateUser");
+const addFavourites = require("./services/addFavourites");
 // var createShop = require("./services/createShop");
 // var signIn = require("./services/signin");
 
@@ -61,6 +62,7 @@ handleTopicRequest("getProductsById", getProductsBasedOnId);
 handleTopicRequest("editProductById", editProductById);
 handleTopicRequest("addToPurchase", addProuctsToPurchases);
 handleTopicRequest("updateUser", updateUser);
+handleTopicRequest("addFavourites", addFavourites);
 
 // handleTopicRequest("create_shop", createShop);
 

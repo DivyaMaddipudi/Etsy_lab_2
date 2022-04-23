@@ -126,6 +126,29 @@ app.post("/api/users/register", function (req, res) {
 //   });
 // });
 
+app.post("/api/products/addFavourite", function (req, res) {
+  console.log(req.body + " IN ADD Favourites");
+  kafka.make_request("addFavourites", req.body, function (err, results) {
+    console.log(req.body + " ----------------------------------");
+    console.log("in result");
+    if (err) {
+      console.log(err);
+      console.log("Inside err");
+      res.json({
+        status: "error",
+        msg: "System Error, Try Again.",
+      });
+    } else {
+      console.log("Inside else----------");
+      console.log(results);
+      res.json({
+        result: results,
+      });
+      res.end();
+    }
+  });
+});
+
 app.get("/api/products/getFavourites/:id", function (req, res) {
   console.log(req.body + " IN ADD TO CART");
   const reqParams = {

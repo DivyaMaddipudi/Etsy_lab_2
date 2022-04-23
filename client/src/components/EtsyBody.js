@@ -87,11 +87,11 @@ function EtsyBody() {
 
   const handleFavourite = (itemId, userId) => {
     console.log("Favourites added " + itemId + " " + userId);
-    Axios.post("http://localhost:4000/api/products/addFavourite", {
+    Axios.post("http://localhost:4001/api/products/addFavourite", {
       itemId: itemId,
       userId: userId,
     }).then((response) => {
-      if (response.data.success === true) {
+      if (response.data) {
         console.log(response.data.result);
         console.log("new fav added");
         // setFavoutriteIcon(true);
