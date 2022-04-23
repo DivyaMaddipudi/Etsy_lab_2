@@ -146,6 +146,9 @@ function ProductOverView() {
             <p>
               Qty
               <select value={qty} onChange={(e) => setQty(e.target.value)}>
+                <option key={0} value={0}>
+                  0
+                </option>
                 {[...Array(productView.itemCount).keys()].map((x) => (
                   <option key={x + 1} value={x + 1}>
                     {x + 1}

@@ -39,6 +39,9 @@ function EtsyBody() {
   }, []);
 
   const getItems = () => {
+    console.log(localStorage.getItem("token"));
+    Axios.defaults.headers.common["authorization"] =
+      localStorage.getItem("token");
     Axios.get("http://localhost:4000/api/products/getItems").then(
       (response) => {
         if (response.data.success === true) {

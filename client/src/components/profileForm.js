@@ -637,7 +637,7 @@ function profileForm() {
               <div className="section">
                 <div className="label">
                   Zipcode
-                  <p>Tell people a little about yourself.</p>
+                  {/* <p>Tell people a little about yourself.</p> */}
                 </div>
                 <input
                   type="text"

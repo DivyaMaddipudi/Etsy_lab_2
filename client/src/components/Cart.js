@@ -28,6 +28,7 @@ const CartScreen = () => {
   const user = useSelector(selectUser);
   const productOverview = useSelector(getAllCartProducts);
   const [finalAmount, setFinalAmount] = useState();
+  const [itemsQtyError, setItemsQtyError] = useState("");
 
   // const cart = useSelector((state) => state.cart);
   // const { cartItems } = cart;
@@ -85,31 +86,50 @@ const CartScreen = () => {
       navigate("/shippingAddress");
     } else {
       checkOutItems.map((product) => {
-        console.log(product);
-        Axios.post("http://localhost:4001/api/products/addProductToPurchase/", {
-          product: product,
-        })
-          .then((response) => {
-            console.log(response);
-          })
-          .catch((err) => {
-            console.log(err);
+        if (product.qty === 0) {
+          console.log(product);
+          console.log("Deleting product with item qty 0");
+          Axios.delete(
+            "http://localhost:4000/api/products/deleteCartItem/" +
+              product.itemId
+          ).then((response) => {
+            console.log(response.data);
+            if (response.data.success === true) {
+              console.log("item deleted successfully");
+              console.log(response.data.res);
+            }
           });
+          // setItemsQtyError("Can't place order with 0 quantity");
+        } else {
+          console.log(product);
+          Axios.post(
+            "http://localhost:4001/api/products/addProductToPurchase/",
+            {
+              product: product,
+            }
+          )
+            .then((response) => {
+              console.log(response);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
 
-        const itemDetails = {
-          itemCount: product.itemCount - product.qty,
-          itemSales: productOverview.sales + product.qty,
-        };
+          const itemDetails = {
+            itemCount: product.itemCount - product.qty,
+            itemSales: productOverview.sales + product.qty,
+          };
 
-        Axios.put(
-          "http://localhost:4000/api/products/editItemQtyById/" +
-            product.itemId,
-          itemDetails
-        ).then((response) => {
-          if (response.data.success) {
-            console.log("Item details edited successfully.....");
-          }
-        });
+          Axios.put(
+            "http://localhost:4000/api/products/editItemQtyById/" +
+              product.itemId,
+            itemDetails
+          ).then((response) => {
+            if (response.data.success) {
+              console.log("Item details edited successfully.....");
+            }
+          });
+        }
       });
 
       Axios.delete("http://localhost:4000/api/products/clearCart")
@@ -137,6 +157,16 @@ const CartScreen = () => {
       <div className="cartscreen">
         <div className="cartscreen__left">
           <h2>Shopping Cart</h2>
+
+          {itemsQtyError === "" ? (
+            <div></div>
+          ) : (
+            <div>
+              <h3 style={{ textAlign: "center", color: "red" }}>
+                {itemsQtyError}
+              </h3>
+            </div>
+          )}
 
           {finalCartProducts.length === 0 ? (
             <div>

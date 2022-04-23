@@ -19,9 +19,8 @@ function register({ setShowRegister }) {
       username: username,
       password: password,
     }).then((response) => {
-      if (response.data.success === true) {
-        console.log("Success========: " + response.data.success);
-
+      console.log(response.data);
+      if (response.data) {
         dispatch(
           registerUser({
             username: username,
@@ -29,10 +28,9 @@ function register({ setShowRegister }) {
           })
         );
         console.log("In frontend register");
-
-        window.location.pathname = "/home";
       }
     });
+    window.location.pathname = "/home";
   };
 
   return (

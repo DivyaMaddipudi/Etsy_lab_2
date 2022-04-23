@@ -1,6 +1,9 @@
 const express = require("express");
 const productRoute = express.Router();
 const product = require("../controller/Products");
+const passport = require("passport");
+const auth = require("../passport");
+// const passportJwt = require("passport-jwt");
 
 //API
 productRoute.post("/api/products/addProduct/:id", product.addProduct);
@@ -17,6 +20,7 @@ productRoute.get(
 productRoute.get("/api/products/updateItemById/:id", product.updateItemById);
 productRoute.get("/api/products/getItemById/:itemId", product.getItemById);
 productRoute.put("/api/products/editItemById/:itemId", product.editItemById);
+
 productRoute.get("/api/products/getItems", product.getItems);
 
 //Favourites

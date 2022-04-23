@@ -1,11 +1,11 @@
 const passport = require("passport");
-const JwtStrategy = require("passport-local").Strategy;
+const JwtStrategy = require("passport-local");
 const { ExtractJwt } = require("passport-jwt");
 const Users = require("./models/model");
 
 function auth() {
   var opts = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken("JWT"),
     secretOrKey: process.env.SECRET,
   };
 
@@ -30,4 +30,4 @@ function auth() {
 }
 
 exports.auth = auth;
-exports.checkAuth = passport.authenticate("jwt", { session: false });
+// exports.checkAuth = passport.authenticate("JWT", { session: false });

@@ -150,6 +150,9 @@ const CartItem = ({ item }) => {
           onChange={(e) => qtyChangeHandler(e.target.value)}
           className="cartItem__select"
         >
+          <option key={0} value={0}>
+            0
+          </option>
           {[...Array(item.itemId.itemCount).keys()].map((x) => (
             <option key={x + 1} value={x + 1}>
               {x + 1}
