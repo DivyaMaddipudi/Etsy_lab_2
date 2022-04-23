@@ -46,7 +46,7 @@ function editItemImage({ setShowProductsEditPage, products, itemId }) {
     <div className="bg-modal">
       <div className="modal-content">
         <CloseLogin setshowSignIn={setShowProductsEditPage} />
-        <h2 className="addProd_title">Add product</h2>
+        <h2 className="addProd_title">Edit Image</h2>
         <form className="items_form" encType="multipart/form-data">
           <div className="htmlForm-group">
             <label htmlFor="item_image">Item Image</label>

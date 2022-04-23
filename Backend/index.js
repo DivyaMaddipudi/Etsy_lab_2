@@ -305,6 +305,43 @@ app.post("/api/products/addProductToPurchase/", function (req, res) {
   });
 });
 
+app.put("/api/users/updateUser/:id", function (req, res) {
+  console.log(" Add Product to shop ++++++++++++++++++++++++++++++++");
+
+  console.log(req.body);
+  const uploadSingle = upload("etsyappstoragedivya").single("userImage");
+
+  uploadSingle(req, res, async (err) => {
+    if (err) return res.status(400).json({ message: err });
+    const reqValues = {
+      id: req.params.id,
+      body: req.body,
+      file: req.file.location,
+    };
+
+    console.log(reqValues);
+    kafka.make_request("updateUser", reqValues, function (err, results) {
+      console.log("in result");
+      if (err) {
+        console.log(err);
+        console.log("Inside err");
+        res.json({
+          status: "error",
+          msg: "System Error, Try Again.",
+        });
+      } else {
+        console.log("Inside else");
+        console.log(results);
+        res.json({
+          results,
+        });
+        res.end();
+      }
+    });
+  });
+  console.log(" Add Product to shop----------------------------- ");
+});
+
 app.post("api/products/add", function (req, res) {
   console.log(req.body + " IN ADD TO PURCHASE");
   // kafka.make_request("addToPurchase", req.body, function (err, results) {

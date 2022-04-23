@@ -46,33 +46,37 @@ function profileForm() {
     axios.defaults.headers.common["authorization"] =
       localStorage.getItem("token");
     Axios.put(
-      "http://localhost:4000/api/users/updateUser/" + user.id,
+      "http://localhost:4001/api/users/updateUser/" + user.id,
       formData
     ).then((response) => {
-      console.log(response);
-      if (response.data.success === true) {
+      console.log("In update");
+
+      console.log(response.data.results.userObj);
+      console.log(response.data.results.userObj["phoneNumber"]);
+
+      if (response.data.results) {
         console.log("Image uploaded successfully");
         console.log(fullAddress);
-        console.log(response.data.result);
-        setUserName(response.data.result["username"]);
-        setDob(response.data.result["dob"]);
-        setGender(response.data.result["gender"]);
-        setCity(response.data.result["city"]);
+        // console.log(response.data.result);
+        setUserName(response.data.results.userObj["userName"]);
+        setDob(response.data.results.userObj["dob"]);
+        setGender(response.data.results.userObj["gender"]);
+        setCity(response.data.results.userObj["city"]);
         setFullAddress(fullAddress);
-        setUserImage(response.data.profilePic);
+        setUserImage(response.data.results.userObj["profilePic"]);
         setAbout(about);
-        setPhoneNumber(response.data.result["phoneNumber"]);
+        setPhoneNumber(response.data.results.userObj["phoneNumber"]);
 
         dispatch(
           updateUserDetails({
-            name: response.data.result["username"],
-            dob: response.data.result["dob"],
-            gender: response.data.result["gender"],
-            city: response.data.result["city"],
+            name: response.data.results.userObj["userName"],
+            dob: response.data.results.userObj["dob"],
+            gender: response.data.results.userObj["gender"],
+            city: response.data.results.userObj["city"],
             fullAddress: fullAddress,
-            profilePic: response.data.profilePic,
+            profilePic: response.data.results.userObj["profilePic"],
             about: about,
-            phoneNumber: response.data.result["phoneNumber"],
+            phoneNumber: response.data.results.userObj["phoneNumber"],
           })
         );
         window.location.pathname = "/profileForm";
