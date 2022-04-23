@@ -5,11 +5,19 @@ function FooterBanner() {
   const [modalOpen, setModalOpen] = useState(false);
   return (
     <div className="main-footer">
-      <div className="container_currency">
+      <div
+        style={{ padding: "3px", backgroundColor: "rgb(0 130 255 / 46%)" }}
+        className="container_currency"
+      >
         <div className="footer-middle">
           <div className="row">
             <div className="col-sm-6">
               <button
+                style={{
+                  border: "1px solid black",
+                  paddingLeft: "4px",
+                  paddingRight: "4px",
+                }}
                 className="button"
                 onClick={() => {
                   setModalOpen(true);

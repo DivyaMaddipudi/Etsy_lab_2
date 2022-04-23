@@ -9,14 +9,12 @@ function productsByCategory() {
   }, []);
 
   const getItemsByCategory = () => {
-    Axios.get("http://54.174.244.242:4000/getItemsByCategory").then(
-      (response) => {
-        if (response.data.success === true) {
-          console.log(response.data.result);
-          setProducts(response.data.result);
-        }
+    Axios.get("http://localhost:4000/getItemsByCategory").then((response) => {
+      if (response.data.success === true) {
+        console.log(response.data.result);
+        setProducts(response.data.result);
       }
-    );
+    });
   };
 
   let renderFavourites = null;

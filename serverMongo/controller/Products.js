@@ -21,18 +21,20 @@ const s3 = new aws.S3({
 });
 
 exports.addProduct = (req, res) => {
-  console.log("In add products");
+  // console.log(
+  //   "In add products ------------------------------------------------"
+  // );
   const userId = req.params.id;
   // console.log(req)
 
-  // console.log(userId);
+  console.log(userId);
   // console.log(itemName);
   // console.log(itemDescription);
   // console.log(itemPrice);
   // console.log(itemCount);
   // console.log(itemCategory);
 
-  const uploadSingle = upload("etsyappstorage").single("itemImage");
+  const uploadSingle = upload("etsyappstoragedivya").single("itemImage");
 
   uploadSingle(req, res, async (err) => {
     if (err) return res.status(400).json({ message: err.message });

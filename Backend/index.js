@@ -14,7 +14,7 @@ const multerS3 = require("multer-s3");
 //use cors to allow cross origin resource sharing
 app.use(
   cors({
-    origin: ["http://54.174.244.242:3000"],
+    origin: ["http://localhost:3000"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -24,15 +24,15 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const s3 = new aws.S3({
-  accessKeyId: process.env.S3_ACCESS_KEY,
-  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
-  region: process.env.S3_BUCKET_REGION,
+  accessKeyId: "AKIAX7YCAZIR2CTLV6VV",
+  secretAccessKey: "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",
+  region: "us-west-1",
 });
 
 //Allow Access Control
 
 app.use(function (req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "http://54.174.244.242:3000");
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader(
     "Access-Control-Allow-Methods",
@@ -152,20 +152,74 @@ app.get("/api/products/getFavourites/:id", function (req, res) {
   });
 });
 
-app.post("/api/products/addProduct/:id", function (req, res) {
-  console.log(" Add Product to shop ");
+app.post("/api/products/getAllProducts/:id", function (req, res) {
+  // console.log(req.body + " IN get products based on id");
+  const reqParams = {
+    id: req.params.id,
+  };
+  kafka.make_request("getProductsById", reqParams, function (err, results) {
+    console.log(req.body + " ----------------------------------");
+    console.log("in result");
+    if (err) {
+      console.log(err);
+      console.log("Inside err");
+      res.json({
+        status: "error",
+        msg: "System Error, Try Again.",
+      });
+    } else {
+      // console.log("Inside else----------");
+      // console.log(results);
+      res.json({
+        result: results,
+      });
+      res.end();
+    }
+  });
+});
 
-  const uploadSingle = upload("etsyappstorage").single("itemImage");
+app.put("/api/products/editItemById/:itemId", function (req, res) {
+  console.log(req.body + " IN update product based on id");
+  const reqParams = {
+    id: req.params.itemId,
+    body: req.body,
+  };
+  kafka.make_request("editProductById", reqParams, function (err, results) {
+    console.log(req.body + " ----------------------------------");
+    console.log("in result");
+    if (err) {
+      console.log(err);
+      console.log("Inside err");
+      res.json({
+        status: "error",
+        msg: "System Error, Try Again.",
+      });
+    } else {
+      console.log("Inside else of update item----------");
+      console.log(results);
+      res.json({
+        result: results,
+      });
+      res.end();
+    }
+  });
+});
+
+app.post("/api/products/addProduct/:id", function (req, res) {
+  console.log(" Add Product to shop ++++++++++++++++++++++++++++++++");
+
+  console.log(req.body);
+  const uploadSingle = upload("etsyappstoragedivya").single("itemImage");
 
   uploadSingle(req, res, async (err) => {
-    if (err) return res.status(400).json({ message: err.message });
+    if (err) return res.status(400).json({ message: err });
     const reqValues = {
       id: req.params.id,
       body: req.body,
       file: req.file.location,
     };
 
-    // console.log(reqValues);
+    console.log(reqValues);
     kafka.make_request("addToShop", reqValues, function (err, results) {
       console.log("in result");
       if (err) {
@@ -225,6 +279,54 @@ app.post("/api/products/addToCart", function (req, res) {
       res.end();
     }
   });
+});
+
+app.post("/api/products/addProductToPurchase/", function (req, res) {
+  console.log(req.body + " IN ADD TO purchases");
+  kafka.make_request("addToPurchase", req.body, function (err, results) {
+    console.log(req.body + " ----------------------------------");
+    console.log("in result");
+    if (err) {
+      console.log(err);
+      console.log("Inside err");
+      res.json({
+        status: "error",
+        msg: "System Error, Try Again.",
+      });
+    } else {
+      console.log("Inside else");
+      console.log(results);
+      res.json({
+        updatedList: results,
+      });
+
+      res.end();
+    }
+  });
+});
+
+app.post("api/products/add", function (req, res) {
+  console.log(req.body + " IN ADD TO PURCHASE");
+  // kafka.make_request("addToPurchase", req.body, function (err, results) {
+  //   console.log(req.body + " ----------------------------------");
+  //   console.log("in result");
+  //   if (err) {
+  //     console.log(err);
+  //     console.log("Inside err");
+  //     res.json({
+  //       status: "error",
+  //       msg: "System Error, Try Again.",
+  //     });
+  //   } else {
+  //     console.log("Inside else");
+  //     console.log(results);
+  //     res.json({
+  //       updatedList: results,
+  //     });
+
+  //     res.end();
+  //   }
+  // });
 });
 
 //start your server on port 3001

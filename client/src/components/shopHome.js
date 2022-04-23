@@ -50,7 +50,7 @@ function shopHome() {
 
   const getItemsByItemSearchId = () => {
     Axios.get(
-      "http://54.174.244.242:4000/api/products/getItemsByItemSearchId/" + id
+      "http://localhost:4000/api/products/getItemsByItemSearchId/" + id
     ).then((response) => {
       console.log(response);
       if (response) {
@@ -78,23 +78,25 @@ function shopHome() {
       variables["searchTerm"] + "------------------ getting viewItems"
     );
     setShowProds(true);
-    console.log("---------------in view Items-------------------");
-    Axios.post(
-      "http://54.174.244.242:4000/api/products/getAllProducts/" + user.id,
-      {
-        searchTerm: variables["searchTerm"],
-      }
-    ).then((response) => {
-      if (response.data.success) {
+    Axios.post("http://localhost:4001/api/products/getAllProducts/" + user.id, {
+      searchTerm: variables["searchTerm"],
+    }).then((response) => {
+      if (response) {
+        console.log("---------------in view Items-------------------");
+
+        console.log(response.data.result.products);
         if (variables.loadMore) {
-          setProducts([...products, ...response.data.result]);
-          console.log(products);
+          setProducts([...products, ...response.data.result.products]);
+          // console.log(products);
+          // console.log("---------------in view Items ending-------------------");
         } else {
-          setProducts(response.data.result);
+          setProducts(response.data.result.products);
+          // console.log("---------------in view Items else-------------------");
         }
         console.log(user.id);
       } else {
         console.log("Failed in ");
+        console.log("---------------in view Items failed-------------------");
       }
     });
   };

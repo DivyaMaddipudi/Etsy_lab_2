@@ -173,7 +173,7 @@ exports.updateUser = (req, res) => {
   console.log("In update user details");
   const userId = req.params.id;
 
-  const uploadSingle = upload("etsyappstorage").single("userImage");
+  const uploadSingle = upload("etsyappstoragedivya").single("userImage");
 
   uploadSingle(req, res, async (err) => {
     if (err) return res.status(400).json({ message: err.message });
@@ -247,7 +247,7 @@ exports.updateShopImageById = (req, res) => {
   const shopName = req.body.shopName;
   const id = req.params.id;
 
-  const uploadSingle = upload("etsyappstorage").single("shopImage");
+  const uploadSingle = upload("etsyappstoragedivya").single("shopImage");
 
   uploadSingle(req, res, async (err) => {
     if (err) return res.status(400).json({ message: err.message });

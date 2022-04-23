@@ -36,7 +36,7 @@ const CartItem = ({ item }) => {
   }, []);
 
   const qtyChangeHandler = (qty) => {
-    Axios.post("http://54.174.244.242:4000/api/products/addToCart", {
+    Axios.post("http://localhost:4000/api/products/addToCart", {
       itemId: item.itemId._id,
       userId: user.id,
       qty: Number(qty),
@@ -57,7 +57,7 @@ const CartItem = ({ item }) => {
   const removeHandler = (id) => {
     console.log("remove");
     Axios.delete(
-      "http://54.174.244.242:4000/api/products/deleteCartItem/" + id
+      "http://localhost:4000/api/products/deleteCartItem/" + id
     ).then((response) => {
       console.log(response.data);
       if (response.data.success === true) {
@@ -123,7 +123,7 @@ const CartItem = ({ item }) => {
               <input
                 type="text"
                 style={{ width: "95%", paddingLeft: "5px" }}
-                placeholder="Enjoy your gift!!"
+                placeholder="Enter gift message!!"
                 onChange={(event) => {
                   setGiftDescription(event.target.value);
                 }}
@@ -137,7 +137,7 @@ const CartItem = ({ item }) => {
                 }}
                 onClick={() => giftOptions(giftDescription, item.itemId._id)}
               >
-                Save Gift Options
+                Save Gift Message
               </button>
             </>
           ) : (

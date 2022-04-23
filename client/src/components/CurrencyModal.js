@@ -19,7 +19,7 @@ function CurrencyModal({ setOpenModal }) {
 
         <div className="title">
           <h4>Update Your Settings</h4>
-          <p> Set the currency you use.</p>
+          <p style={{ fontSize: "35px" }}> Set the currency you use.</p>
         </div>
 
         <div className="currency_body body">

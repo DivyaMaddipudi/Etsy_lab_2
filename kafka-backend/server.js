@@ -6,7 +6,9 @@ var addUser = require("./services/addUser");
 var addToCart = require("./services/addToCart");
 var getFavs = require("./services/getFavs");
 var addProduct = require("./services/addItemToShop");
-
+var getProductsBasedOnId = require("./services/getProductsById");
+var editProductById = require("./services/updateItem");
+var addProuctsToPurchases = require("./services/addToPurchases");
 // var createShop = require("./services/createShop");
 // var signIn = require("./services/signin");
 
@@ -54,6 +56,9 @@ handleTopicRequest("addUser", addUser);
 handleTopicRequest("addToCart", addToCart);
 handleTopicRequest("getFavourites", getFavs);
 handleTopicRequest("addToShop", addProduct);
+handleTopicRequest("getProductsById", getProductsBasedOnId);
+handleTopicRequest("editProductById", editProductById);
+handleTopicRequest("addToPurchase", addProuctsToPurchases);
 
 // handleTopicRequest("create_shop", createShop);
 
