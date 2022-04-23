@@ -156,6 +156,7 @@ app.post("/api/products/getAllProducts/:id", function (req, res) {
   // console.log(req.body + " IN get products based on id");
   const reqParams = {
     id: req.params.id,
+    term: req.body.searchTerm,
   };
   kafka.make_request("getProductsById", reqParams, function (err, results) {
     console.log(req.body + " ----------------------------------");
