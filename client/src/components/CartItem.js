@@ -39,7 +39,7 @@ const CartItem = ({ item }) => {
     console.log(qty);
     console.log("item updation qty in axios");
 
-    Axios.post("http://localhost:4000/api/products/addToCart", {
+    Axios.post("http://54.151.45.102:4000/api/products/addToCart", {
       itemId: item.itemId._id,
       userId: user.id,
       qty: Number(qty),
@@ -52,7 +52,7 @@ const CartItem = ({ item }) => {
           // window.location.pathname = "/home";
           if (Number(qty) === 0) {
             Axios.delete(
-              "http://localhost:4000/api/products/deleteCartItemByItemId/" +
+              "http://54.151.45.102:4000/api/products/deleteCartItemByItemId/" +
                 item.itemId._id
             ).then((response) => {
               console.log(response);
@@ -75,7 +75,7 @@ const CartItem = ({ item }) => {
   const removeHandler = (id) => {
     console.log("remove");
     Axios.delete(
-      "http://localhost:4000/api/products/deleteCartItem/" + id
+      "http://54.151.45.102:4000/api/products/deleteCartItem/" + id
     ).then((response) => {
       console.log(response.data);
       if (response.data.success === true) {

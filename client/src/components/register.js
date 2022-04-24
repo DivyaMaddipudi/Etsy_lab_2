@@ -14,7 +14,7 @@ function register({ setShowRegister }) {
     // console.log(email + " " + username + " " + password);
     // localStorage.Item("preferedCurrency", userPreferedCurrency);
     console.log(" in register axios ");
-    Axios.post("http://localhost:4001/api/users/register", {
+    Axios.post("http://54.151.45.102:4001/api/users/register", {
       email: email,
       username: username,
       password: password,

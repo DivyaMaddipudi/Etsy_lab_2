@@ -25,7 +25,7 @@ function searchBar(props) {
     console.log("submit clicked");
     if (searchValue !== "") {
       Axios.get(
-        "http://localhost:4000/api/products/getSearchItems/" + searchValue
+        "http://54.151.45.102:4000/api/products/getSearchItems/" + searchValue
       ).then((response) => {
         if (response.data.success === true) {
           console.log(response.data.result);

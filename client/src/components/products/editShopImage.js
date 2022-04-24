@@ -18,7 +18,7 @@ const editShopImage = ({ editShopPage }) => {
     formData.append("shopImage", shopImage);
     console.log("Inedit client axios " + user.id);
     Axios.put(
-      "http://localhost:4000/api/users/updateShopImageById/" + user.id,
+      "http://54.151.45.102:4000/api/users/updateShopImageById/" + user.id,
       formData
     ).then((response) => {
       if (response.data.success) {
@@ -37,16 +37,16 @@ const editShopImage = ({ editShopPage }) => {
   }, []);
 
   const fetchItemDetails = () => {
-    Axios.get("http://localhost:4000/api/users/getShopById/" + user.id).then(
-      (response) => {
-        if (response) {
-          console.log(response.data.user["shopImage"] + " shop image ");
-          setShopImage(response.data.user["shopImage"]);
-          // setProductExist(true);
-          console.log("Products stored in get shop by id");
-        }
+    Axios.get(
+      "http://54.151.45.102:4000/api/users/getShopById/" + user.id
+    ).then((response) => {
+      if (response) {
+        console.log(response.data.user["shopImage"] + " shop image ");
+        setShopImage(response.data.user["shopImage"]);
+        // setProductExist(true);
+        console.log("Products stored in get shop by id");
       }
-    );
+    });
   };
   return (
     <div className="bg-modal">
