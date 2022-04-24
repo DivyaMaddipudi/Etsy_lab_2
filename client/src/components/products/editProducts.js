@@ -27,7 +27,7 @@ function editProducts({ setShowProductsEditPage, itemId }) {
     console.log("In edit item client axios");
     console.log(itemDetails);
     Axios.put(
-      "http://3.101.88.78:4001/api/products/editItemById/" + itemId,
+      "http://localhost:4001/api/products/editItemById/" + itemId,
       itemDetails
     ).then((response) => {
       if (response) {
@@ -42,21 +42,21 @@ function editProducts({ setShowProductsEditPage, itemId }) {
   }, []);
 
   const fetchItemDetails = () => {
-    Axios.get(
-      "http://3.101.88.78:4000/api/products/getItemById/" + itemId
-    ).then((response) => {
-      if (response) {
-        console.log("In edit items page");
+    Axios.get("http://localhost:4000/api/products/getItemById/" + itemId).then(
+      (response) => {
+        if (response) {
+          console.log("In edit items page");
 
-        setItemName(response.data.result[0]["itemName"]);
-        setItemDescription(response.data.result[0]["itemDescription"]);
-        setItemPrice(response.data.result[0]["itemPrice"]);
-        setItemCount(response.data.result[0]["itemCount"]);
-        setItemCategory(response.data.result[0]["itemCategory"]);
-        setProduct(response.data.result[0]["itemCount"]);
-        setProductExist(true);
+          setItemName(response.data.result[0]["itemName"]);
+          setItemDescription(response.data.result[0]["itemDescription"]);
+          setItemPrice(response.data.result[0]["itemPrice"]);
+          setItemCount(response.data.result[0]["itemCount"]);
+          setItemCategory(response.data.result[0]["itemCategory"]);
+          setProduct(response.data.result[0]["itemCount"]);
+          setProductExist(true);
+        }
       }
-    });
+    );
   };
   return (
     <div className="bg-modal">

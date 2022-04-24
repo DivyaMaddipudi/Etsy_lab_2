@@ -33,7 +33,7 @@ function Signin({ setshowSignIn }) {
 
   const checkUser = (e) => {
     e.preventDefault();
-    Axios.post("http://3.101.88.78:4000/api/users/signin", {
+    Axios.post("http://localhost:4000/api/users/signin", {
       email: email,
       password: password,
     })
@@ -73,7 +73,7 @@ function Signin({ setshowSignIn }) {
   };
 
   useEffect(() => {
-    Axios.get("http://3.101.88.78:4000/api/users/signin").then((response) => {
+    Axios.get("http://localhost:4000/api/users/signin").then((response) => {
       // console.log(response);
 
       if (response.data.success === true) {

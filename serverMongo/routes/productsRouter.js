@@ -42,6 +42,11 @@ productRoute.delete(
   "/api/products/deleteCartItem/:cartId",
   product.deleteCartItem
 );
+productRoute.delete(
+  "/api/products/deleteCartItemByItemId/:itemId",
+  product.deleteCartItemByItemId
+);
+
 productRoute.delete("/api/products/clearCart", product.clearCart);
 
 //purchases

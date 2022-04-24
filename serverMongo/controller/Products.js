@@ -348,6 +348,20 @@ exports.deleteCartItem = (req, res) => {
     });
 };
 
+exports.deleteCartItemByItemId = (req, res) => {
+  const cartId = req.params.itemId;
+  console.log(cartId + "===========================================");
+  cartDb
+    .findOneAndDelete({ itemId: cartId })
+    .then((result) => {
+      console.log("Item deleted successfully");
+      res.send({ success: true, result });
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+};
+
 exports.clearCart = (req, res) => {
   cartDb
     .deleteMany({})

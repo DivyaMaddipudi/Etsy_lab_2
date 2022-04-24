@@ -22,14 +22,11 @@ function shippingAddress() {
   const dispatch = useDispatch();
 
   const editShippingAddress = () => {
-    Axios.put(
-      "http://3.101.88.78:4000/api/users/updateUserAddress/" + user.id,
-      {
-        fullAddress: fullAddress,
-        about: about,
-        city: city,
-      }
-    ).then((response) => {
+    Axios.put("http://localhost:4000/api/users/updateUserAddress/" + user.id, {
+      fullAddress: fullAddress,
+      about: about,
+      city: city,
+    }).then((response) => {
       if (response.data.success === true) {
         dispatch(
           updateUserDetails({
@@ -47,7 +44,7 @@ function shippingAddress() {
         checkOutItems.map((product) => {
           console.log(product);
           Axios.post(
-            "http://3.101.88.78:4001/api/products/addProductToPurchase/",
+            "http://localhost:4001/api/products/addProductToPurchase/",
             {
               product: product,
             }
@@ -65,7 +62,7 @@ function shippingAddress() {
           };
 
           Axios.put(
-            "http://3.101.88.78:4000/api/products/editItemQtyById/" +
+            "http://localhost:4000/api/products/editItemQtyById/" +
               product.itemId,
             itemDetails
           ).then((response) => {
@@ -75,7 +72,7 @@ function shippingAddress() {
           });
         });
 
-        Axios.delete("http://3.101.88.78:4000/api/products/clearCart")
+        Axios.delete("http://localhost:4000/api/products/clearCart")
           .then((response) => {
             if (response) {
               console.log("Items deleted successfully");

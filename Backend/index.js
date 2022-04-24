@@ -14,7 +14,7 @@ const multerS3 = require("multer-s3");
 //use cors to allow cross origin resource sharing
 app.use(
   cors({
-    origin: ["http://3.101.88.78:3000"],
+    origin: ["http://localhost:3000"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -32,7 +32,7 @@ const s3 = new aws.S3({
 //Allow Access Control
 
 app.use(function (req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "http://3.101.88.78:3000");
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader(
     "Access-Control-Allow-Methods",
@@ -308,7 +308,7 @@ app.post("/api/products/addToCart", function (req, res) {
 app.post("/api/products/addProductToPurchase/", function (req, res) {
   console.log(req.body + " IN ADD TO purchases");
   kafka.make_request("addToPurchase", req.body, function (err, results) {
-    console.log(req.body + " ----------------------------------");
+    // console.log(req.body + " ----------------------------------");
     console.log("in result");
     if (err) {
       console.log(err);
@@ -319,7 +319,7 @@ app.post("/api/products/addProductToPurchase/", function (req, res) {
       });
     } else {
       console.log("Inside else");
-      console.log(results);
+      // console.log(results);
       res.json({
         updatedList: results,
       });

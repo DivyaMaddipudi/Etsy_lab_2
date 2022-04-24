@@ -28,7 +28,7 @@ function ProductOverView() {
 
   const addToCartHandler = (itemId) => {
     console.log("add to cart handler");
-    Axios.post("http://3.101.88.78:4001/api/products/addToCart", {
+    Axios.post("http://localhost:4001/api/products/addToCart", {
       itemId: itemId,
       userId: user.id,
       qty: Number(qty),
@@ -69,7 +69,7 @@ function ProductOverView() {
     // }
     // console.log(productView.length);
     // if (user !== null) {
-    //   Axios.post("http://3.101.88.78:4000/addProductToCart/" + user.id, {
+    //   Axios.post("http://localhost:4000/addProductToCart/" + user.id, {
     // itemId: cartProduct.itemId,
     // itemName: cartProduct.itemName,
     // itemDescription: cartProduct.itemDescription,

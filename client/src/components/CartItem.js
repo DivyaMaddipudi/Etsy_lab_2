@@ -35,8 +35,11 @@ const CartItem = ({ item }) => {
     );
   }, []);
 
-  const qtyChangeHandler = (qty) => {
-    Axios.post("http://3.101.88.78:4000/api/products/addToCart", {
+  const qtyChangeHandler = (id, qty) => {
+    console.log(qty);
+    console.log("item updation qty in axios");
+
+    Axios.post("http://localhost:4000/api/products/addToCart", {
       itemId: item.itemId._id,
       userId: user.id,
       qty: Number(qty),
@@ -45,8 +48,23 @@ const CartItem = ({ item }) => {
         console.log(response);
         if (response.data.success) {
           console.log("Items added to cart successfully");
-          window.location.reload(true);
+          // window.location.reload(true);
           // window.location.pathname = "/home";
+          if (Number(qty) === 0) {
+            Axios.delete(
+              "http://localhost:4000/api/products/deleteCartItemByItemId/" +
+                item.itemId._id
+            ).then((response) => {
+              console.log(response);
+              if (response) {
+                console.log("item deleted successfully");
+                console.log(response.data);
+                dispatch(removeCartItem(item.itemId._id));
+                window.location.reload(true);
+              }
+            });
+          }
+          // window.location.reload(true);
         }
       })
       .catch((err) => {
@@ -57,7 +75,7 @@ const CartItem = ({ item }) => {
   const removeHandler = (id) => {
     console.log("remove");
     Axios.delete(
-      "http://3.101.88.78:4000/api/products/deleteCartItem/" + id
+      "http://localhost:4000/api/products/deleteCartItem/" + id
     ).then((response) => {
       console.log(response.data);
       if (response.data.success === true) {
@@ -147,7 +165,7 @@ const CartItem = ({ item }) => {
         <p className="cartitem__price">${item.itemId.itemPrice}</p>
         <select
           value={item.qty}
-          onChange={(e) => qtyChangeHandler(e.target.value)}
+          onChange={(e) => qtyChangeHandler(item._id, e.target.value)}
           className="cartItem__select"
         >
           <option key={0} value={0}>
