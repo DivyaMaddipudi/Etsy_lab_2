@@ -17,7 +17,7 @@ app.use(morgan("short"));
 
 app.use(
   cors({
-    origin: ["http://3.101.191.130:3000"],
+    origin: ["http://localhost:3000"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })

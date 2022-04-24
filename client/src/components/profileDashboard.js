@@ -28,7 +28,7 @@ function profileDashboard() {
 
   const getFavouriteItems = () => {
     Axios.get(
-      "http://3.101.191.130:4001/api/products/getFavourites/" + user.id
+      "http://localhost:4001/api/products/getFavourites/" + user.id
     ).then((response) => {
       console.log(response);
       if (response.data.result) {
@@ -57,7 +57,7 @@ function profileDashboard() {
   const handleFavourite = (favId) => {
     console.log("Favourites deletd" + favId);
     Axios.delete(
-      "http://3.101.191.130:4000/api/products/deleteFavourite/" + favId
+      "http://localhost:4000/api/products/deleteFavourite/" + favId
     ).then((response) => {
       console.log(response.data);
       if (response.data.success === true) {

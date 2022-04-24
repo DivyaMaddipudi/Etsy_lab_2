@@ -44,7 +44,7 @@ const CartScreen = () => {
 
   const getCartList = () => {
     Axios.get(
-      "http://3.101.191.130:4000/api/products/getCartItems/" + user.id
+      "http://localhost:4000/api/products/getCartItems/" + user.id
     ).then((response) => {
       console.log(response.data.result);
       if (response.data.success === true) {
@@ -90,7 +90,7 @@ const CartScreen = () => {
           console.log(product);
           console.log("Deleting product with item qty 0");
           Axios.delete(
-            "http://3.101.191.130:4000/api/products/deleteCartItem/" +
+            "http://localhost:4000/api/products/deleteCartItem/" +
               product.itemId
           ).then((response) => {
             console.log(response.data);
@@ -103,7 +103,7 @@ const CartScreen = () => {
         } else {
           console.log(product);
           Axios.post(
-            "http://3.101.191.130:4001/api/products/addProductToPurchase/",
+            "http://localhost:4001/api/products/addProductToPurchase/",
             {
               product: product,
             }
@@ -121,7 +121,7 @@ const CartScreen = () => {
           };
 
           Axios.put(
-            "http://3.101.191.130:4000/api/products/editItemQtyById/" +
+            "http://localhost:4000/api/products/editItemQtyById/" +
               product.itemId,
             itemDetails
           ).then((response) => {
@@ -132,7 +132,7 @@ const CartScreen = () => {
         }
       });
 
-      Axios.delete("http://3.101.191.130:4000/api/products/clearCart")
+      Axios.delete("http://localhost:4000/api/products/clearCart")
         .then((response) => {
           if (response) {
             console.log("Items deleted successfully");

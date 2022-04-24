@@ -1,7 +1,9 @@
 const express = require("express");
 const route = express.Router();
 const user = require("../controller/User");
-const { checkAuth } = require("../passport");
+const passport = require("passport");
+require("../passport")(passport);
+let auth = passport.authenticate("jwt", { session: false });
 
 //API
 

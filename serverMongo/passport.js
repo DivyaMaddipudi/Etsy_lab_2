@@ -1,33 +1,27 @@
-const passport = require("passport");
-const JwtStrategy = require("passport-local");
-const { ExtractJwt } = require("passport-jwt");
-const Users = require("./models/model");
+// const passport = require("passport");
+// const { ExtractJwt } = require("passport-jwt");
+// const Users = require("./models/model");
+// const passport = require("passport");
 
-function auth() {
+const JwtStrategy = require("passport-jwt").Strategy;
+var cookieExtractor = function (req) {
+  const token = req.header("auth-token");
+  return token;
+};
+
+module.exports = (passport) => {
   var opts = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken("JWT"),
+    jwtFromRequest: cookieExtractor,
     secretOrKey: process.env.SECRET,
+    passReqToCallback: true,
   };
 
   passport.use(
-    new JwtStrategy(opts, (jwt_payload, callback) => {
-      const user_id = jwt_payload._id;
-      Users.findById(user_id, (err, results) => {
-        if (err) {
-          console.log("Error, Invalid user");
-          return callback(err, false);
-        }
-        if (results) {
-          console.log("No error, valid user");
-          callback(null, results);
-        } else {
-          console.log("No error, Invalid user");
-          callback(null, false);
-        }
-      });
+    new JwtStrategy(opts, (req, jwt_payload, callback) => {
+      req.user = jwt_payload;
+      callback(null, req.user);
     })
   );
-}
+};
 
-exports.auth = auth;
 // exports.checkAuth = passport.authenticate("JWT", { session: false });

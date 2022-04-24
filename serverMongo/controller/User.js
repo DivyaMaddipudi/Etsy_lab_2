@@ -92,9 +92,15 @@ exports.findUser = (req, res) => {
             expiresIn: "1h",
           });
 
+          res.cookie("token", token, {
+            maxAge: 900000,
+            httpOnly: false,
+            path: "/",
+          });
+
           console.log("result " + result + " token " + token);
 
-          res.send({ success: true, user, token: "JWT " + token });
+          res.send({ success: true, user, token });
           // res.send(result);
           console.log("=========end =============");
         } else {

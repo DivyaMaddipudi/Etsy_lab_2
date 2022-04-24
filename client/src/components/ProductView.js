@@ -52,7 +52,7 @@ function ProductView() {
     // }
     // console.log(productView.length);
     // if (user !== null) {
-    //   Axios.post("http://3.101.191.130:4000/addProductToCart/" + user.id, {
+    //   Axios.post("http://localhost:4000/addProductToCart/" + user.id, {
     // itemId: cartProduct.itemId,
     // itemName: cartProduct.itemName,
     // itemDescription: cartProduct.itemDescription,

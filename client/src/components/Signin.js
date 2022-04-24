@@ -33,10 +33,19 @@ function Signin({ setshowSignIn }) {
 
   const checkUser = (e) => {
     e.preventDefault();
-    Axios.post("http://3.101.191.130:4000/api/users/signin", {
-      email: email,
-      password: password,
-    })
+    Axios.post(
+      "http://localhost:4000/api/users/signin",
+      {
+        email: email,
+        password: password,
+      },
+      {
+        headers: {
+          "content-Type": "application/json",
+          "auth-token": cookie.load("token"),
+        },
+      }
+    )
       .then((response) => {
         console.log(response);
         if (response.data.success) {
@@ -73,7 +82,7 @@ function Signin({ setshowSignIn }) {
   };
 
   useEffect(() => {
-    Axios.get("http://3.101.191.130:4000/api/users/signin").then((response) => {
+    Axios.get("http://localhost:4000/api/users/signin").then((response) => {
       // console.log(response);
 
       if (response.data.success === true) {
@@ -85,13 +94,13 @@ function Signin({ setshowSignIn }) {
   }, []);
 
   let redirVal = null;
-  if (token) {
-    console.log(token);
-    localStorage.setItem("token", token);
+  if (cookie.load(token)) {
+    // console.log(token);
+    // localStorage.setItem("token", token);
 
-    var decoded = jwt_decode(token.split(" ")[1]);
-    localStorage.setItem("user_id", decoded._id);
-    localStorage.setItem("username", decoded.username);
+    // var decoded = jwt_decode(token.split(" ")[1]);
+    // localStorage.setItem("user_id", decoded._id);
+    // localStorage.setItem("username", decoded.username);
 
     redirVal = <Navigate to="/home" />;
     // setLoginStatus(null);

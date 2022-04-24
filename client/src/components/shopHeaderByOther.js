@@ -21,7 +21,7 @@ function shopHeaderByOther({ searchProductUserId }) {
 
   const userInformation = useSelector(getSearchItemUserInfo);
   useEffect(() => {
-    Axios.get("http://3.101.191.130:4000/api/products/getSalesCount").then(
+    Axios.get("http://localhost:4000/api/products/getSalesCount").then(
       (response) => {
         console.log("In sales count axios");
         console.log(response);

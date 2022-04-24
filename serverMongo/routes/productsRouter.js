@@ -2,7 +2,8 @@ const express = require("express");
 const productRoute = express.Router();
 const product = require("../controller/Products");
 const passport = require("passport");
-const auth = require("../passport");
+require("../passport")(passport);
+let auth = passport.authenticate("jwt", { session: false });
 // const passportJwt = require("passport-jwt");
 
 //API
@@ -21,10 +22,10 @@ productRoute.get("/api/products/updateItemById/:id", product.updateItemById);
 productRoute.get("/api/products/getItemById/:itemId", product.getItemById);
 productRoute.put("/api/products/editItemById/:itemId", product.editItemById);
 
-productRoute.get("/api/products/getItems", product.getItems);
+productRoute.get("/api/products/getItems", auth, product.getItems);
 
 //Favourites
-productRoute.post("/api/products/addFavourite/", product.addFavourite);
+productRoute.post("/api/products/addFavourite/", auth, product.addFavourite);
 
 //kafka
 productRoute.get("/api/products/getFavourites/:id", product.getFavourites);
