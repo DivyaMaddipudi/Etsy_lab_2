@@ -27,7 +27,7 @@ function editProducts({ setShowProductsEditPage, itemId }) {
     console.log("In edit item client axios");
     console.log(itemDetails);
     Axios.put(
-      "http://54.151.45.102:4001/api/products/editItemById/" + itemId,
+      "http://13.57.14.152:4001/api/products/editItemById/" + itemId,
       itemDetails
     ).then((response) => {
       if (response) {
@@ -43,7 +43,7 @@ function editProducts({ setShowProductsEditPage, itemId }) {
 
   const fetchItemDetails = () => {
     Axios.get(
-      "http://54.151.45.102:4000/api/products/getItemById/" + itemId
+      "http://13.57.14.152:4000/api/products/getItemById/" + itemId
     ).then((response) => {
       if (response) {
         console.log("In edit items page");

@@ -20,7 +20,7 @@ function Cart() {
   }, []);
 
   const getCartItems = () => {
-    Axios.get("http://54.151.45.102:4000/getFinalCartProducts/" + user.id).then(
+    Axios.get("http://13.57.14.152:4000/getFinalCartProducts/" + user.id).then(
       (response) => {
         console.log(response);
         setCartItems([...cartItems, ...response.data.result]);
@@ -31,7 +31,7 @@ function Cart() {
   const qtyChangeHandler = (itemId, qty) => {
     // dispatch(addProductToCart(id, qty));
     console.log(itemId);
-    Axios.put("http://54.151.45.102:4000/updateCartQuantity/" + user.id, {
+    Axios.put("http://13.57.14.152:4000/updateCartQuantity/" + user.id, {
       itemId: itemId,
       qty: qty,
     }).then((response) => {

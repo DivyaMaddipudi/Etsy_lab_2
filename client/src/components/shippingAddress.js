@@ -23,7 +23,7 @@ function shippingAddress() {
 
   const editShippingAddress = () => {
     Axios.put(
-      "http://54.151.45.102:4000/api/users/updateUserAddress/" + user.id,
+      "http://13.57.14.152:4000/api/users/updateUserAddress/" + user.id,
       {
         fullAddress: fullAddress,
         about: about,
@@ -47,7 +47,7 @@ function shippingAddress() {
         checkOutItems.map((product) => {
           console.log(product);
           Axios.post(
-            "http://54.151.45.102:4001/api/products/addProductToPurchase/",
+            "http://13.57.14.152:4001/api/products/addProductToPurchase/",
             {
               product: product,
             }
@@ -65,7 +65,7 @@ function shippingAddress() {
           };
 
           Axios.put(
-            "http://54.151.45.102:4000/api/products/editItemQtyById/" +
+            "http://13.57.14.152:4000/api/products/editItemQtyById/" +
               product.itemId,
             itemDetails
           ).then((response) => {
@@ -75,7 +75,7 @@ function shippingAddress() {
           });
         });
 
-        Axios.delete("http://54.151.45.102:4000/api/products/clearCart")
+        Axios.delete("http://13.57.14.152:4000/api/products/clearCart")
           .then((response) => {
             if (response) {
               console.log("Items deleted successfully");
