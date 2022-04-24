@@ -39,7 +39,7 @@ const CartItem = ({ item }) => {
     console.log(qty);
     console.log("item updation qty in axios");
 
-    Axios.post("http://13.57.14.152:4000/api/products/addToCart", {
+    Axios.post("http://3.101.191.130:4000/api/products/addToCart", {
       itemId: item.itemId._id,
       userId: user.id,
       qty: Number(qty),
@@ -47,12 +47,12 @@ const CartItem = ({ item }) => {
       .then((response) => {
         console.log(response);
         if (response.data.success) {
-          console.log("Items added to cart successfully");
+          console.log("Items added to cart successfully" + Number(qty));
           // window.location.reload(true);
           // window.location.pathname = "/home";
           if (Number(qty) === 0) {
             Axios.delete(
-              "http://13.57.14.152:4000/api/products/deleteCartItemByItemId/" +
+              "http://3.101.191.130:4000/api/products/deleteCartItemByItemId/" +
                 item.itemId._id
             ).then((response) => {
               console.log(response);
@@ -63,6 +63,8 @@ const CartItem = ({ item }) => {
                 window.location.reload(true);
               }
             });
+          } else {
+            window.location.reload(true);
           }
           // window.location.reload(true);
         }
@@ -75,7 +77,7 @@ const CartItem = ({ item }) => {
   const removeHandler = (id) => {
     console.log("remove");
     Axios.delete(
-      "http://13.57.14.152:4000/api/products/deleteCartItem/" + id
+      "http://3.101.191.130:4000/api/products/deleteCartItem/" + id
     ).then((response) => {
       console.log(response.data);
       if (response.data.success === true) {

@@ -33,7 +33,7 @@ function Signin({ setshowSignIn }) {
 
   const checkUser = (e) => {
     e.preventDefault();
-    Axios.post("http://13.57.14.152:4000/api/users/signin", {
+    Axios.post("http://3.101.191.130:4000/api/users/signin", {
       email: email,
       password: password,
     })
@@ -73,7 +73,7 @@ function Signin({ setshowSignIn }) {
   };
 
   useEffect(() => {
-    Axios.get("http://13.57.14.152:4000/api/users/signin").then((response) => {
+    Axios.get("http://3.101.191.130:4000/api/users/signin").then((response) => {
       // console.log(response);
 
       if (response.data.success === true) {

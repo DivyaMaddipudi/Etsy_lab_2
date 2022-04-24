@@ -46,7 +46,7 @@ function profileForm() {
     axios.defaults.headers.common["authorization"] =
       localStorage.getItem("token");
     Axios.put(
-      "http://13.57.14.152:4001/api/users/updateUser/" + user.id,
+      "http://3.101.191.130:4001/api/users/updateUser/" + user.id,
       formData
     ).then((response) => {
       console.log("In update");
@@ -92,28 +92,28 @@ function profileForm() {
     // e.preventDefault();
     // axios.defaults.headers.common["authorization"] =
     //   localStorage.getItem("token");
-    Axios.get("http://13.57.14.152:4000/api/users/getShopById/" + user.id).then(
-      (response) => {
-        console.log(response);
+    Axios.get(
+      "http://3.101.191.130:4000/api/users/getShopById/" + user.id
+    ).then((response) => {
+      console.log(response);
 
-        // console.log("In get of profile form");
-        if (response.data.success === true) {
-          console.log("In get of profile form");
-          console.log(response.data.user);
-          console.log(response.data.user["fullAddress"]);
+      // console.log("In get of profile form");
+      if (response.data.success === true) {
+        console.log("In get of profile form");
+        console.log(response.data.user);
+        console.log(response.data.user["fullAddress"]);
 
-          setUserName(response.data.user["username"]);
-          setUserImage(response.data.user["profilePic"]);
-          setDob(response.data.user["dob"]);
-          setGender(response.data.user["gender"]);
-          setCity(response.data.user["city"]);
-          setFullAddress(response.data.user["fullAddress"]);
-          setAbout(response.data.user["about"]);
-          setPhoneNumber(response.data.user["phoneNumber"]);
-          console.log("Products stored in product");
-        }
+        setUserName(response.data.user["username"]);
+        setUserImage(response.data.user["profilePic"]);
+        setDob(response.data.user["dob"]);
+        setGender(response.data.user["gender"]);
+        setCity(response.data.user["city"]);
+        setFullAddress(response.data.user["fullAddress"]);
+        setAbout(response.data.user["about"]);
+        setPhoneNumber(response.data.user["phoneNumber"]);
+        console.log("Products stored in product");
       }
-    );
+    });
   };
 
   const dateFunction = (specifiedDate) => {
@@ -129,7 +129,7 @@ function profileForm() {
   // }, []);
 
   // const fetchItemDetails = () => {
-  //   Axios.get("http://13.57.14.152:4000/getShopById/" + user.id).then(
+  //   Axios.get("http://3.101.191.130:4000/getShopById/" + user.id).then(
   //     (response) => {
   //       if (response) {
   //         console.log(response.data.result[0].shopImage);

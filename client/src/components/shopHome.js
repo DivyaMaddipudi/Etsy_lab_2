@@ -50,7 +50,7 @@ function shopHome() {
 
   const getItemsByItemSearchId = () => {
     Axios.get(
-      "http://13.57.14.152:4000/api/products/getItemsByItemSearchId/" + id
+      "http://3.101.191.130:4000/api/products/getItemsByItemSearchId/" + id
     ).then((response) => {
       console.log(response);
       if (response) {
@@ -79,7 +79,7 @@ function shopHome() {
     );
     setShowProds(true);
     Axios.post(
-      "http://13.57.14.152:4001/api/products/getAllProducts/" + user.id,
+      "http://3.101.191.130:4001/api/products/getAllProducts/" + user.id,
       {
         searchTerm: variables["searchTerm"],
       }

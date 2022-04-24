@@ -33,7 +33,7 @@ function shopHomeByOther() {
   });
 
   const getUserIdFromItemId = () => {
-    Axios.get("http://13.57.14.152:4000/getItemById/" + itemId).then(
+    Axios.get("http://3.101.191.130:4000/getItemById/" + itemId).then(
       (response) => {
         if (response) {
           dispatch(userId(response.data[0].userId));
@@ -44,7 +44,7 @@ function shopHomeByOther() {
 
   const getItemsFromUserid = () => {
     Axios.get(
-      "http://13.57.14.152:4000/api/products/getAllProducts/" + userId
+      "http://3.101.191.130:4000/api/products/getAllProducts/" + userId
     ).then((response) => {
       if (response) {
         console.log(response.data.result);
@@ -55,7 +55,7 @@ function shopHomeByOther() {
   };
 
   const getUserDetails = () => {
-    Axios.get("http://13.57.14.152:4000/api/users/getShopById/" + userId).then(
+    Axios.get("http://3.101.191.130:4000/api/users/getShopById/" + userId).then(
       (response) => {
         if (response) {
           console.log(response);

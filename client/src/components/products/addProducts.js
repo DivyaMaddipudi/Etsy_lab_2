@@ -38,7 +38,7 @@ function addProducts({ setShowProductsAddPage }) {
     console.log(itemCategory);
 
     Axios.post(
-      "http://13.57.14.152:4001/api/products/addProduct/" + user.id,
+      "http://3.101.191.130:4001/api/products/addProduct/" + user.id,
       formData
     ).then((response) => {
       console.log(response);
