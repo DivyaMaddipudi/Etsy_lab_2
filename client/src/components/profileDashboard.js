@@ -28,7 +28,7 @@ function profileDashboard() {
 
   const getFavouriteItems = () => {
     Axios.get(
-      "http://localhost:4001/api/products/getFavourites/" + user.id
+      "http://localhost:4000/api/products/getFavourites/" + user.id
     ).then((response) => {
       console.log(response);
       if (response.data.result) {
@@ -42,7 +42,9 @@ function profileDashboard() {
         //   setFavProds([...favProdS, favItem.itemId]);
         // });
 
-        setFavProds(response.data.result.result);
+        // setFavProds(response.data.result.result); with kafka
+        setFavProds(response.data.result);
+
         dispatch(favouritesList(response.data.result.result));
 
         // console.log(response.data.result.length);

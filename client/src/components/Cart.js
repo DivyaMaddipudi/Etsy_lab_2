@@ -103,7 +103,7 @@ const CartScreen = () => {
         } else {
           console.log(product);
           Axios.post(
-            "http://localhost:4001/api/products/addProductToPurchase/",
+            "http://localhost:4000/api/products/addProductToPurchase/",
             {
               product: product,
             }

@@ -18,6 +18,8 @@ import { selectUser } from "../features/userSlice";
 import { Link } from "react-router-dom";
 import { productOverview } from "../features/cartSlice";
 import ProductOverView from "./ProductOverView";
+import { useQuery } from "@apollo/client";
+import { LOAD_USERS } from "../GraphQL/Queries";
 
 function EtsyBody() {
   const dispatch = useDispatch();
@@ -33,10 +35,16 @@ function EtsyBody() {
   const [prodLen, setProdLen] = useState(0);
   // const [productOverview, setProductOverview] = useState(false);
 
+  const { error, loading, data } = useQuery(LOAD_USERS);
+
   useEffect(() => {
     getItems();
     console.log("--------------------------token");
     console.log(cookie.load("token"));
+    if (data) {
+      console.log(typeof data + data.email);
+    }
+
     // getFavourites();
   }, []);
 
@@ -90,7 +98,7 @@ function EtsyBody() {
 
   const handleFavourite = (itemId, userId) => {
     console.log("Favourites added " + itemId + " " + userId);
-    Axios.post("http://localhost:4001/api/products/addFavourite", {
+    Axios.post("http://localhost:4000/api/products/addFavourite", {
       itemId: itemId,
       userId: userId,
     }).then((response) => {

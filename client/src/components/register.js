@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Axios from "axios";
 import { useDispatch } from "react-redux";
 import { login, registerUser, activeShop } from "../features/userSlice";
+import { CREATE_USER_MUTATION } from "../GraphQL/Mutation";
+import { useMutation } from "@apollo/client";
 
 function register({ setShowRegister }) {
   const [email, setEmail] = useState("");
@@ -9,27 +11,45 @@ function register({ setShowRegister }) {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
 
+  const [createUser, { error }] = useMutation(CREATE_USER_MUTATION);
   const addUser = (e) => {
     // e.preventDefault();
     // console.log(email + " " + username + " " + password);
     // localStorage.Item("preferedCurrency", userPreferedCurrency);
     console.log(" in register axios ");
-    Axios.post("http://localhost:4001/api/users/register", {
-      email: email,
-      username: username,
-      password: password,
-    }).then((response) => {
-      console.log(response.data);
-      if (response.data) {
-        dispatch(
-          registerUser({
-            username: username,
-            email: email,
-          })
-        );
-        console.log("In frontend register");
-      }
+    createUser({
+      variables: {
+        username: username,
+        email: email,
+        password: password,
+      },
     });
+    if (error) {
+      console.log(error);
+    }
+    // Axios.post("http://localhost:4000/api/users/register", {
+    //   email: email,
+    //   username: username,
+    //   password: password,
+    // }).then((response) => {
+    //   console.log(response.data);
+    //   if (response.data) {
+    //     dispatch(
+    //       registerUser({
+    //         username: username,
+    //         email: email,
+    //       })
+    //     );
+    //     console.log("In frontend register");
+    //   }
+    // });
+    // dispatch(
+    //   registerUser({
+    //     username: username,
+    //     email: email,
+    //   })
+    // );
+
     window.location.pathname = "/home";
   };
 

@@ -233,7 +233,7 @@ app.post("/api/products/addProduct/:id", function (req, res) {
   console.log(" Add Product to shop ++++++++++++++++++++++++++++++++");
 
   console.log(req.body);
-  const uploadSingle = upload("etsyappstoragedivya").single("itemImage");
+  const uploadSingle = upload("etsyappstoragelab").single("itemImage");
 
   uploadSingle(req, res, async (err) => {
     if (err) return res.status(400).json({ message: err });
@@ -333,7 +333,7 @@ app.put("/api/users/updateUser/:id", function (req, res) {
   console.log(" Add Product to shop ++++++++++++++++++++++++++++++++");
 
   console.log(req.body);
-  const uploadSingle = upload("etsyappstoragedivya").single("userImage");
+  const uploadSingle = upload("etsyappstoragelab").single("userImage");
 
   uploadSingle(req, res, async (err) => {
     if (err) return res.status(400).json({ message: err });
@@ -392,4 +392,4 @@ app.post("api/products/add", function (req, res) {
 
 //start your server on port 3001
 app.listen(4001);
-console.log("Server Listening on port 4001");
+console.log("Server Listening on port 4000");

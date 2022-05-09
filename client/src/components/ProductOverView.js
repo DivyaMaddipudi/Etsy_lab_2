@@ -28,7 +28,7 @@ function ProductOverView() {
 
   const addToCartHandler = (itemId) => {
     console.log("add to cart handler");
-    Axios.post("http://localhost:4001/api/products/addToCart", {
+    Axios.post("http://localhost:4000/api/products/addToCart", {
       itemId: itemId,
       userId: user.id,
       qty: Number(qty),

@@ -34,33 +34,35 @@ const s3 = new aws.S3({
 
 //create and save new user
 exports.create = async (req, res) => {
-  console.log("In register post");
-  //validate request
-  console.log(req.body.username + " --------------- ");
-  if (!req.body) {
-    res.status(400).send({ message: "Content can not be empty" });
-    return;
-  }
+  return new Promise(async (resolve, reject) => {
+    console.log("In register post " + req);
+    //validate request
+    console.log(req.username + " --------------- ");
+    if (!req) {
+      res.status(400).send({ message: "Content can not be empty" });
+      return;
+    }
 
-  //new user
-  const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    // //new user
+    const hashedPassword = await bcrypt.hash(req.password, 10);
 
-  const user = new Userdb({
-    username: req.body.username,
-    email: req.body.email,
-    password: hashedPassword,
-  });
-
-  // save user in the db
-  user
-    .save(user)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send({ message: "some error occured" });
+    const user = new Userdb({
+      username: req.username,
+      email: req.email,
+      password: hashedPassword,
     });
+
+    // save user in the db
+    user
+      .save(user)
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        reject({ message: "some error occured" });
+      });
+  });
 };
 
 exports.findUser = (req, res) => {

@@ -78,7 +78,7 @@ function shopHome() {
       variables["searchTerm"] + "------------------ getting viewItems"
     );
     setShowProds(true);
-    Axios.post("http://localhost:4001/api/products/getAllProducts/" + user.id, {
+    Axios.post("http://localhost:4000/api/products/getAllProducts/" + user.id, {
       searchTerm: variables["searchTerm"],
     }).then((response) => {
       if (response) {
@@ -90,7 +90,9 @@ function shopHome() {
           // console.log(products);
           // console.log("---------------in view Items ending-------------------");
         } else {
-          setProducts(response.data.result.products);
+          // setProducts(response.data.result.products);//with kafka
+          setProducts(response.data.result); //without kafka
+
           // console.log("---------------in view Items else-------------------");
         }
         console.log(user.id);

@@ -27,7 +27,7 @@ function editProducts({ setShowProductsEditPage, itemId }) {
     console.log("In edit item client axios");
     console.log(itemDetails);
     Axios.put(
-      "http://localhost:4001/api/products/editItemById/" + itemId,
+      "http://localhost:4000/api/products/editItemById/" + itemId,
       itemDetails
     ).then((response) => {
       if (response) {

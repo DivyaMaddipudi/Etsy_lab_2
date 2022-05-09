@@ -38,7 +38,7 @@ function addProducts({ setShowProductsAddPage }) {
     console.log(itemCategory);
 
     Axios.post(
-      "http://localhost:4001/api/products/addProduct/" + user.id,
+      "http://localhost:4000/api/products/addProduct/" + user.id,
       formData
     ).then((response) => {
       console.log(response);

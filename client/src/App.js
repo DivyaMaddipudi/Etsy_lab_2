@@ -30,11 +30,38 @@ import Purchases from "./components/Purchases";
 import ProductView from "./components/ProductView";
 import ShopHomeByOther from "./components/shopHomeByOther";
 import ShippingAddress from "./components/shippingAddress";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  HttpLink,
+  from,
+} from "@apollo/client";
+
+import { onError } from "@apollo/client/link/error";
+
+const errorLink = onError(({ graphqlErrors, networkErrors }) => {
+  if (graphqlErrors) {
+    graphqlErrors.map(({ message, location, path }) => {
+      alert(`Graphql error ${message}`);
+    });
+  }
+});
+
+const link = from([
+  errorLink,
+  new HttpLink({ uri: "http://localhost:4002/graphql" }),
+]);
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: link,
+});
 
 function App() {
   const user = useSelector(selectUser);
   return (
-    <>
+    <ApolloProvider client={client}>
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -62,7 +89,7 @@ function App() {
           <Route path="/shippingAddress" element={<ShippingAddress />} />
         </Routes>
       </Router>
-    </>
+    </ApolloProvider>
   );
 }
 
