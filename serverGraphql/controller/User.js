@@ -33,22 +33,22 @@ const s3 = new aws.S3({
 });
 
 //create and save new user
-exports.create = async (req, res) => {
+exports.create = async (username, email, password) => {
+  console.log("======================== in create");
   return new Promise(async (resolve, reject) => {
-    console.log("In register post " + req);
+    console.log("In register post " + username);
     //validate request
-    console.log(req.username + " --------------- ");
-    if (!req) {
-      res.status(400).send({ message: "Content can not be empty" });
+    console.log(username + " --------------- ");
+    if (!username && !email && !password) {
+      reject({ message: "Content can not be empty" });
       return;
     }
-
-    // //new user
-    const hashedPassword = await bcrypt.hash(req.password, 10);
+    //new user
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = new Userdb({
-      username: req.username,
-      email: req.email,
+      username: username,
+      email: email,
       password: hashedPassword,
     });
 
@@ -68,10 +68,9 @@ exports.create = async (req, res) => {
 exports.findUser = (req, res) => {
   console.log("In finduser post");
 
+  console.log(req + " " + res);
   var email = req.body.email;
   var password = req.body.password;
-
-  console.log(email + " " + password);
   Userdb.findOne({ email: email }).then((user) => {
     console.log(user + "--------------------------");
     if (user) {
@@ -102,18 +101,18 @@ exports.findUser = (req, res) => {
 
           console.log("result " + result + " token " + token);
 
-          res.send({ success: true, user, token });
+          resolve({ success: true, user, token });
           // res.send(result);
           console.log("=========end =============");
         } else {
-          res.send({
+          reject({
             message: "Password doesn't match",
           });
         }
       });
     } else {
       console.log("No user exists");
-      res.send({ message: "No user found!" });
+      reject({ message: "No user found!" });
     }
   });
 };

@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "apollo-server": "^3.7.0",
     "aws-sdk": "^2.1130.0",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
