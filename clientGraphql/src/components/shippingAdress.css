@@ -1,0 +1,21 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.title {
+  font-family: "Guardian-EgypTT", Charter, "Charter Bitstream", Cambria,
+    "Noto Serif Light", "Droid Serif", Georgia, serif;
+  font-size: 44px;
+}
+
+.shippingAddressForm {
+  width: 50%;
+  height: 200px;
+  margin-left: 25%;
+  /* background-color: rebeccapurple; */
+}
+
+.label {
+  font-size: 18px;
+}
