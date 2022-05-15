@@ -128,21 +128,22 @@ exports.getSignIn = (req, res) => {
   }
 };
 
-exports.findShopDuplicates = (req, res) => {
-  const shopName = req.body.shopName;
-
-  Userdb.findOne({ shopName: shopName }).then((user) => {
-    if (user) {
-      res.send({
-        message: "duplicate",
-      });
-      console.log("In shops db shop name found");
-    } else {
-      res.send({
-        message: "No duplicates",
-      });
-      console.log("In shops db and no shop name found");
-    }
+exports.findShopDuplicates = (shopName) => {
+  // const shopName = req.body.shopName;
+  return new Promise(async (resolve, reject) => {
+    Userdb.findOne({ shopName: shopName }).then((user) => {
+      if (user) {
+        res.send({
+          message: "duplicate",
+        });
+        console.log("In shops db shop name found");
+      } else {
+        res.send({
+          message: "No duplicates",
+        });
+        console.log("In shops db and no shop name found");
+      }
+    });
   });
 };
 

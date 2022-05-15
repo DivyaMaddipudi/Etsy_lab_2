@@ -42,22 +42,12 @@ function EtsyBody() {
     // if (loading) return <div>Spinner..........</div>;
     // if (error) return <div>Something went wrong..........</div>;
 
-    console.log("data from graphql", data);
-
-    // fetch("http://localhost:4002/graphql", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ query: LOAD_PRODUCTS }),
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => console.log(data))
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-    // getItems();
-    // console.log("--------------------------token");
-    // console.log(cookie.load("token"));
-    // getFavourites();
+    console.log("data from graphql");
+    if (data !== undefined) {
+      console.log(data.getItemsList);
+      dispatch(getAllItems(data.getItemsList));
+      SetItems(data.getItemsList);
+    }
   }, [data]);
 
   const getItems = () => {
