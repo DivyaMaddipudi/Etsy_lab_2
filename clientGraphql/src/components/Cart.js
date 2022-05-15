@@ -21,6 +21,13 @@ import { getAllCartProducts } from "../features/cartSlice";
 import Navbar from "./Navbar";
 import Hoverbar from "./Hoverbar";
 import { useNavigate } from "react-router-dom";
+import { useQuery, gql } from "@apollo/client";
+import { LOAD_CART_ITEMS } from "../GraphQL/Queries";
+import {
+  ADD_ITEM_TO_PURCHASES,
+  DELETE_ITEM_FROM_CART,
+} from "../GraphQL/Mutation";
+import { useMutation } from "@apollo/client";
 
 const CartScreen = () => {
   const dispatch = useDispatch();
@@ -29,6 +36,28 @@ const CartScreen = () => {
   const productOverview = useSelector(getAllCartProducts);
   const [finalAmount, setFinalAmount] = useState();
   const [itemsQtyError, setItemsQtyError] = useState("");
+
+  const { error, loading, data } = useQuery(LOAD_CART_ITEMS, {
+    variables: { userId: user.id },
+  });
+
+  const [deleteItemFromCart] = useMutation(DELETE_ITEM_FROM_CART, {
+    onCompleted(res) {
+      console.log(res);
+    },
+    onError(e) {
+      console.log(e.message);
+    },
+  });
+
+  const [addItemsToPurchases] = useMutation(ADD_ITEM_TO_PURCHASES, {
+    onCompleted(res) {
+      console.log(res);
+    },
+    onError(e) {
+      console.log(e.message);
+    },
+  });
 
   // const cart = useSelector((state) => state.cart);
   // const { cartItems } = cart;
@@ -40,19 +69,26 @@ const CartScreen = () => {
 
   useEffect(() => {
     getCartList();
-  }, []);
+  }, [data]);
 
   const getCartList = () => {
-    Axios.get(
-      "http://localhost:4000/api/products/getCartItems/" + user.id
-    ).then((response) => {
-      console.log(response.data.result);
-      if (response.data.success === true) {
-        console.log("geting all fav products and storing in redux");
-        console.log(response.data.result);
-        setFinalCartProducts([...finalCartProducts, ...response.data.result]);
-      }
-    });
+    console.log("In cart screen");
+
+    if (data !== undefined) {
+      console.log(data.getCartList);
+      setFinalCartProducts([...finalCartProducts, ...data.getCartList]);
+    }
+    // setFinalCartProducts
+    // Axios.get(
+    //   "http://localhost:4000/api/products/getCartItems/" + user.id
+    // ).then((response) => {
+    //   console.log(response.data.result);
+    //   if (response.data.success === true) {
+    //     console.log("geting all fav products and storing in redux");
+    //     console.log(response.data.result);
+    //     setFinalCartProducts([...finalCartProducts, ...response.data.result]);
+    //   }
+    // });
   };
 
   const removeFromCartHandler = (id) => {
@@ -81,6 +117,7 @@ const CartScreen = () => {
   };
 
   const handleCheckOut = async () => {
+    console.log("---------------Handling checkout-----------------");
     console.log(checkOutItems.length);
     if (user.about === null) {
       navigate("/shippingAddress");
@@ -89,31 +126,69 @@ const CartScreen = () => {
         if (product.qty === 0) {
           console.log(product);
           console.log("Deleting product with item qty 0");
-          Axios.delete(
-            "http://localhost:4000/api/products/deleteCartItem/" +
-              product.itemId
-          ).then((response) => {
-            console.log(response.data);
-            if (response.data.success === true) {
+
+          deleteItemFromCart({
+            variables: {
+              itemId: product.itemId,
+            },
+          }).then((res) => {
+            console.log(res);
+            if (res.data !== undefined) {
+              console.log(res.data);
               console.log("item deleted successfully");
-              console.log(response.data.res);
+              // window.location.pathname = "/home";
             }
           });
+
+          // Axios.delete(
+          //   "http://localhost:4000/api/products/deleteCartItem/" +
+          //     product.itemId
+          // ).then((response) => {
+          //   console.log(response.data);
+          //   if (response.data.success === true) {
+          //     console.log("item deleted successfully");
+          //     console.log(response.data.res);
+          //   }
+          // });
           // setItemsQtyError("Can't place order with 0 quantity");
         } else {
+          console.log(
+            " ----------------------- Printing product -----------------------"
+          );
           console.log(product);
-          Axios.post(
-            "http://localhost:4000/api/products/addProductToPurchase/",
-            {
-              product: product,
+          addItemsToPurchases({
+            variables: {
+              itemId: product.itemId,
+              userId: user.id,
+              itemName: product.itemName,
+              itemImage: product.itemImage,
+              itemCount: product.itemCount,
+              totalPrice: product.totalPrice,
+              qty: product.qty,
+              itemDescription: product.itemDescription,
+              giftMessage: product.giftMessage,
+            },
+          }).then((res) => {
+            console.log(res);
+            if (res.data !== undefined) {
+              console.log(res.data);
+              console.log("item deleted successfully");
+              // window.location.pathname = "/home";
             }
-          )
-            .then((response) => {
-              console.log(response);
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+          });
+
+          // Axios.post(
+          //   "http://localhost:4000/api/products/addProductToPurchase/",
+          //   {
+          //     product: product,
+          //   }
+          // )
+          //   .then((response) => {
+          //     console.log(response);
+          //   })
+          //   .catch((err) => {
+          //     console.log(err);
+          //   });
 
           const itemDetails = {
             itemCount: product.itemCount - product.qty,
@@ -145,7 +220,7 @@ const CartScreen = () => {
 
       dispatch(clearCart());
 
-      window.location.pathname = "/purchase";
+      // window.location.pathname = "/purchase";
     }
   };
 

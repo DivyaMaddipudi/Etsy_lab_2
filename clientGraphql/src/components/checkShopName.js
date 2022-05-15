@@ -4,9 +4,9 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { activeShop, selectUser, updateUser } from "../features/userSlice";
 import { CHECK_SHOP_DUPLICATES, CREATE_SHOP_NAME } from "../GraphQL/Mutation";
+import { useMutation } from "@apollo/client";
 import Navbar from "./Navbar";
 import Hoverbar from "./Hoverbar";
-import { useMutation } from "@apollo/client";
 
 function checkShopName() {
   const dispatch = useDispatch();

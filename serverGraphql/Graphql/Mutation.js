@@ -1,11 +1,22 @@
-const { Customer, Items, User } = require("../Graphql/TypeDef");
+const {
+  Customer,
+  Items,
+  User,
+  Cart,
+  CartItem,
+  Purchases,
+} = require("../Graphql/TypeDef");
 const UserController = require("../controller/User");
 const Userdb = require("../models/model");
+const Itemsdb = require("../models/items");
+const cartdb = require("../models/cart");
+const purchasesdb = require("../models/purchases");
 
 const {
   GraphQLSchema,
   GraphQLObjectType,
   GraphQLString,
+  GraphQLUpload,
   GraphQLInt,
   GraphQLList,
   GraphQLFloat,
@@ -63,8 +74,121 @@ const mutation = new GraphQLObjectType({
         return args;
       },
     },
+
+    addToCart: {
+      type: CartItem,
+      args: {
+        userId: { type: GraphQLString },
+        itemId: { type: GraphQLString },
+        qty: { type: GraphQLInt },
+      },
+      async resolve(parent, args) {
+        const cart = new cartdb({
+          userId: args.userId,
+          itemId: args.itemId,
+          qty: args.qty,
+        });
+        const isCartItemExist = await cartdb.exists({ itemId: args.itemId });
+        if (isCartItemExist) {
+          console.log("item already exist");
+          await cartdb.findOneAndUpdate(
+            { itemId: args.itemId },
+            { qty: args.qty }
+          );
+          console.log("qty updated");
+        } else {
+          console.log("item not exist");
+          cart.save(cart);
+        }
+        return cart;
+      },
+    },
+    deleteFromCart: {
+      type: CartItem,
+      args: {
+        itemId: { type: GraphQLString },
+      },
+      async resolve(parent, args) {
+        const cart = await cartdb.findOneAndDelete({ itemId: args.itemId });
+        console.log(cart);
+        return cart;
+      },
+    },
+    addItemToPurchases: {
+      type: Purchases,
+      args: {
+        itemId: { type: GraphQLString },
+        userId: { type: GraphQLString },
+        itemName: { type: GraphQLString },
+        itemImage: { type: GraphQLString },
+        itemCount: { type: GraphQLInt },
+        totalPrice: { type: GraphQLFloat },
+        qty: { type: GraphQLInt },
+        itemDescription: { type: GraphQLString },
+        giftMessage: { type: GraphQLString },
+      },
+      async resolve(parent, args) {
+        const purchases = new purchasesdb({
+          userId: args.userId,
+          itemName: args.itemName,
+          itemPrice: args.itemPrice,
+          itemCount: args.itemCount,
+          qty: args.qty,
+          itemId: args.itemId,
+          itemImage: args.itemImage,
+          itemDescription: args.itemDescription,
+          giftMessage: args.giftMessage,
+        });
+
+        await purchases.save(purchases);
+        return args;
+      },
+    },
+    // addShopItem: {
+    //   type: Items,
+    //   args: {
+    //     userId: { type: GraphQLString },
+    //     itemName: { type: GraphQLString },
+    //     itemCategory: { type: GraphQLString },
+    //     itemPrice: { type: GraphQLString },
+    //     itemDescription: { type: GraphQLString },
+    //     itemCount: { type: GraphQLString },
+    //     itemImage: { type: GraphQLUpload },
+    //     sales: { type: GraphQLInt },
+    //   },
+    //   async resolve(parent, args) {
+    //     const uploadSingle = upload("etsyappstoragelab").single("itemImage");
+    //     uploadSingle(req, res, async (err) => {
+    //       const product = new Itemsdb({
+    //         userId: args.userId,
+    //         itemName: args.itemName,
+    //         itemCategory: args.itemCategory,
+    //         itemPrice: args.itemPrice,
+    //         itemDescription: args.itemDescription,
+    //         itemCount: args.itemCount,
+    //         itemImage: args.itemImage,
+    //       });
+
+    //       await product.save(product);
+    //     });
+    //   },
+    // },
   },
 });
+
+// const upload = (bucketName) =>
+//   multer({
+//     storage: multerS3({
+//       s3,
+//       bucket: bucketName,
+//       metadata: function (req, file, cb) {
+//         cb(null, { fieldName: file.fieldname });
+//       },
+//       key: function (req, file, cb) {
+//         cb(null, `ProductImage-${Date.now()}.jpeg`);
+//       },
+//     }),
+//   });
 
 module.exports = {
   mutation,

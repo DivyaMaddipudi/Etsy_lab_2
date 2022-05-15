@@ -2,6 +2,8 @@ import Axios from "axios";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../features/userSlice";
+import { ADD_PRODUCT } from "../../GraphQL/Mutation";
+import { useMutation } from "@apollo/client";
 import CloseLogin from "../closeLogin";
 
 function addProducts({ setShowProductsAddPage }) {
@@ -14,6 +16,15 @@ function addProducts({ setShowProductsAddPage }) {
   const [itemCount, setItemCount] = useState(0);
   const [itemNewCategory, setItemNewCategory] = useState("");
   const [newCategoryVisible, setNewCategoryVisible] = useState(false);
+
+  const [addProduct] = useMutation(ADD_PRODUCT, {
+    onCompleted(res) {
+      console.log(res);
+    },
+    onError(e) {
+      console.log(e.message);
+    },
+  });
 
   const addItem = (e) => {
     e.preventDefault();
@@ -37,6 +48,17 @@ function addProducts({ setShowProductsAddPage }) {
     console.log(itemCount);
     console.log(itemCategory);
 
+    // addProduct({
+    //   variables: {
+    //     userId: user.id,
+    //     itemName: itemName,
+    //     itemDescription: itemDescription,
+    //     itemPrice: itemPrice,
+    //     itemCount: itemCount,
+    //     itemCategory: itemCategory,
+    //     itemImage: itemImage,
+    //   },
+    // });
     Axios.post(
       "http://localhost:4000/api/products/addProduct/" + user.id,
       formData

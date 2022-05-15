@@ -11,6 +11,11 @@ import {
 import { Delete } from "@material-ui/icons";
 import Axios from "axios";
 import { selectUser } from "../features/userSlice";
+import {
+  ADD_PRODUCT_TO_CART,
+  DELETE_ITEM_FROM_CART,
+} from "../GraphQL/Mutation";
+import { useMutation } from "@apollo/client";
 
 const CartItem = ({ item }) => {
   const dispatch = useDispatch();
@@ -18,6 +23,28 @@ const CartItem = ({ item }) => {
   const [giftOption, setGiftOption] = useState(false);
   const [giftDescription, setGiftDescription] = useState("");
   const user = useSelector(selectUser);
+
+  // const { error, loading, data } = useQuery(LOAD_CART_ITEMS, {
+  //   variables: { userId: user.id },
+  // });
+
+  const [addProductToCart] = useMutation(ADD_PRODUCT_TO_CART, {
+    onCompleted(res) {
+      console.log(res);
+    },
+    onError(e) {
+      console.log(e.message);
+    },
+  });
+
+  const [deleteItemFromCart] = useMutation(DELETE_ITEM_FROM_CART, {
+    onCompleted(res) {
+      console.log(res);
+    },
+    onError(e) {
+      console.log(e.message);
+    },
+  });
 
   useEffect(() => {
     dispatch(
@@ -38,35 +65,24 @@ const CartItem = ({ item }) => {
   const qtyChangeHandler = (id, qty) => {
     console.log(qty);
     console.log("item updation qty in axios");
+    console.log(item);
 
-    Axios.post("http://localhost:4000/api/products/addToCart", {
-      itemId: item.itemId._id,
-      userId: user.id,
-      qty: Number(qty),
+    console.log(item.itemId._id);
+
+    addProductToCart({
+      variables: {
+        userId: user.id,
+        itemId: item.itemId._id,
+        qty: Number(qty),
+      },
     })
       .then((response) => {
-        console.log(response);
-        if (response.data.success) {
+        console.log("itm qty change in response axios");
+        console.log(response.data);
+        if (response.data !== undefined) {
           console.log("Items added to cart successfully" + Number(qty));
-          // window.location.reload(true);
+          window.location.reload(true);
           // window.location.pathname = "/home";
-          if (Number(qty) === 0) {
-            Axios.delete(
-              "http://localhost:4000/api/products/deleteCartItemByItemId/" +
-                item.itemId._id
-            ).then((response) => {
-              console.log(response);
-              if (response) {
-                console.log("item deleted successfully");
-                console.log(response.data);
-                dispatch(removeCartItem(item.itemId._id));
-                window.location.reload(true);
-              }
-            });
-          } else {
-            window.location.reload(true);
-          }
-          // window.location.reload(true);
         }
       })
       .catch((err) => {
@@ -76,16 +92,32 @@ const CartItem = ({ item }) => {
 
   const removeHandler = (id) => {
     console.log("remove");
-    Axios.delete(
-      "http://localhost:4000/api/products/deleteCartItem/" + id
-    ).then((response) => {
-      console.log(response.data);
-      if (response.data.success === true) {
+
+    deleteItemFromCart({
+      variables: {
+        itemId: id,
+      },
+    }).then((res) => {
+      console.log(res);
+      if (res.data !== undefined) {
+        console.log(res.data);
         console.log("item deleted successfully");
-        console.log(response.data.res);
         window.location.reload(true);
+
+        // window.location.pathname = "/home";
       }
     });
+
+    // Axios.delete(
+    //   "http://localhost:4000/api/products/deleteCartItem/" + id
+    // ).then((response) => {
+    //   console.log(response.data);
+    //   if (response.data.success === true) {
+    //     console.log("item deleted successfully");
+    //     console.log(response.data.res);
+    //     window.location.reload(true);
+    //   }
+    // });
 
     // dispatch(removeFromCart(id));
   };
@@ -182,7 +214,7 @@ const CartItem = ({ item }) => {
 
         <button
           className="cartItem__deleteBtn"
-          onClick={() => removeHandler(item._id)}
+          onClick={() => removeHandler(item.itemId._id)}
         >
           <Delete />
         </button>

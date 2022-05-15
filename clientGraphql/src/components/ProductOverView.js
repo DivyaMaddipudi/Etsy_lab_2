@@ -16,6 +16,8 @@ import Navbar from "./Navbar";
 import "./ProductOverView.css";
 import { getCartItems } from "../features/cartItemsSlice";
 import { Link } from "react-router-dom";
+import { ADD_PRODUCT_TO_CART } from "../GraphQL/Mutation";
+import { useMutation } from "@apollo/client";
 
 function ProductOverView() {
   const [qty, setQty] = useState(1);
@@ -26,64 +28,53 @@ function ProductOverView() {
   // const cartItems = useSelector(getCartItems);
   const [addToCartMessage, setAddToCart] = useState("");
 
+  const [addProductToCart] = useMutation(ADD_PRODUCT_TO_CART, {
+    onCompleted(res) {
+      console.log(res);
+    },
+    onError(e) {
+      console.log(e.message);
+    },
+  });
+
   const addToCartHandler = (itemId) => {
     console.log("add to cart handler");
-    Axios.post("http://localhost:4000/api/products/addToCart", {
-      itemId: itemId,
-      userId: user.id,
-      qty: Number(qty),
+
+    addProductToCart({
+      variables: {
+        userId: user.id,
+        itemId: itemId,
+        qty: Number(qty),
+      },
     })
-      .then((response) => {
-        console.log(response);
-        if (response.data.success) {
-          console.log("Items added to cart successfully");
-          // window.location.pathname = "/home";
+      .then((res) => {
+        console.log(res);
+        if (res.data !== undefined) {
+          console.log(res.data);
+          console.log("Item added to card");
+          window.location.pathname = "/home";
         }
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.log(error);
       });
-    setAddToCart("Item added to your cart successfully");
-    // cartItems.map((ele) => console.log(ele));
-    // if (cartItems) {
 
-    // dispatch(
-    //   createCartItem({
-    //     itemId: productView._id,
-    //     itemName: productView.itemName,
-    //     itemDescription: productView.itemDescription,
-    //     itemImage: productView.itemImage,
-    //     itemPrice: productView.itemPrice,
-    //     itemCount: productView.itemCount,
-    //     // itemId: productView._id,
-    //     qty: Number(qty),
-    //   })
-    // );
-    // }
-
-    // if (cartItems) {
-    //   console.log(cartItems.qty);
-    //   console.log(qty);
-    // } else {
-    //   console.log("No cart items");
-    // }
-    // console.log(productView.length);
-    // if (user !== null) {
-    //   Axios.post("http://localhost:4000/addProductToCart/" + user.id, {
-    // itemId: cartProduct.itemId,
-    // itemName: cartProduct.itemName,
-    // itemDescription: cartProduct.itemDescription,
-    // itemImage: cartProduct.itemImage,
-    // itemPrice: cartProduct.itemPrice,
-    // itemId: cartProduct.itemId,
-    // qty: qty,
-    //   }).then((response) => {
-    //     if (response.data.success === true) {
-    //       console.log("-------------responce data ------", response.data);
+    // Axios.post("http://localhost:4000/api/products/addToCart", {
+    //   itemId: itemId,
+    //   userId: user.id,
+    //   qty: Number(qty),
+    // })
+    //   .then((response) => {
+    //     console.log(response);
+    //     if (response.data.success) {
+    //       console.log("Items added to cart successfully");
+    //       // window.location.pathname = "/home";
     //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
     //   });
-    //   console.log("Add to cart clicked");
-    // }
+    setAddToCart("Item added to your cart successfully");
   };
 
   let redirectVar = null;

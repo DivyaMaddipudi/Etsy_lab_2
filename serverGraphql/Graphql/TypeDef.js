@@ -45,7 +45,17 @@ const Items = new GraphQLObjectType({
 const Cart = new GraphQLObjectType({
   name: "Cart",
   fields: () => ({
+    itemId: { type: Items },
+    userId: { type: GraphQLString },
+    qty: { type: GraphQLInt },
+  }),
+});
+
+const CartItem = new GraphQLObjectType({
+  name: "CartItem",
+  fields: () => ({
     itemId: { type: GraphQLString },
+    userId: { type: GraphQLString },
     qty: { type: GraphQLInt },
   }),
 });
@@ -68,5 +78,6 @@ module.exports = {
   User,
   Items,
   Cart,
+  CartItem,
   Purchases,
 };

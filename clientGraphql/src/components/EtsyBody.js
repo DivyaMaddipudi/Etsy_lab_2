@@ -43,8 +43,9 @@ function EtsyBody() {
     // if (error) return <div>Something went wrong..........</div>;
 
     console.log("data from graphql");
+    console.log(data);
+
     if (data !== undefined) {
-      console.log(data.getItemsList);
       dispatch(getAllItems(data.getItemsList));
       SetItems(data.getItemsList);
     }
