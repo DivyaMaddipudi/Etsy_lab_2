@@ -79,10 +79,6 @@ const CartScreen = () => {
     },
   });
 
-  // const cart = useSelector((state) => state.cart);
-  // const { cartItems } = cart;
-  // const finalCartProduct = useSelector(getCartItems);
-
   const checkOutItems = useSelector(getCartItems);
 
   const [finalCartProducts, setFinalCartProducts] = useState([]);
@@ -95,7 +91,6 @@ const CartScreen = () => {
     console.log("In cart screen");
 
     if (data !== undefined) {
-      console.log(data.getCartList);
       setFinalCartProducts([...finalCartProducts, ...data.getCartList]);
     }
     // setFinalCartProducts
@@ -111,9 +106,9 @@ const CartScreen = () => {
     // });
   };
 
-  const removeFromCartHandler = (id) => {
-    // dispatch(removeFromCart(id));
-  };
+  // const removeFromCartHandler = (id) => {
+  //   // dispatch(removeFromCart(id));
+  // };
 
   const getCartCount = () => {
     if (finalCartProducts === null) {
@@ -131,9 +126,6 @@ const CartScreen = () => {
         .reduce((price, item) => price + item.itemId.itemPrice * item.qty, 0)
         .toFixed(2);
     }
-
-    // setFinalAmount(finalPrice);
-    // return finalPrice;
   };
 
   const handleCheckOut = async () => {
@@ -143,8 +135,10 @@ const CartScreen = () => {
       navigate("/shippingAddress");
     } else {
       checkOutItems.map((product) => {
+        console.log(product);
+        console.log("---------------Handling checkout-----------------");
+
         if (product.qty === 0) {
-          console.log(product);
           console.log("Deleting product with item qty 0");
 
           deleteItemFromCart({
@@ -159,22 +153,8 @@ const CartScreen = () => {
               // window.location.pathname = "/home";
             }
           });
-
-          // Axios.delete(
-          //   "http://localhost:4000/api/products/deleteCartItem/" +
-          //     product.itemId
-          // ).then((response) => {
-          //   console.log(response.data);
-          //   if (response.data.success === true) {
-          //     console.log("item deleted successfully");
-          //     console.log(response.data.res);
-          //   }
-          // });
-          // setItemsQtyError("Can't place order with 0 quantity");
         } else {
-          console.log(
-            " ----------------------- Printing product -----------------------"
-          );
+          console.log("--------------- Printing product ---------------");
           console.log(product);
           addItemsToPurchases({
             variables: {
@@ -183,7 +163,7 @@ const CartScreen = () => {
               itemName: product.itemName,
               itemImage: product.itemImage,
               itemCount: product.itemCount,
-              totalPrice: product.totalPrice,
+              itemPrice: product.itemPrice,
               qty: product.qty,
               itemDescription: product.itemDescription,
               giftMessage: product.giftMessage,
@@ -192,50 +172,27 @@ const CartScreen = () => {
             console.log(res);
             if (res.data !== undefined) {
               console.log(res.data);
-              console.log("item deleted successfully");
+              console.log(
+                "======================-------------------------------------"
+              );
               // window.location.pathname = "/home";
             }
           });
-
-          // Axios.post(
-          //   "http://localhost:4000/api/products/addProductToPurchase/",
-          //   {
-          //     product: product,
-          //   }
-          // )
-          //   .then((response) => {
-          //     console.log(response);
-          //   })
-          //   .catch((err) => {
-          //     console.log(err);
-          //   });
-
-          const itemDetails = {};
 
           editItemQty({
             variables: {
               itemId: product.itemId,
               itemCount: product.itemCount - product.qty,
-              itemSales: productOverview.sales + product.qty,
+              sales: product.qty,
             },
           }).then((res) => {
             console.log(res);
             if (res.data !== undefined) {
               console.log(res.data);
               console.log("item deleted successfully");
-              // window.location.pathname = "/home";
+              window.location.pathname = "/home";
             }
           });
-
-          // Axios.put(
-          //   "http://localhost:4000/api/products/editItemQtyById/" +
-          //     product.itemId,
-          //   itemDetails
-          // ).then((response) => {
-          //   if (response.data.success) {
-          //     console.log("Item details edited successfully.....");
-          //   }
-          // });
         }
       });
 

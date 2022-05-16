@@ -76,7 +76,7 @@ export const ADD_ITEM_TO_PURCHASES = gql`
     $itemName: String!
     $itemImage: String!
     $itemCount: Int!
-    $totalPrice: Float
+    $itemPrice: Int!
     $qty: Int!
     $itemDescription: String!
     $giftMessage: String!
@@ -87,7 +87,7 @@ export const ADD_ITEM_TO_PURCHASES = gql`
       itemName: $itemName
       itemImage: $itemImage
       itemCount: $itemCount
-      totalPrice: $totalPrice
+      itemPrice: $itemPrice
       qty: $qty
       itemDescription: $itemDescription
       giftMessage: $giftMessage
@@ -102,7 +102,7 @@ export const ADD_ITEM_TO_PURCHASES = gql`
 export const EDIT_ITEM_QTY = gql`
   mutation editItemQtyById($itemId: String!, $itemCount: Int!, $sales: Int!) {
     editItemQtyById(itemId: $itemId, itemCount: $itemCount, sales: $sales) {
-      sales
+      itemCount
     }
   }
 `;

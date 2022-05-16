@@ -68,7 +68,7 @@ const Purchases = new GraphQLObjectType({
     itemName: { type: GraphQLString },
     itemImage: { type: GraphQLInt },
     itemCount: { type: GraphQLFloat },
-    totalPrice: { type: GraphQLFloat },
+    itemPrice: { type: GraphQLInt },
     qty: { type: GraphQLInt },
     itemDescription: { type: GraphQLString },
     giftMessage: { type: GraphQLString },

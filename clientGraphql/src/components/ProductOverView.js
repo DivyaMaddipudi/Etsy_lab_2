@@ -52,7 +52,7 @@ function ProductOverView() {
         if (res.data !== undefined) {
           console.log(res.data);
           console.log("Item added to card");
-          window.location.pathname = "/home";
+          // window.location.pathname = "/home";
         }
       })
       .catch((error) => {

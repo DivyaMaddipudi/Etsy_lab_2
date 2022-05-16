@@ -122,7 +122,7 @@ const mutation = new GraphQLObjectType({
         itemName: { type: GraphQLString },
         itemImage: { type: GraphQLString },
         itemCount: { type: GraphQLInt },
-        totalPrice: { type: GraphQLFloat },
+        itemPrice: { type: GraphQLInt },
         qty: { type: GraphQLInt },
         itemDescription: { type: GraphQLString },
         giftMessage: { type: GraphQLString },
@@ -152,14 +152,13 @@ const mutation = new GraphQLObjectType({
         sales: { type: GraphQLInt },
       },
       async resolve(parent, args) {
+        console.log("=================== items update ====================");
+
         const items_update = Itemsdb.findByIdAndUpdate(
           { _id: args.itemId },
           {
             itemCount: args.itemCount,
             sales: args.sales,
-          },
-          {
-            new: true,
           }
         );
         console.log(items_update);
