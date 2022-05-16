@@ -1,4 +1,4 @@
-const { User, Items, Cart } = require("../Graphql/TypeDef");
+const { User, Items, Cart, Purchases } = require("../Graphql/TypeDef");
 const UserController = require("../controller/User");
 const {
   GraphQLSchema,
@@ -11,6 +11,7 @@ const {
 const Userdb = require("../models/model");
 const itemsDb = require("../models/items");
 const cartsdb = require("../models/cart");
+const purchasesdb = require("../models/purchases");
 
 const query = new GraphQLObjectType({
   name: "query",
@@ -35,6 +36,17 @@ const query = new GraphQLObjectType({
         console.log(cartItems);
 
         return cartItems;
+      },
+    },
+    getPurchasesList: {
+      type: new GraphQLList(Purchases),
+      args: {
+        userId: { type: GraphQLString },
+      },
+      async resolve(parent, args) {
+        const purchases = await purchasesdb.find({ userId: args.userId });
+        console.log(purchases);
+        return purchases;
       },
     },
   },

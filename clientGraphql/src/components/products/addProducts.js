@@ -16,8 +16,29 @@ function addProducts({ setShowProductsAddPage }) {
   const [itemCount, setItemCount] = useState(0);
   const [itemNewCategory, setItemNewCategory] = useState("");
   const [newCategoryVisible, setNewCategoryVisible] = useState(false);
+  const [profilePhoto, SetProfilePhoto] = useState();
 
-  const [addProduct] = useMutation(ADD_PRODUCT, {
+  function uploadImageToCloud(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("cloud_name", "dac0hzhv5");
+    formData.append("upload_preset", "j8gp4zov");
+    Axios.post(
+      "https://api.cloudinary.com/v1_1/dac0hzhv5/image/upload",
+      formData
+    ).then((res) => {
+      console.log("======================CLOUDINARY URL=============");
+      console.log(res.data.url);
+      SetProfilePhoto(res.data.url);
+    });
+  }
+
+  const imageChangeHandler = (e) => {
+    const inputValue = e.target.files[0];
+    uploadImageToCloud(inputValue);
+  };
+
+  const [addProductToShop] = useMutation(ADD_PRODUCT, {
     onCompleted(res) {
       console.log(res);
     },
@@ -28,18 +49,10 @@ function addProducts({ setShowProductsAddPage }) {
 
   const addItem = (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("itemImage", itemImage);
-    formData.append("itemName", itemName);
-    formData.append("itemDescription", itemDescription);
-    formData.append("itemPrice", itemPrice);
-    formData.append("itemCount", itemCount);
-    console.log(itemCategory);
-
     if (itemCategory === "others") {
-      formData.append("itemCategory", itemNewCategory);
+      setItemCategory(itemNewCategory);
     } else {
-      formData.append("itemCategory", itemCategory);
+      setItemCategory(itemCategory);
     }
 
     console.log(itemName);
@@ -48,24 +61,20 @@ function addProducts({ setShowProductsAddPage }) {
     console.log(itemCount);
     console.log(itemCategory);
 
-    // addProduct({
-    //   variables: {
-    //     userId: user.id,
-    //     itemName: itemName,
-    //     itemDescription: itemDescription,
-    //     itemPrice: itemPrice,
-    //     itemCount: itemCount,
-    //     itemCategory: itemCategory,
-    //     itemImage: itemImage,
-    //   },
-    // });
-    Axios.post(
-      "http://localhost:4000/api/products/addProduct/" + user.id,
-      formData
-    ).then((response) => {
-      console.log(response);
-      if (response) {
-        console.log("Image uploaded successfully");
+    addProductToShop({
+      variables: {
+        userId: user.id,
+        itemName: itemName,
+        itemCategory: itemCategory,
+        itemPrice: itemPrice,
+        itemDescription: itemDescription,
+        itemCount: itemCount,
+        itemImage: profilePhoto,
+      },
+    }).then((res) => {
+      console.log(res);
+      if (res.data !== undefined) {
+        console.log(res.data);
         window.location.pathname = "/shopHome";
       }
     });
@@ -169,7 +178,7 @@ function addProducts({ setShowProductsAddPage }) {
               className="item_image"
               id="item_image"
               onChange={(event) => {
-                setItemImage(event.target.files[0]);
+                imageChangeHandler(event);
               }}
               required
             />

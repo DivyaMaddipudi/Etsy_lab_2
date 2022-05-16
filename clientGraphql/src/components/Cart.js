@@ -190,7 +190,7 @@ const CartScreen = () => {
             if (res.data !== undefined) {
               console.log(res.data);
               console.log("item deleted successfully");
-              window.location.pathname = "/home";
+              window.location.pathname = "/purchase";
             }
           });
         }

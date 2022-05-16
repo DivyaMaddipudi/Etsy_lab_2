@@ -63,6 +63,7 @@ const CartItem = new GraphQLObjectType({
 const Purchases = new GraphQLObjectType({
   name: "Purchases",
   fields: () => ({
+    _id: { type: GraphQLString },
     itemId: { type: GraphQLString },
     userId: { type: GraphQLString },
     itemName: { type: GraphQLString },

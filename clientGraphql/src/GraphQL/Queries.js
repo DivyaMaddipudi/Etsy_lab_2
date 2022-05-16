@@ -32,3 +32,19 @@ export const LOAD_CART_ITEMS = gql`
     }
   }
 `;
+
+export const LOAD_PURCHASES_LIST = gql`
+  query getPurchasesList($userId: String!) {
+    getPurchasesList(userId: $userId) {
+      _id
+      userId
+      qty
+      itemId
+      itemName
+      itemPrice
+      itemDescription
+      itemCount
+      itemImage
+    }
+  }
+`;

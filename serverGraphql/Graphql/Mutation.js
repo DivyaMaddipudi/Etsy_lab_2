@@ -172,52 +172,34 @@ const mutation = new GraphQLObjectType({
         return cartDel;
       },
     },
+    addShopItem: {
+      type: Items,
+      args: {
+        userId: { type: GraphQLString },
+        itemName: { type: GraphQLString },
+        itemCategory: { type: GraphQLString },
+        itemPrice: { type: GraphQLString },
+        itemDescription: { type: GraphQLString },
+        itemCount: { type: GraphQLString },
+        itemImage: { type: GraphQLString },
+        sales: { type: GraphQLInt },
+      },
+      async resolve(parent, args) {
+        const product = new Itemsdb({
+          userId: args.userId,
+          itemName: args.itemName,
+          itemCategory: args.itemCategory,
+          itemPrice: args.itemPrice,
+          itemDescription: args.itemDescription,
+          itemCount: args.itemCount,
+          itemImage: args.itemImage,
+        });
 
-    // addShopItem: {
-    //   type: Items,
-    //   args: {
-    //     userId: { type: GraphQLString },
-    //     itemName: { type: GraphQLString },
-    //     itemCategory: { type: GraphQLString },
-    //     itemPrice: { type: GraphQLString },
-    //     itemDescription: { type: GraphQLString },
-    //     itemCount: { type: GraphQLString },
-    //     itemImage: { type: GraphQLUpload },
-    //     sales: { type: GraphQLInt },
-    //   },
-    //   async resolve(parent, args) {
-    //     const uploadSingle = upload("etsyappstoragelab").single("itemImage");
-    //     uploadSingle(req, res, async (err) => {
-    //       const product = new Itemsdb({
-    //         userId: args.userId,
-    //         itemName: args.itemName,
-    //         itemCategory: args.itemCategory,
-    //         itemPrice: args.itemPrice,
-    //         itemDescription: args.itemDescription,
-    //         itemCount: args.itemCount,
-    //         itemImage: args.itemImage,
-    //       });
-
-    //       await product.save(product);
-    //     });
-    //   },
-    // },
+        await product.save(product);
+      },
+    },
   },
 });
-
-// const upload = (bucketName) =>
-//   multer({
-//     storage: multerS3({
-//       s3,
-//       bucket: bucketName,
-//       metadata: function (req, file, cb) {
-//         cb(null, { fieldName: file.fieldname });
-//       },
-//       key: function (req, file, cb) {
-//         cb(null, `ProductImage-${Date.now()}.jpeg`);
-//       },
-//     }),
-//   });
 
 module.exports = {
   mutation,
