@@ -49,6 +49,17 @@ const query = new GraphQLObjectType({
         return purchases;
       },
     },
+    getAllShopItems: {
+      type: new GraphQLList(Items),
+      args: {
+        userId: { type: GraphQLString },
+      },
+      async resolve(parent, args) {
+        const items = await itemsDb.find({ userId: args.userId });
+        console.log(items);
+        return items;
+      },
+    },
   },
 });
 

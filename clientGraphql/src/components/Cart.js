@@ -172,9 +172,6 @@ const CartScreen = () => {
             console.log(res);
             if (res.data !== undefined) {
               console.log(res.data);
-              console.log(
-                "======================-------------------------------------"
-              );
               // window.location.pathname = "/home";
             }
           });

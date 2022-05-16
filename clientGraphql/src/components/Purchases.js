@@ -9,18 +9,27 @@ import Navbar from "./Navbar";
 import Hoverbar from "./Hoverbar";
 import cookie from "react-cookies";
 import Pagination from "./Pagination";
+import { LOAD_PURCHASES_LIST } from "../GraphQL/Queries";
+import { useQuery, gql } from "@apollo/client";
 
 function Purchases() {
   const user = useSelector(selectUser);
   const [purchasedProducts, setPurchasedProducts] = useState([]);
   // const [purchasedProducts, setPurchasedProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
+  const { error, loading, data } = useQuery(LOAD_PURCHASES_LIST, {
+    variables: { userId: user.id },
+  });
 
   useEffect(() => {
-    getPurchasedItems();
-  }, []);
+    // getPurchasedItems();
+    if (data != undefined) {
+      console.log(data.getPurchasesList);
+      setPurchasedProducts([...purchasedProducts, ...data.getPurchasesList]);
+    }
+  }, [data]);
   //Get current posts
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -68,12 +77,12 @@ function Purchases() {
               <p style={{ width: "40%" }} className="purchase_item_price">
                 Order Id #{pro._id}
               </p>
-              <p style={{ width: "30%" }} className="purchase_item_price">
+              {/* <p style={{ width: "30%" }} className="purchase_item_price">
                 Order Date: {pro.createdAt.split("T")[0]}
               </p>
               <p style={{ width: "30%" }} className="purchase_item_price">
                 Order Time: {pro.createdAt.substr(11, 5)}
-              </p>
+              </p> */}
             </div>
 
             <hr style={{ marginTop: "-2px" }}></hr>

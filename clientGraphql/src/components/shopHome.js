@@ -14,6 +14,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import cookie from "react-cookies";
 import { Navigate } from "react-router-dom";
+import { LOAD_SHOP_ITEMS } from "../GraphQL/Queries";
+import { useQuery, gql } from "@apollo/client";
 
 function shopHome() {
   const { id } = useParams(); //itemId
@@ -35,6 +37,10 @@ function shopHome() {
   const [shopImage, setShopImage] = useState();
   const [userId, setUserId] = useState(0);
 
+  const { error, loading, data } = useQuery(LOAD_SHOP_ITEMS, {
+    variables: { userId: user.id },
+  });
+
   const addItems = () => {
     setShowProductsAddPage(true);
   };
@@ -44,9 +50,14 @@ function shopHome() {
       skip: Skip,
       limit: limit,
     };
-    viewItems(variables);
+    // viewItems(variables);
     // getItemsByItemSearchId();
-  }, []);
+    console.log(" ================in shop home ====================");
+    if (data != undefined) {
+      console.log(data.getAllShopItems);
+      setProducts([...products, ...data.getAllShopItems]);
+    }
+  }, [data]);
 
   const getItemsByItemSearchId = () => {
     Axios.get(

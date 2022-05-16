@@ -45,6 +45,21 @@ export const LOAD_PURCHASES_LIST = gql`
       itemDescription
       itemCount
       itemImage
+      giftMessage
+    }
+  }
+`;
+export const LOAD_SHOP_ITEMS = gql`
+  query getAllShopItems($userId: String!) {
+    getAllShopItems(userId: $userId) {
+      userId
+      itemName
+      _id
+      itemPrice
+      itemCount
+      itemCategory
+      itemImage
+      itemDescription
     }
   }
 `;
