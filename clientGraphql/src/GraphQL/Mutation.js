@@ -25,7 +25,6 @@ export const CREATE_SHOP_NAME = gql`
   }
 `;
 
-//Doubt
 export const ADD_PRODUCT = gql`
   mutation addShopItem(
     $itemName: String!
@@ -47,6 +46,38 @@ export const ADD_PRODUCT = gql`
     ) {
       userId
       itemName
+    }
+  }
+`;
+
+export const EDIT_PROFILE = gql`
+  mutation editProfile(
+    $username: String!
+    $email: String!
+    $phoneNumber: Int!
+    $dob: String!
+    $gender: String!
+    $profilePic: String!
+    $about: String!
+    $city: String!
+    $fullAddress: String!
+  ) {
+    addShopItem(
+      username: $username
+      email: $email
+      phoneNumber: $phoneNumber
+      dob: $dob
+      gender: $gender
+      profilePic: $profilePic
+      about: $about
+      city: $city
+      fullAddress: $fullAddress
+    ) {
+      username
+      email
+      phoneNumber
+      city
+      gender
     }
   }
 `;

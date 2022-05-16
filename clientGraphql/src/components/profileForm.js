@@ -374,6 +374,7 @@ function profileForm() {
                   <option value="Cuba">Cuba</option>
                   <option value="Cyprus">Cyprus</option>
                   <option value="Czech Republic">Czech Republic</option>
+                  <option value="Daly City">Daly City</option>
                   <option value="Denmark">Denmark</option>
                   <option value="Djibouti">Djibouti</option>
                   <option value="Dominica">Dominica</option>

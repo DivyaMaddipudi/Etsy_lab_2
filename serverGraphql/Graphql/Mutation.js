@@ -161,8 +161,8 @@ const mutation = new GraphQLObjectType({
             sales: args.sales,
           }
         );
-        console.log(items_update);
-        return items_update;
+        // console.log(items_update);
+        return args;
       },
     },
     clearCart: {

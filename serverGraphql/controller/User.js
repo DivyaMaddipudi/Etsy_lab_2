@@ -34,11 +34,11 @@ const s3 = new aws.S3({
 
 //create and save new user
 exports.create = async (username, email, password) => {
-  console.log("======================== in create");
+  console.log(" --------------------- in register user ---------------------");
   return new Promise(async (resolve, reject) => {
     console.log("In register post " + username);
     //validate request
-    console.log(username + " --------------- ");
+    console.log(username + " created successfully ");
     if (!username && !email && !password) {
       reject({ message: "Content can not be empty" });
       return;

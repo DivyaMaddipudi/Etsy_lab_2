@@ -33,6 +33,22 @@ export const LOAD_CART_ITEMS = gql`
   }
 `;
 
+export const LOAD_USER_PROFILE = gql`
+  query getUserProfile($userId: String!) {
+    getUserProfile(userId: $userId) {
+      username
+      email
+      phoneNumber
+      dob
+      gender
+      profilePic
+      about
+      city
+      fullAddress
+    }
+  }
+`;
+
 export const LOAD_PURCHASES_LIST = gql`
   query getPurchasesList($userId: String!) {
     getPurchasesList(userId: $userId) {
