@@ -98,3 +98,19 @@ export const ADD_ITEM_TO_PURCHASES = gql`
     }
   }
 `;
+
+export const EDIT_ITEM_QTY = gql`
+  mutation editItemQtyById($itemId: String!, $itemCount: Int!, $sales: Int!) {
+    editItemQtyById(itemId: $itemId, itemCount: $itemCount, sales: $sales) {
+      sales
+    }
+  }
+`;
+
+export const CLEAR_CART = gql`
+  mutation clearCart {
+    clearCart {
+      itemId
+    }
+  }
+`;

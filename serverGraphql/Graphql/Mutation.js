@@ -144,6 +144,36 @@ const mutation = new GraphQLObjectType({
         return args;
       },
     },
+    editItemQtyById: {
+      type: Items,
+      args: {
+        itemId: { type: GraphQLString },
+        itemCount: { type: GraphQLInt },
+        sales: { type: GraphQLInt },
+      },
+      async resolve(parent, args) {
+        const items_update = Itemsdb.findByIdAndUpdate(
+          { _id: args.itemId },
+          {
+            itemCount: args.itemCount,
+            sales: args.sales,
+          },
+          {
+            new: true,
+          }
+        );
+        console.log(items_update);
+        return items_update;
+      },
+    },
+    clearCart: {
+      type: CartItem,
+      async resolve(parent, args) {
+        const cartDel = await cartdb.deleteMany({});
+        return cartDel;
+      },
+    },
+
     // addShopItem: {
     //   type: Items,
     //   args: {

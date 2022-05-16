@@ -26,6 +26,8 @@ import { LOAD_CART_ITEMS } from "../GraphQL/Queries";
 import {
   ADD_ITEM_TO_PURCHASES,
   DELETE_ITEM_FROM_CART,
+  EDIT_ITEM_QTY,
+  CLEAR_CART,
 } from "../GraphQL/Mutation";
 import { useMutation } from "@apollo/client";
 
@@ -51,6 +53,24 @@ const CartScreen = () => {
   });
 
   const [addItemsToPurchases] = useMutation(ADD_ITEM_TO_PURCHASES, {
+    onCompleted(res) {
+      console.log(res);
+    },
+    onError(e) {
+      console.log(e.message);
+    },
+  });
+
+  const [clearCartItems] = useMutation(CLEAR_CART, {
+    onCompleted(res) {
+      console.log(res);
+    },
+    onError(e) {
+      console.log(e.message);
+    },
+  });
+
+  const [editItemQty] = useMutation(EDIT_ITEM_QTY, {
     onCompleted(res) {
       console.log(res);
     },
@@ -190,33 +210,48 @@ const CartScreen = () => {
           //     console.log(err);
           //   });
 
-          const itemDetails = {
-            itemCount: product.itemCount - product.qty,
-            itemSales: productOverview.sales + product.qty,
-          };
+          const itemDetails = {};
 
-          Axios.put(
-            "http://localhost:4000/api/products/editItemQtyById/" +
-              product.itemId,
-            itemDetails
-          ).then((response) => {
-            if (response.data.success) {
-              console.log("Item details edited successfully.....");
+          editItemQty({
+            variables: {
+              itemId: product.itemId,
+              itemCount: product.itemCount - product.qty,
+              itemSales: productOverview.sales + product.qty,
+            },
+          }).then((res) => {
+            console.log(res);
+            if (res.data !== undefined) {
+              console.log(res.data);
+              console.log("item deleted successfully");
+              // window.location.pathname = "/home";
             }
           });
+
+          // Axios.put(
+          //   "http://localhost:4000/api/products/editItemQtyById/" +
+          //     product.itemId,
+          //   itemDetails
+          // ).then((response) => {
+          //   if (response.data.success) {
+          //     console.log("Item details edited successfully.....");
+          //   }
+          // });
         }
       });
 
-      Axios.delete("http://localhost:4000/api/products/clearCart")
-        .then((response) => {
-          if (response) {
-            console.log("Items deleted successfully");
-            console.log(response.data.message);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      clearCartItems().then((res) => {
+        console.log(res);
+      });
+      // Axios.delete("http://localhost:4000/api/products/clearCart")
+      //   .then((response) => {
+      //     if (response) {
+      //       console.log("Items deleted successfully");
+      //       console.log(response.data.message);
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
 
       dispatch(clearCart());
 
